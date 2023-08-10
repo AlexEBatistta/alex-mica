@@ -34,9 +34,9 @@ export class MainScene extends PixiScene {
 			// ESTO ES PARA EL ADMIN
 		}
 
-		this.background = GraphicsHelper.pixel(0xffffff, 0.95);
+		this.background = GraphicsHelper.pixel(0xff000f, 0.95);
 		this.background.pivot.set(0.5);
-		// this.addChild(this.background);
+		this.addChild(this.background);
 
 		this.centerContainer = new Container();
 		// this.addChild(this.centerContainer);
