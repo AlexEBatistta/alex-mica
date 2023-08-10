@@ -24,10 +24,34 @@
         "y": 0.5
       }
     },
-    "package-1/checkbox_background.png": {
+    "package-1/alliances.png": {
       "frame": {
         "x": 2,
         "y": 632,
+        "w": 372,
+        "h": 288
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 372,
+        "h": 288
+      },
+      "sourceSize": {
+        "w": 372,
+        "h": 288
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "package-1/checkbox_background.png": {
+      "frame": {
+        "x": 2,
+        "y": 924,
         "w": 210,
         "h": 210
       },
@@ -50,8 +74,8 @@
     },
     "package-1/checkbox_check.png": {
       "frame": {
-        "x": 216,
-        "y": 632,
+        "x": 2,
+        "y": 1138,
         "w": 116,
         "h": 113
       },
@@ -74,8 +98,8 @@
     },
     "package-1/heart.png": {
       "frame": {
-        "x": 336,
-        "y": 632,
+        "x": 2,
+        "y": 1255,
         "w": 82,
         "h": 72
       },
@@ -98,8 +122,8 @@
     },
     "package-1/arrow.png": {
       "frame": {
-        "x": 422,
-        "y": 632,
+        "x": 2,
+        "y": 1331,
         "w": 44,
         "h": 26
       },
@@ -128,7 +152,7 @@
     "format": "RGBA8888",
     "size": {
       "w": 512,
-      "h": 1024
+      "h": 2048
     },
     "scale": 1
   }
