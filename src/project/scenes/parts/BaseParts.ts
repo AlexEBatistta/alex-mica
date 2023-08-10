@@ -2,10 +2,11 @@ import type { Graphics } from "pixi.js";
 import { Container } from "pixi.js";
 import { GraphicsHelper } from "../../../engine/utils/GraphicsHelper";
 import { Manager } from "../../..";
+import { ColorDictionary } from "../../../engine/utils/Constants";
 
 export class BaseParts extends Container {
 	protected background: Graphics;
-	constructor(alpha: number, color: number = 0x000000) {
+	constructor(alpha: number, color: number = ColorDictionary.black) {
 		super();
 
 		this.background = GraphicsHelper.pixel(color, alpha);

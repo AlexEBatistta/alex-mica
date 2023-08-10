@@ -19,7 +19,6 @@ uniform float uFakeBold;
 // shadow
 uniform vec3 uShadowColor;
 uniform vec2 uShadowOffset;
-uniform float uShadowOpacity;
 
 void main(void) {
 
@@ -57,7 +56,7 @@ void main(void) {
   float alphaShadow =
       clamp((uFWidth * (median - 0.5 + uFakeBold)) + 0.5 - uFakeBold, 0.0, 1.0);
 
-  vec4 shadowColor = vec4(uShadowColor, alphaShadow - uShadowOpacity);
+  vec4 shadowColor = vec4(uShadowColor, alphaShadow);
 
   vec4 outColor = mix(shadowColor, textColor, textColor.a);
   outColor.a = outColor.a * uColor.a; // apply global alpha

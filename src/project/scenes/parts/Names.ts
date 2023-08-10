@@ -1,14 +1,15 @@
-import { Sprite, Text, TextStyle } from "pixi.js";
+import { Sprite, Text } from "pixi.js";
 import { BaseParts } from "./BaseParts";
 import { setPivotToCenter } from "../../../engine/utils/MathUtils";
 import { AdjustmentFilter } from "@pixi/filter-adjustment";
 import { GraphicsHelper } from "../../../engine/utils/GraphicsHelper";
 import i18next from "i18next";
-import type { ISDFTextStyle } from "../../../engine/sdftext/SDFBitmapText";
 import { SDFBitmapText } from "../../../engine/sdftext/SDFBitmapText";
-import { DropShadowFilter } from "@pixi/filter-drop-shadow";
+import { AnimatedArrow } from "../../../engine/ui/button/AnimatedArrow";
+import { SDFTextStyleDictionary, TextStyleDictionary } from "../../../engine/utils/Constants";
+import { ScaleHelper } from "../../../engine/utils/ScaleHelper";
 export class Names extends BaseParts {
-	constructor() {
+	constructor(callbackArrow: Function) {
 		super(0.8);
 		const coverPhoto = Sprite.from("cover_photo");
 		coverPhoto.anchor.set(0.5, 0);
@@ -20,27 +21,18 @@ export class Names extends BaseParts {
 		overPhoto.scale.set(coverPhoto.width, coverPhoto.height);
 		this.addChild(overPhoto);
 
-		const date = new SDFBitmapText(i18next.t("Names.date"), { fontName: "monbaiti", fontSize: 205, tint: 0xffffff } as ISDFTextStyle);
+		const date = new SDFBitmapText(i18next.t("Names.date"), SDFTextStyleDictionary.namesDate);
 		setPivotToCenter(date);
 		date.position.set(395, 400);
 		this.addChild(date);
 
-		const names = new SDFBitmapText(i18next.t("Names.names"), {
-			fontName: "monbaiti",
-			fontSize: 134,
-			tint: 0xffffff,
-		} as ISDFTextStyle);
+		const names = new SDFBitmapText(i18next.t("Names.names"), SDFTextStyleDictionary.namesTitle);
 		setPivotToCenter(names);
 		names.position.set(0, 1490);
-		names.filters = [new DropShadowFilter()];
+		// names.filters = [new DropShadowFilter({ quality: 5 })];
 		this.addChild(names);
 
-		const style: TextStyle = new TextStyle({
-			fontSize: 66,
-			fontFamily: "Poppins",
-			fill: 0xffffff,
-		});
-		const subtitle = new Text(i18next.t("Names.subtitle"), style);
+		const subtitle = new Text(i18next.t("Names.subtitle"), TextStyleDictionary.namesSubtitle);
 		setPivotToCenter(subtitle);
 		subtitle.position.set(0, 1632);
 		this.addChild(subtitle);
@@ -50,6 +42,10 @@ export class Names extends BaseParts {
 		heart.position.set(0, 1758);
 		this.addChild(heart);
 
-		this.setBackgroundSize(1080, this.height);
+		const arrow: AnimatedArrow = new AnimatedArrow(callbackArrow);
+		arrow.y = coverPhoto.height - arrow.height * 3.5;
+		this.addChild(arrow);
+
+		this.setBackgroundSize(ScaleHelper.IDEAL_WIDTH, this.height);
 	}
 }

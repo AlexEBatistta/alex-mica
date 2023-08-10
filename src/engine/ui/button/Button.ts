@@ -1,5 +1,6 @@
 import type { IPointData, Filter } from "pixi.js";
 import { Circle, Container, Rectangle, Sprite, TextStyle, Texture, Text } from "pixi.js";
+import { Tween } from "tweedle.js";
 
 export class Button extends Container {
 	private readonly graphic: Sprite;
@@ -224,11 +225,25 @@ export class Button extends Container {
 			this.currentState = this.fallbackState; // emergency patch
 		}
 
-		// the container
-		this.scaleAndFilterContainer.scale.x = this.currentState?.scaleX ?? this.currentState?.scale ?? this.fallbackState.scaleX;
-		this.scaleAndFilterContainer.scale.y = this.currentState?.scaleY ?? this.currentState?.scale ?? this.fallbackState.scaleY;
-		this.scaleAndFilterContainer.hitArea = this.getHitArea();
-		this.scaleAndFilterContainer.cursor = this.getCursor();
+		if (this.currentState?.tween) {
+			new Tween(this.scaleAndFilterContainer)
+				.to(
+					{
+						scale: {
+							x: this.currentState?.scaleX ?? this.currentState?.scale ?? this.fallbackState.scaleX,
+							y: this.currentState?.scaleY ?? this.currentState?.scale ?? this.fallbackState.scaleY,
+						},
+					},
+					50
+				)
+				.start();
+		} else {
+			// the container
+			this.scaleAndFilterContainer.scale.x = this.currentState?.scaleX ?? this.currentState?.scale ?? this.fallbackState.scaleX;
+			this.scaleAndFilterContainer.scale.y = this.currentState?.scaleY ?? this.currentState?.scale ?? this.fallbackState.scaleY;
+			this.scaleAndFilterContainer.hitArea = this.getHitArea();
+			this.scaleAndFilterContainer.cursor = this.getCursor();
+		}
 
 		// assertion. I am sure the fallbacks are never just strings.
 		this.fallbackState.texture = this.fallbackState.texture as TextureOptions;
@@ -306,6 +321,7 @@ interface ButtonStateOptions {
 	 * Only works if you don't set scaleX and scaleY
 	 */
 	scale?: number;
+	tween?: boolean;
 
 	//
 	text?: string | TextOptions;

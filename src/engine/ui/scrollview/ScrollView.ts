@@ -144,20 +144,22 @@ export class ScrollView extends Container {
 			this.on("pointerup", this.onDragEnd, this);
 			this.on("pointerupoutside", this.onDragEnd, this);
 			this.on("pointermove", this.onDragMove, this);
-			/* if (options?.useMouseWheel) {
+			if (options?.useMouseWheel) {
+				console.log("HOLAaaaa");
 				this.wheelFunction = this.onMouseWheel.bind(this);
-				window.addEventListener("mousewheel", this.wheelFunction);
-			} */
+				window.addEventListener("wheel", this.wheelFunction);
+			}
 		}
 	}
 
-	/* private wheelFunction: any;
+	private wheelFunction: any;
 	private onMouseWheel(delta: WheelEvent): void {
-		if (!this.dragging && this.worldVisible && (Manager.lastHitObject == this || isDescendantOf(this, Manager.lastHitObject))) {
-			this.content.y -= delta.deltaY;
-			this.constraintRectangle();
+		if (!this.dragging && this.worldVisible) {
+			this.scrollInnertia(0, this.content.y - delta.deltaY);
+			// this.content.y -= delta.deltaY;
+			// this.constraintRectangle();
 		}
-	} */
+	}
 
 	private onDragStart(e: any): void {
 		// store a reference to the data
@@ -276,7 +278,6 @@ export class ScrollView extends Container {
 					.start();
 			}
 		}
-
 		// set the interaction data to null
 		this.dragging = false;
 		this.dragInitPosition = null;
@@ -317,6 +318,21 @@ export class ScrollView extends Container {
 		if (constraint) {
 			this.constraintRectangle();
 		}
+	}
+
+	public scrollInnertia(posX: number = 0, posY: number = 0): void {
+		if (this.scrollLimits.height <= Math.abs(posY) + Manager.height * 2) {
+			return;
+		}
+		const differenceX: number = this.content.x - posX;
+		const differenceY: number = this.content.y - posY;
+		const distance: number = Math.sqrt(differenceX ** 2 + differenceY ** 2);
+		this.dragTween = new Tween(this.content.position)
+			.to({ x: posX, y: posY }, distance * (this.innertiaTimeMultiplier / 2))
+			.onUpdate(() => this.updateGradients())
+			.easing(Easing.Quadratic.Out)
+			.onComplete(() => (this.dragTween = null))
+			.start();
 	}
 
 	public scrollToBottom(): void {
@@ -454,9 +470,9 @@ export class ScrollView extends Container {
 	}
 
 	public override destroy(options?: { children?: boolean; texture?: boolean; baseTexture?: boolean }): void {
-		/* if (this.wheelFunction != undefined) {
+		if (this.wheelFunction != undefined) {
 			window.removeEventListener("mousewheel", this.wheelFunction);
-		} */
+		}
 		super.destroy(options);
 	}
 }
@@ -482,4 +498,5 @@ interface ScrollOptions {
 	snapModulusVertical?: number;
 
 	bleedOut?: boolean;
+	useMouseWheel?: boolean;
 }

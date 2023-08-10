@@ -3,5 +3,14 @@
 		"date": "30\n03\n24",
 		"names":"ALEX & MICA",
 		"subtitle": "¡NOS CASAMOS!"
+	},
+	"Location":{
+		"title": "¡LLEGÓ EL GRAN DÍA",
+		"subtitle": "CEREMONIA Y FIESTA",
+		"text": "Celebramos nuestro casamiento el 19 de Marzo a las 17:30 horas en La Herencia, Saraví 1867, Pilar (altura Km 47.5 Panamericana). Tocá el botón de abajo para recibir las indicaciones para llegar. Te esperamos!",
+		"button": "CÓMO LLEGAR"
+	},
+	"Photos":{
+		"title": "NOSOTROS"
 	}
 }

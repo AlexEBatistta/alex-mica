@@ -9,6 +9,10 @@ import { Tween } from "tweedle.js";
 import { Easing } from "tweedle.js";
 import { PhotoViewer } from "../PhotoViewer";
 import { ScaleHelper } from "../../../engine/utils/ScaleHelper";
+import { SDFBitmapText } from "../../../engine/sdftext/SDFBitmapText";
+import i18next from "i18next";
+import { ColorDictionary, SDFTextStyleDictionary } from "../../../engine/utils/Constants";
+import { setPivotToCenter } from "../../../engine/utils/MathUtils";
 
 const spacing: number = 10;
 const columns: number = 2;
@@ -20,7 +24,12 @@ export class Photos extends BaseParts {
 	private tweens: Array<{ in: Tween<Container>; out: Tween<Container> }>;
 	private auxPos: Point;
 	constructor() {
-		super(0.4);
+		super(1, ColorDictionary.white);
+
+		const title: SDFBitmapText = new SDFBitmapText(i18next.t("Photos.title"), SDFTextStyleDictionary.titleBlack);
+		setPivotToCenter(title);
+		title.y = 25;
+		this.addChild(title);
 
 		this.photos = new Array();
 		this.tweens = new Array();
@@ -47,7 +56,8 @@ export class Photos extends BaseParts {
 
 			photo.interactive = true;
 			photo.cursor = "pointer";
-			if (!utils.isMobile) {
+
+			if (!utils.isMobile.any) {
 				photo.on("pointerenter", this.zoomIn.bind(this, photo, this.tweens[i]));
 				photo.on("pointerover", this.zoomIn.bind(this, photo, this.tweens[i]));
 				photo.on("pointerleave", this.zoomOut.bind(this, photo, this.tweens[i]));
@@ -67,8 +77,10 @@ export class Photos extends BaseParts {
 		});
 		this.grid.x = (photoSize.width * this.defaultScale) / 2;
 		this.grid.x -= this.grid.width / 2;
-		this.grid.y = spacing + (photoSize.height * this.defaultScale) / 2;
+		this.grid.y = 120 + spacing + (photoSize.height * this.defaultScale) / 2;
 		this.addChild(this.grid);
+
+		this.setBackgroundSize(ScaleHelper.IDEAL_WIDTH, 1633);
 	}
 
 	private zoomIn(photo: Sprite, tween: { in: Tween<Container>; out: Tween<Container> }): void {
@@ -95,11 +107,9 @@ export class Photos extends BaseParts {
 
 	private onPointerDown(e: PointerEvent): void {
 		this.auxPos = new Point(e.x, e.y);
-		console.log(this.auxPos);
 	}
 
 	private onPointerUp(e: PointerEvent, photo: Sprite, tween: { in: Tween<Container>; out: Tween<Container> }, index: number): void {
-		console.log(e.y);
 		if (this.auxPos?.y == e.y) {
 			Manager.openPopup(PhotoViewer, [this.photos, index]);
 		}

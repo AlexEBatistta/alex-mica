@@ -11,13 +11,6 @@
 					"name": "strings-en",
 					"srcs": "./lang/en.i18.json"
 				},
-				/* {
-					"name": "font1",
-					"srcs": "./fonts/monbaiti.ttf",
-					"data": {
-						"family": "monbaiti"
-					}
-				}, */
 				{
 					"name": "font2",
 					"srcs": "./fonts/Poppins-Light.ttf",
@@ -27,11 +20,16 @@
 				},
 				{ 
 					"name": "monbaiti",
-					"srcs": "./fonts/sdf/monbaiti.json" }
-				/*{
-					"name": "defaultSDFFont",
-					"srcs": "./fonts/roundedelegance.json"
-				}*/
+					"srcs": "./fonts/sdf/monbaiti.json" 
+				},
+				{ 
+					"name": "monbaitiBig",
+					"srcs": "./fonts/sdf/monbaitiBig.json" 
+				},
+				{ 
+					"name": "monbaitiSmall",
+					"srcs": "./fonts/sdf/monbaitiSmall.json" 
+				}
 			]
 		},
 		{

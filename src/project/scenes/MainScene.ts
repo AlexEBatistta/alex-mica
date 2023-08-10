@@ -8,7 +8,6 @@ import { Button } from "../../engine/ui/button/Button";
 import { CheckBox } from "../../engine/ui/button/CheckBox";
 import { TextInput, TextInputEvents } from "../../engine/textinput/TextInput";
 import { setPivotToCenter } from "../../engine/utils/MathUtils";
-import { AnimatedArrow } from "../../engine/ui/button/AnimatedArrow";
 import { Names } from "./parts/Names";
 import { ScrollView } from "../../engine/ui/scrollview/ScrollView";
 import { Location } from "./parts/Location";
@@ -27,7 +26,6 @@ export class MainScene extends PixiScene {
 	private button: Button;
 	private checkbox: CheckBox;
 	private inputBox: TextInput;
-	private arrows: AnimatedArrow;
 	constructor() {
 		super();
 
@@ -42,7 +40,7 @@ export class MainScene extends PixiScene {
 		this.centerContainer = new Container();
 		// this.addChild(this.centerContainer);
 
-		this.namesContainer = new Names();
+		this.namesContainer = new Names(() => this.scrollView.scrollInnertia(0, -1920));
 		this.centerContainer.addChild(this.namesContainer);
 
 		const location: Location = new Location();
@@ -98,17 +96,12 @@ export class MainScene extends PixiScene {
 		this.inputBox.y = -200;
 		// this.centerContainer.addChild(this.inputBox);
 
-		this.arrows = new AnimatedArrow(3, () => {
-			console.log("ARROWS");
-		});
-		this.arrows.y = 200;
-		// this.centerContainer.addChild(this.arrows);
-
 		this.centerContainer.pivot.set(-this.centerContainer.width * 0.5, 0);
 		this.scrollView = new ScrollView(this.centerContainer.width, this.centerContainer.height, {
 			addToContent: this.centerContainer,
 			useInnertia: true,
 			scrollLimits: new Rectangle(0, 0, this.centerContainer.width, this.centerContainer.height),
+			useMouseWheel: true,
 		});
 		this.addChild(this.scrollView);
 	}

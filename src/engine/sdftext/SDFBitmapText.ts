@@ -38,7 +38,6 @@ export class SDFBitmapText extends BitmapText {
 
 	// Numbers in the range of 0.004 look good. No idea what they mean. Sorry.
 	public shadowOffset: Point = new Point();
-	public shadowOpacity: number = 0;
 	public shadowColor: number = 0;
 
 	private _lineSpacing: number = 0;
@@ -58,7 +57,6 @@ export class SDFBitmapText extends BitmapText {
 		this.outlineColor = style.outlineColor ?? this.outlineColor;
 		this.fakeBold = style.fakeBold ?? this.fakeBold;
 		this.shadowColor = style.shadowColor ?? this.shadowColor;
-		this.shadowOpacity = style.shadowOpacity ?? this.shadowOpacity;
 		this._lineSpacing = style.lineSpacing ?? 0;
 		this.shadowOffset.copyFrom(style.shadowOffset ?? this.shadowOffset);
 
@@ -366,10 +364,6 @@ export class SDFBitmapText extends BitmapText {
 
 			mesh.mesh.shader.uniforms.uShadowColor = magnitudeSquared(this.shadowOffset) > 0 ? new Color(this.shadowColor).toRgbArray() : new Color(this.tint).toRgbArray();
 			mesh.mesh.shader.uniforms.uShadowOffset = [-this.shadowOffset.x, -this.shadowOffset.y];
-			if (this.shadowOpacity > 0) {
-				mesh.mesh.shader.uniforms.uShadowOpacity = 1 - this.shadowOpacity;
-				console.log(1 - this.shadowOpacity);
-			}
 		}
 
 		super._render(renderer);
@@ -397,7 +391,6 @@ export interface ISDFTextStyle extends IBitmapTextStyle {
 	outlineColor?: number;
 	fakeBold?: boolean;
 	shadowColor?: number;
-	shadowOpacity?: number;
 	// Numbers in the range of 0.004 look good. No idea what they mean. Sorry.
 	shadowOffset?: IPointData;
 	lineSpacing?: number;
