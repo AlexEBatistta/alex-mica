@@ -115,12 +115,12 @@ export class MainScene extends PixiScene {
 		this.background.height = newH;
 		this.background.position.set(newW * 0.5, newH * 0.5);
 
-		const contentScale: number = ScaleHelper.screenScale(1080, 1920, newW, newH, 1, 1, Math.min);
+		const contentScale: number = ScaleHelper.screenScale(ScaleHelper.IDEAL_WIDTH, ScaleHelper.IDEAL_HEIGHT, newW, newH, 1, 1, Math.min);
 		this.scrollView.scale.set(contentScale);
 
 		this.scrollView.scrollHeight = newH / contentScale;
 		this.scrollView.constraintRectangle();
 
-		this.scrollView.position.set((newW - 1080 * contentScale) / 2, 0);
+		this.scrollView.position.set((newW - ScaleHelper.IDEAL_WIDTH * contentScale) / 2, 0);
 	}
 }
