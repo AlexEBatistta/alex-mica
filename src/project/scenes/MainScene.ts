@@ -13,7 +13,7 @@ import { ScrollView } from "../../engine/ui/scrollview/ScrollView";
 import { Location } from "./parts/Location";
 import { Photos } from "./parts/Photos";
 
-// https://alexbatistta.github.io/testRepo/
+// https://alexebatistta.github.io/invitations
 // const size: ISize = { width: 1080, height: 1920 * 4 };
 export class MainScene extends PixiScene {
 	// public static readonly BUNDLES = ["package-1", "sfx", "music"];
@@ -129,6 +129,4 @@ export class MainScene extends PixiScene {
 
 		this.scrollView.position.set((newW - 1080 * contentScale) / 2, 0);
 	}
-
-	
 }
