@@ -1,0 +1,62 @@
+// ! THIS FILE IS A MAGICAL JSON THAT CAN HAVE COMMENTS.
+// It will be turned into a regular json file during the build process.
+// PLEASE DON'T REMOVE THE .jsonc extension!
+// ! PLEASE REMEMBER TO TELL YOUR SCENES WHICH BUNDLES THEY NEED WITH THE `public static readonly BUNDLES: string[] = ["bundleName"]` PROPERTY.
+{
+	"bundles": [
+		{
+			"name": "initialLoad",
+			"assets": [
+				{
+					"name": "strings-en",
+					"srcs": "./lang/en.i18.json"
+				},
+				/* {
+					"name": "font1",
+					"srcs": "./fonts/monbaiti.ttf",
+					"data": {
+						"family": "monbaiti"
+					}
+				}, */
+				{
+					"name": "font2",
+					"srcs": "./fonts/Poppins-Light.ttf",
+					"data": {
+						"family": "Poppins"
+					}
+				},
+				{ 
+					"name": "monbaiti",
+					"srcs": "./fonts/sdf/monbaiti.json" }
+				/*{
+					"name": "defaultSDFFont",
+					"srcs": "./fonts/roundedelegance.json"
+				}*/
+			]
+		},
+		{
+			"name": "package-1",
+			"assets": {
+				"cover_photo": "./img/cover_photo.png",
+				"photo1": "./img/photo1.png",
+				"photo2": "./img/photo2.png",
+				"photo3": "./img/photo3.png",
+				"photo4": "./img/photo4.png",
+				"photo5": "./img/photo5.png",
+				"photo6": "./img/photo6.png"
+			}
+		}
+		/* {
+			"name": "sfx",
+			"assets": {
+				"beep": "./sfx/beep.mp3"
+			}
+		},
+		{
+			"name": "music",
+			"assets": {
+				"music": "./music/musical.mp3"
+			}
+		}, */
+	]
+}
