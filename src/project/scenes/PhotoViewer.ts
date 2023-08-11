@@ -2,9 +2,10 @@ import Hammer from "hammerjs";
 import type { Graphics } from "pixi.js";
 import { Point } from "pixi.js";
 import { Sprite } from "pixi.js";
-import { Tween } from "tweedle.js";
+import { Easing, Tween } from "tweedle.js";
 import { Manager } from "../..";
 import { PixiScene } from "../../engine/scenemanager/scenes/PixiScene";
+import { Timer } from "../../engine/tweens/Timer";
 import { GraphicsHelper } from "../../engine/utils/GraphicsHelper";
 import { ScaleHelper } from "../../engine/utils/ScaleHelper";
 
@@ -19,6 +20,7 @@ const enum HammerEvents {
 }
 
 const ZOOM: number = 2;
+const TIME_PHOTO: number = 2000;
 export class PhotoViewer extends PixiScene {
 	private background: Graphics;
 	private photos: Array<Sprite>;
@@ -28,6 +30,7 @@ export class PhotoViewer extends PixiScene {
 	private inZoom: boolean;
 	private defaultScale: Point;
 	private zoomPosition: Point;
+	private timer: Timer;
 	constructor(photos: Array<Sprite>, index: number) {
 		super();
 		this.photos = photos;
@@ -41,6 +44,22 @@ export class PhotoViewer extends PixiScene {
 		this.mainPhoto = Sprite.from(this.photos[index].texture.clone());
 		this.mainPhoto.anchor.set(0.5);
 		this.addChild(this.mainPhoto);
+
+		this.timer = new Timer()
+			.to(TIME_PHOTO)
+			.onRepeat(() => {
+				new Tween(this.mainPhoto)
+					.to({ alpha: 0 }, 150)
+					.easing(Easing.Sinusoidal.Out)
+					.onComplete(() => {
+						this.currentIndex = (this.currentIndex + 1) % this.photos.length;
+						this.mainPhoto.texture = this.photos[this.currentIndex].texture.clone();
+						new Tween(this.mainPhoto).to({ alpha: 1 }, 150).easing(Easing.Sinusoidal.In).start();
+					})
+					.start();
+			})
+			.repeat(Infinity)
+			.start();
 	}
 
 	public override onShow(): void {
@@ -92,6 +111,7 @@ export class PhotoViewer extends PixiScene {
 								x: toLeft ? Manager.width + this.mainPhoto.width / 2 : -this.mainPhoto.width / 2,
 								y: center.y,
 							})
+							.onComplete(() => this.timer.restart())
 							.start();
 					})
 					.start();
@@ -140,8 +160,12 @@ export class PhotoViewer extends PixiScene {
 				this.zoomPosition = this.mainPhoto.position.clone();
 				this.mainPhoto.scale.set(this.defaultScale.x * ZOOM);
 			}
-		} else if (this.inZoom) {
-			this.zoomPosition = this.mainPhoto.position.clone();
+		} else {
+			this.timer.pause();
+			console.log("timer paused");
+			if (this.inZoom) {
+				this.zoomPosition = this.mainPhoto.position.clone();
+			}
 		}
 	}
 
