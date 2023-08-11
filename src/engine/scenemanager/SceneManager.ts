@@ -988,14 +988,14 @@ export class SceneManager<R extends IRenderer> {
 				);
 			}
 			await Promise.all(bundlesPromises);
-		} else {
+		} /* else {
 			if (!isTransition) {
 				console.warn(
 					`No bundles found for scene ${String(sceneClass.name)}, Did you forget the public static readonly BUNDLES: string[] = ["bundleNameHere"] ?`,
 					sceneClass
 				);
 			}
-		}
+		} */
 	}
 
 	private async initAssets(): Promise<void> {

@@ -14,7 +14,7 @@ export class AnimatedArrow extends Container {
 		new Tween(this.arrow).to({ alpha: 1 }, 1000).easing(Easing.Sinusoidal.InOut).yoyo(true).repeat(Infinity).start();
 		new Tween(this.arrow).to({ y: this.arrow.height }, 2000).repeat(Infinity).from({ y: 0 }).easing(Easing.Sinusoidal.InOut).start();
 
-		this.hitArea = new Rectangle(-this.arrow.width / 2, -this.arrow.height / 2, this.arrow.width, this.arrow.height * 2);
+		this.hitArea = new Rectangle(-this.arrow.width, -this.arrow.height, this.arrow.width * 2, this.arrow.height * 3);
 		this.interactive = true;
 		this.cursor = "pointer";
 		this.on("pointertap", () => callback());

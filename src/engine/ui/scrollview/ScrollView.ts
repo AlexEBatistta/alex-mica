@@ -145,7 +145,6 @@ export class ScrollView extends Container {
 			this.on("pointerupoutside", this.onDragEnd, this);
 			this.on("pointermove", this.onDragMove, this);
 			if (options?.useMouseWheel) {
-				console.log("HOLAaaaa");
 				this.wheelFunction = this.onMouseWheel.bind(this);
 				window.addEventListener("wheel", this.wheelFunction);
 			}
