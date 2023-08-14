@@ -12,6 +12,7 @@ import { Names } from "./parts/Names";
 import { ScrollView } from "../../engine/ui/scrollview/ScrollView";
 import { Location } from "./parts/Location";
 import { Photos } from "./parts/Photos";
+import { Payment } from "./parts/Payment";
 
 // https://alexebatistta.github.io/invitations
 // const size: ISize = { width: 1080, height: 1920 * 4 };
@@ -50,6 +51,10 @@ export class MainScene extends PixiScene {
 		const photos: Photos = new Photos();
 		photos.y = location.y + location.height;
 		this.centerContainer.addChild(photos);
+
+		const payment: Payment = new Payment();
+		payment.y = photos.y + photos.height;
+		this.centerContainer.addChild(payment);
 
 		const btnContent: Container = new Container();
 		const btnBack: Graphics = GraphicsHelper.pixel(0xff0000);

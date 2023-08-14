@@ -12,5 +12,9 @@
 	},
 	"Photos":{
 		"title": "NOSOTROS"
+	},
+	"Payment":{
+		"text": "El costo de la tarjeta es de\nAdultos: $3500\nMenores de 10: No abonan",
+		"button": "CÓMO LLEGAR"
 	}
 }

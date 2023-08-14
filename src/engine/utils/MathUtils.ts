@@ -132,3 +132,7 @@ export function multiplyScalar(vector: Point, num: number): Point {
 export function subtract(vector1: Point, vector2: Point): Point {
 	return new Point(vector1.x - vector2.x, vector1.y - vector2.y);
 }
+
+export function addScalar(vector1: Point, num: number): Point {
+	return new Point(vector1.x + num, vector1.y + num);
+}

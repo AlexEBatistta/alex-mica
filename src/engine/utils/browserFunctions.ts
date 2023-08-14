@@ -113,7 +113,7 @@ export function forceFullscreen(_element: HTMLElement): void {
 	// const done = false;
 	const callback = (): void => {
 		if (utils.isMobile.any) {
-			if (screenfull.isEnabled) {
+			if (screenfull.isEnabled && !screenfull.isFullscreen) {
 				// screenfull.request(element, { navigationUI: "hide" });
 				screenfull.request(undefined, { navigationUI: "hide" });
 			}

@@ -37,7 +37,7 @@ export class Location extends BaseParts {
 		subtitle.y = 835;
 		this.addChild(subtitle);
 
-		const text: Text = new Text(i18next.t("Location.text"), TextStyleDictionary.text);
+		const text: Text = new Text(i18next.t("Location.text"), TextStyleDictionary.textBlack);
 		setPivotToCenter(text);
 		text.y = 1150;
 		this.addChild(text);
@@ -47,7 +47,7 @@ export class Location extends BaseParts {
 		btnBack.pivot.set(0.5);
 		btnBack.scale.set(520, 90);
 		btnContent.addChild(btnBack);
-		const btnText: Text = new Text(i18next.t("Location.button"), TextStyleDictionary.buttons);
+		const btnText: Text = new Text(i18next.t("Location.button"), TextStyleDictionary.buttonWhite);
 		setPivotToCenter(btnText);
 		btnContent.addChild(btnText);
 
