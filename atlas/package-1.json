@@ -24,14 +24,38 @@
         "y": 0.5
       }
     },
-    "package-1/alliances.png": {
+    "package-1/dressCode.png": {
       "frame": {
         "x": 2,
         "y": 632,
+        "w": 486,
+        "h": 288
+      },
+      "rotated": true,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 486,
+        "h": 288
+      },
+      "sourceSize": {
+        "w": 486,
+        "h": 288
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "package-1/alliances.png": {
+      "frame": {
+        "x": 2,
+        "y": 1122,
         "w": 372,
         "h": 288
       },
-      "rotated": false,
+      "rotated": true,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
@@ -48,10 +72,34 @@
         "y": 0.5
       }
     },
+    "package-1/foodCover.png": {
+      "frame": {
+        "x": 2,
+        "y": 1498,
+        "w": 318,
+        "h": 286
+      },
+      "rotated": true,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 318,
+        "h": 286
+      },
+      "sourceSize": {
+        "w": 318,
+        "h": 286
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
     "package-1/checkbox_background.png": {
       "frame": {
         "x": 2,
-        "y": 924,
+        "y": 1820,
         "w": 210,
         "h": 210
       },
@@ -74,12 +122,12 @@
     },
     "package-1/checkbox_check.png": {
       "frame": {
-        "x": 2,
-        "y": 1138,
+        "x": 216,
+        "y": 1820,
         "w": 116,
         "h": 113
       },
-      "rotated": false,
+      "rotated": true,
       "trimmed": true,
       "spriteSourceSize": {
         "x": 47,
@@ -98,12 +146,12 @@
     },
     "package-1/heart.png": {
       "frame": {
-        "x": 2,
-        "y": 1255,
+        "x": 216,
+        "y": 1940,
         "w": 82,
         "h": 72
       },
-      "rotated": false,
+      "rotated": true,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
@@ -122,12 +170,12 @@
     },
     "package-1/arrow.png": {
       "frame": {
-        "x": 2,
-        "y": 1331,
+        "x": 292,
+        "y": 1940,
         "w": 44,
         "h": 26
       },
-      "rotated": false,
+      "rotated": true,
       "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
