@@ -13,6 +13,10 @@ import { ScrollView } from "../../engine/ui/scrollview/ScrollView";
 import { Location } from "./parts/Location";
 import { Photos } from "./parts/Photos";
 import { Payment } from "./parts/Payment";
+import { Confirmation } from "./parts/Confirmation";
+import { DressCode } from "./parts/DressCode";
+import { SongsList } from "./parts/SongsList";
+import { FinalGreeting } from "./parts/FinalGreeting";
 
 // https://alexebatistta.github.io/invitations
 // const size: ISize = { width: 1080, height: 1920 * 4 };
@@ -55,6 +59,22 @@ export class MainScene extends PixiScene {
 		const payment: Payment = new Payment();
 		payment.y = photos.y + photos.height;
 		this.centerContainer.addChild(payment);
+
+		const confirmation: Confirmation = new Confirmation();
+		confirmation.y = payment.y + payment.height;
+		this.centerContainer.addChild(confirmation);
+
+		const dressCode: DressCode = new DressCode();
+		dressCode.y = confirmation.y + confirmation.height;
+		this.centerContainer.addChild(dressCode);
+
+		const songsList: SongsList = new SongsList();
+		songsList.y = dressCode.y + dressCode.height;
+		this.centerContainer.addChild(songsList);
+
+		const finalGreeting: FinalGreeting = new FinalGreeting();
+		finalGreeting.y = songsList.y + songsList.height;
+		this.centerContainer.addChild(finalGreeting);
 
 		const btnContent: Container = new Container();
 		const btnBack: Graphics = GraphicsHelper.pixel(0xff0000);

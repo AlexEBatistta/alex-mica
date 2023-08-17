@@ -1,33 +1,35 @@
 import i18next from "i18next";
 import type { Graphics } from "pixi.js";
-import { Container, Sprite, Text } from "pixi.js";
+import { Container, Text } from "pixi.js";
+import { SDFBitmapText } from "../../../engine/sdftext/SDFBitmapText";
 import { Button } from "../../../engine/ui/button/Button";
-import { ColorDictionary, TextStyleDictionary } from "../../../engine/utils/Constants";
+import { ColorDictionary, SDFTextStyleDictionary, TextStyleDictionary } from "../../../engine/utils/Constants";
 import { GraphicsHelper } from "../../../engine/utils/GraphicsHelper";
 import { setPivotToCenter } from "../../../engine/utils/MathUtils";
 import { ScaleHelper } from "../../../engine/utils/ScaleHelper";
 import { BaseParts } from "./BaseParts";
 
-export class Payment extends BaseParts {
+export class SongsList extends BaseParts {
 	constructor() {
-		super(1, ColorDictionary.black);
+		super(1, ColorDictionary.white);
+		this.setBackgroundSize(ScaleHelper.IDEAL_WIDTH, 721);
 
-		const icon: Sprite = Sprite.from("package-1/foodCover.png");
-		icon.anchor.set(0.5);
-		icon.y = 285;
-		this.addChild(icon);
+		const title: SDFBitmapText = new SDFBitmapText(i18next.t("SongsList.title"), SDFTextStyleDictionary.titleBlack);
+		setPivotToCenter(title);
+		title.y = 133;
+		this.addChild(title);
 
-		const text: Text = new Text(i18next.t("Payment.text"), TextStyleDictionary.textWhite);
+		const text: Text = new Text(i18next.t("SongsList.text"), TextStyleDictionary.textBlack);
 		setPivotToCenter(text);
-		text.y = 590;
+		text.y = 342;
 		this.addChild(text);
 
 		const btnContent: Container = new Container();
-		const btnBack: Graphics = GraphicsHelper.pixel(ColorDictionary.white);
+		const btnBack: Graphics = GraphicsHelper.pixel(ColorDictionary.black);
 		btnBack.pivot.set(0.5);
-		btnBack.scale.set(520, 90);
+		btnBack.scale.set(665, 90);
 		btnContent.addChild(btnBack);
-		const btnText: Text = new Text(i18next.t("Payment.button"), TextStyleDictionary.buttonBlack);
+		const btnText: Text = new Text(i18next.t("SongsList.button"), TextStyleDictionary.buttonWhite);
 		setPivotToCenter(btnText);
 		btnContent.addChild(btnText);
 
@@ -46,9 +48,7 @@ export class Payment extends BaseParts {
 			},
 			fixedCursor: "pointer",
 		});
-		button.y = 770;
+		button.y = 533;
 		this.addChild(button);
-
-		this.setBackgroundSize(ScaleHelper.IDEAL_WIDTH, 886);
 	}
 }
