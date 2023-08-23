@@ -14,9 +14,9 @@ export class BaseParts extends Container {
 		this.addChild(this.background);
 	}
 
-	protected setBackgroundSize(width: number, height: number): void {
+	public setBackgroundSize(width: number, height?: number): void {
 		this.background.width = width;
-		this.background.height = height;
+		this.background.height = height ?? this.background.height;
 	}
 
 	public onResize(): void {

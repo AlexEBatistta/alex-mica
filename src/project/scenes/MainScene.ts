@@ -1,4 +1,5 @@
 import type { Graphics } from "pixi.js";
+import { Sprite } from "pixi.js";
 import { Rectangle } from "pixi.js";
 import { Container } from "pixi.js";
 import { PixiScene } from "../../engine/scenemanager/scenes/PixiScene";
@@ -17,16 +18,15 @@ import { Confirmation } from "./parts/Confirmation";
 import { DressCode } from "./parts/DressCode";
 import { SongsList } from "./parts/SongsList";
 import { FinalGreeting } from "./parts/FinalGreeting";
+import type { BaseParts } from "./parts/BaseParts";
+import { WIDTH_PARTS } from "../../engine/utils/Constants";
 
 // https://alexebatistta.github.io/invitations
-// const size: ISize = { width: 1080, height: 1920 * 4 };
 export class MainScene extends PixiScene {
-	// public static readonly BUNDLES = ["package-1", "sfx", "music"];
 	public static readonly BUNDLES = ["package-1"];
-	private background: Graphics;
+	private photoBackground: Sprite;
 	private scrollView: ScrollView;
 	private centerContainer: Container;
-	private namesContainer: Names;
 
 	private button: Button;
 	private checkbox: CheckBox;
@@ -38,18 +38,18 @@ export class MainScene extends PixiScene {
 			// ESTO ES PARA EL ADMIN
 		}
 
-		this.background = GraphicsHelper.pixel(0xffffff, 0.95);
-		this.background.pivot.set(0.5);
-		// this.addChild(this.background);
+		this.photoBackground = Sprite.from("cover_photo");
+		this.photoBackground.anchor.set(0.5);
+		this.addChild(this.photoBackground);
 
 		this.centerContainer = new Container();
 		// this.addChild(this.centerContainer);
 
-		this.namesContainer = new Names(() => this.scrollView.scrollInnertia(0, -1920));
-		this.centerContainer.addChild(this.namesContainer);
+		const namesContainer: Names = new Names(() => this.scrollView.scrollInnertia(0, -1920));
+		this.centerContainer.addChild(namesContainer);
 
 		const location: Location = new Location();
-		location.y = this.namesContainer.height;
+		location.y = namesContainer.height;
 		this.centerContainer.addChild(location);
 
 		const photos: Photos = new Photos();
@@ -128,6 +128,7 @@ export class MainScene extends PixiScene {
 			scrollLimits: new Rectangle(0, 0, this.centerContainer.width, this.centerContainer.height),
 			useMouseWheel: true,
 		});
+		this.scrollView.pivot.x = this.scrollView.width / 2;
 		this.addChild(this.scrollView);
 	}
 
@@ -136,16 +137,33 @@ export class MainScene extends PixiScene {
 	}
 
 	public override onResize(newW: number, newH: number): void {
-		this.background.width = newW;
-		this.background.height = newH;
-		this.background.position.set(newW * 0.5, newH * 0.5);
+		ScaleHelper.setScaleRelativeToScreen(this.photoBackground, newW, newH, 1, 1, Math.max);
+		this.photoBackground.position.set(newW / 2, newH / 2);
 
-		const contentScale: number = ScaleHelper.screenScale(ScaleHelper.IDEAL_WIDTH, ScaleHelper.IDEAL_HEIGHT, newW, newH, 1, 1, Math.min);
+		let contentScale: number = ScaleHelper.screenScale(ScaleHelper.IDEAL_WIDTH, ScaleHelper.IDEAL_HEIGHT, newW, newH, 1, 1, Math.max);
+
 		this.scrollView.scale.set(contentScale);
 
+		if (this.scrollView.width > newW) {
+			contentScale = ScaleHelper.screenScale(ScaleHelper.IDEAL_WIDTH, ScaleHelper.IDEAL_HEIGHT, newW, newH, 1, 1, Math.min);
+			this.scrollView.scale.set(contentScale);
+		}
+
+		this.scrollView.position.set(newW / 2, 0);
+
+		const contentParts: BaseParts[] = this.scrollView.content.children[0].children as BaseParts[];
+		for (let i = 0; i < contentParts.length; i++) {
+			const part = contentParts[i];
+			if (part instanceof Photos) {
+				part.setBackgroundSize(WIDTH_PARTS);
+			}
+			if (i > 0) {
+				part.y = contentParts[i - 1].y + contentParts[i - 1].height;
+			}
+		}
+
+		this.scrollView.updateScrollLimits(undefined, this.centerContainer.height);
 		this.scrollView.scrollHeight = newH / contentScale;
 		this.scrollView.constraintRectangle();
-
-		this.scrollView.position.set((newW - ScaleHelper.IDEAL_WIDTH * contentScale) / 2, 0);
 	}
 }

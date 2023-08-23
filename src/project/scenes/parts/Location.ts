@@ -5,20 +5,19 @@ import { Container, Sprite } from "pixi.js";
 import { BaseParts } from "./BaseParts";
 import { Button } from "../../../engine/ui/button/Button";
 import { GraphicsHelper } from "../../../engine/utils/GraphicsHelper";
-import { ScaleHelper } from "../../../engine/utils/ScaleHelper";
 import { SDFBitmapText } from "../../../engine/sdftext/SDFBitmapText";
 import i18next from "i18next";
-import { ColorDictionary, SDFTextStyleDictionary, TextStyleDictionary } from "../../../engine/utils/Constants";
+import { ColorDictionary, SDFTextStyleDictionary, TextStyleDictionary, WIDTH_PARTS } from "../../../engine/utils/Constants";
 import { setPivotToCenter } from "../../../engine/utils/MathUtils";
 
 export class Location extends BaseParts {
 	constructor() {
 		super(1, ColorDictionary.white);
-		this.setBackgroundSize(ScaleHelper.IDEAL_WIDTH, 1542);
+		this.setBackgroundSize(WIDTH_PARTS, 1542);
 
 		const backTitle: Graphics = GraphicsHelper.pixel(ColorDictionary.black);
 		backTitle.pivot.set(0.5, 0);
-		backTitle.scale.set(ScaleHelper.IDEAL_WIDTH, 238);
+		backTitle.scale.set(WIDTH_PARTS, 238);
 		this.addChild(backTitle);
 
 		const title: SDFBitmapText = new SDFBitmapText(i18next.t("Location.title"), SDFTextStyleDictionary.titleWhite);

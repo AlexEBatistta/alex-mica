@@ -11,6 +11,7 @@ import Stats from "stats.js";
 import { Ticker } from "pixi.js";
 import { SceneEvents } from "./SceneEvents";
 import { Assets } from "pixi.js";
+import { ScaleHelper } from "../utils/ScaleHelper";
 
 /** The constructor function of T. It has no arguments */
 export type EmptyConstructor<T> = new () => T;
@@ -134,7 +135,17 @@ export class SceneManager<R extends IRenderer> {
 	private lockScene: IScene | undefined; // Ok, this is more a hotfix than a feature. This will be only one.
 
 	private preferredOrientation: "portrait" | "landscape" = "portrait";
-	private currentOrientation: "portrait" | "landscape" = "portrait";
+	private set currentOrientation(orientation: "portrait" | "landscape") {
+		if (this._currentOrientation != orientation) {
+			this._currentOrientation = orientation;
+			ScaleHelper.IDEAL_HEIGHT = this.isPortrait ? 1920 : 1080;
+			ScaleHelper.IDEAL_WIDTH = this.isPortrait ? 1080 : 1920;
+		}
+	}
+	private _currentOrientation: "portrait" | "landscape" = "portrait";
+	public get isPortrait(): boolean {
+		return this._currentOrientation == "portrait";
+	}
 
 	private ticker: Ticker;
 	private hasFocus: boolean = true;
@@ -687,6 +698,8 @@ export class SceneManager<R extends IRenderer> {
 		for (const popup of this.currentPopups) {
 			popup.onResize(w, h);
 		}
+
+		this.currentOrientation = w > h ? "landscape" : "portrait";
 	}
 
 	/**

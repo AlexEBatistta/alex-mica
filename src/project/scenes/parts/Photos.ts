@@ -1,21 +1,18 @@
+import { Point, utils } from "pixi.js";
 import type { Container, ISize } from "pixi.js";
-import { Point } from "pixi.js";
-import { utils } from "pixi.js";
 import { Graphics, Sprite, Texture } from "pixi.js";
 import { BaseParts } from "./BaseParts";
-import { Grid } from "../../../engine/ui/grid/Grid";
-import { Manager } from "../../..";
-import { Tween } from "tweedle.js";
-import { Easing } from "tweedle.js";
-import { PhotoViewer } from "../PhotoViewer";
-import { ScaleHelper } from "../../../engine/utils/ScaleHelper";
 import { SDFBitmapText } from "../../../engine/sdftext/SDFBitmapText";
 import i18next from "i18next";
-import { ColorDictionary, SDFTextStyleDictionary } from "../../../engine/utils/Constants";
+import { ColorDictionary, SDFTextStyleDictionary, WIDTH_PARTS } from "../../../engine/utils/Constants";
 import { setPivotToCenter } from "../../../engine/utils/MathUtils";
+import { Grid } from "../../../engine/ui/grid/Grid";
+import { Easing, Tween } from "tweedle.js";
+import { Manager } from "../../..";
+import { ScaleHelper } from "../../../engine/utils/ScaleHelper";
+import { PhotoViewer } from "../PhotoViewer";
 
 const spacing: number = 10;
-const columns: number = 2;
 export class Photos extends BaseParts {
 	private photos: Array<Sprite>;
 	private grid: Grid;
@@ -23,6 +20,9 @@ export class Photos extends BaseParts {
 	private maxScale: number;
 	private tweens: Array<{ in: Tween<Container>; out: Tween<Container> }>;
 	private auxPos: Point;
+	private photoSize: ISize;
+	private columns: number;
+	private content: Container;
 	constructor() {
 		super(1, ColorDictionary.white);
 
@@ -31,25 +31,45 @@ export class Photos extends BaseParts {
 		title.y = 25;
 		this.addChild(title);
 
+		this.createGrid();
+
+		this.setBackgroundSize(WIDTH_PARTS, this.grid.y + this.grid.height - (this.photoSize.height * this.defaultScale) / 2 + spacing * 2);
+	}
+
+	public override setBackgroundSize(_width: number, _height?: number): void {
+		this.removeChild(this.content);
+
+		if ((this.columns == 2 && !Manager.isPortrait) || (this.columns == 3 && Manager.isPortrait)) {
+			this.removeChild(this.grid);
+			this.grid.destroy();
+
+			this.createGrid();
+		}
+
+		super.setBackgroundSize(WIDTH_PARTS, this.grid.y + this.grid.height - (this.photoSize.height * this.defaultScale) / 2 + spacing * 2);
+	}
+
+	private createGrid(): void {
 		this.photos = new Array();
 		this.tweens = new Array();
+		this.columns = Manager.isPortrait ? 2 : 3;
 
-		const photoSize: ISize = { width: Texture.from("cover_photo").width, height: 1035 };
+		this.photoSize = { width: Texture.from("cover_photo").width, height: 1035 };
 		const offsetMask: number[] = [210, 15, 430, 320, 520, 390];
-		this.defaultScale = (ScaleHelper.IDEAL_WIDTH / columns - spacing * 2) / photoSize.width;
-		this.maxScale = (ScaleHelper.IDEAL_WIDTH / columns + spacing * 2.5) / photoSize.width;
+		this.defaultScale = (ScaleHelper.IDEAL_WIDTH / this.columns - spacing * 2) / this.photoSize.width;
+		this.maxScale = (ScaleHelper.IDEAL_WIDTH / this.columns + spacing * 2.5) / this.photoSize.width;
 		for (let i = 0; i < 6; i++) {
 			const photo: Sprite = Sprite.from(`photo${i + 1}`);
 			photo.scale.set(this.defaultScale);
 
 			const maskPhoto = new Graphics();
 			maskPhoto.beginFill(0xff0000);
-			maskPhoto.drawRect(0, offsetMask[i], photoSize.width, photoSize.height);
+			maskPhoto.drawRect(0, offsetMask[i], this.photoSize.width, this.photoSize.height);
 			maskPhoto.endFill();
 			photo.mask = maskPhoto;
 			photo.addChild(maskPhoto);
-			photo.pivot.y = offsetMask[i] + photoSize.height / 2;
-			photo.pivot.x = photoSize.width / 2;
+			photo.pivot.y = offsetMask[i] + this.photoSize.height / 2;
+			photo.pivot.x = this.photoSize.width / 2;
 			this.photos.push(photo);
 
 			this.tweens.push({ in: new Tween(photo), out: new Tween(photo) });
@@ -70,17 +90,15 @@ export class Photos extends BaseParts {
 		this.grid = new Grid({
 			elements: this.photos,
 			orientation: "columns",
-			colOrRowNumber: columns,
+			colOrRowNumber: this.columns,
 			spacingX: spacing,
 			spacingY: spacing,
-			fixedHeight: photoSize.height * this.defaultScale,
+			fixedHeight: this.photoSize.height * this.defaultScale,
 		});
-		this.grid.x = (photoSize.width * this.defaultScale) / 2;
+		this.grid.x = (this.photoSize.width * this.defaultScale) / 2;
 		this.grid.x -= this.grid.width / 2;
-		this.grid.y = 120 + spacing + (photoSize.height * this.defaultScale) / 2;
+		this.grid.y = 120 + spacing + (this.photoSize.height * this.defaultScale) / 2;
 		this.addChild(this.grid);
-
-		this.setBackgroundSize(ScaleHelper.IDEAL_WIDTH, 1633);
 	}
 
 	private zoomIn(photo: Sprite, tween: { in: Tween<Container>; out: Tween<Container> }): void {

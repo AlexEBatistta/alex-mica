@@ -3,16 +3,15 @@ import type { Graphics } from "pixi.js";
 import { Container, Text } from "pixi.js";
 import { SDFBitmapText } from "../../../engine/sdftext/SDFBitmapText";
 import { Button } from "../../../engine/ui/button/Button";
-import { ColorDictionary, SDFTextStyleDictionary, TextStyleDictionary } from "../../../engine/utils/Constants";
+import { ColorDictionary, SDFTextStyleDictionary, TextStyleDictionary, WIDTH_PARTS } from "../../../engine/utils/Constants";
 import { GraphicsHelper } from "../../../engine/utils/GraphicsHelper";
 import { setPivotToCenter } from "../../../engine/utils/MathUtils";
-import { ScaleHelper } from "../../../engine/utils/ScaleHelper";
 import { BaseParts } from "./BaseParts";
 
 export class Confirmation extends BaseParts {
 	constructor() {
 		super(1, ColorDictionary.white);
-		this.setBackgroundSize(ScaleHelper.IDEAL_WIDTH, 790);
+		this.setBackgroundSize(WIDTH_PARTS, 790);
 
 		const title: SDFBitmapText = new SDFBitmapText(i18next.t("Confirmation.title"), SDFTextStyleDictionary.titleBlack);
 		setPivotToCenter(title);

@@ -6,8 +6,7 @@ import { GraphicsHelper } from "../../../engine/utils/GraphicsHelper";
 import i18next from "i18next";
 import { SDFBitmapText } from "../../../engine/sdftext/SDFBitmapText";
 import { AnimatedArrow } from "../../../engine/ui/button/AnimatedArrow";
-import { SDFTextStyleDictionary, TextStyleDictionary } from "../../../engine/utils/Constants";
-import { ScaleHelper } from "../../../engine/utils/ScaleHelper";
+import { SDFTextStyleDictionary, TextStyleDictionary, WIDTH_PARTS } from "../../../engine/utils/Constants";
 export class Names extends BaseParts {
 	constructor(callbackArrow: Function) {
 		super(0.8);
@@ -46,6 +45,6 @@ export class Names extends BaseParts {
 		arrow.y = coverPhoto.height - arrow.height * 3.5;
 		this.addChild(arrow);
 
-		this.setBackgroundSize(ScaleHelper.IDEAL_WIDTH, this.height);
+		this.setBackgroundSize(WIDTH_PARTS, this.height);
 	}
 }

@@ -2,10 +2,9 @@ import i18next from "i18next";
 import type { Graphics } from "pixi.js";
 import { Container, Sprite, Text } from "pixi.js";
 import { Button } from "../../../engine/ui/button/Button";
-import { ColorDictionary, TextStyleDictionary } from "../../../engine/utils/Constants";
+import { ColorDictionary, TextStyleDictionary, WIDTH_PARTS } from "../../../engine/utils/Constants";
 import { GraphicsHelper } from "../../../engine/utils/GraphicsHelper";
 import { setPivotToCenter } from "../../../engine/utils/MathUtils";
-import { ScaleHelper } from "../../../engine/utils/ScaleHelper";
 import { BaseParts } from "./BaseParts";
 
 export class Payment extends BaseParts {
@@ -49,6 +48,6 @@ export class Payment extends BaseParts {
 		button.y = 770;
 		this.addChild(button);
 
-		this.setBackgroundSize(ScaleHelper.IDEAL_WIDTH, 886);
+		this.setBackgroundSize(WIDTH_PARTS, 886);
 	}
 }

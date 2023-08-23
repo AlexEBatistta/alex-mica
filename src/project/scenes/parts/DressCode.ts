@@ -3,14 +3,13 @@ import { Sprite } from "pixi.js";
 import { BaseParts } from "./BaseParts";
 import { SDFBitmapText } from "../../../engine/sdftext/SDFBitmapText";
 import i18next from "i18next";
-import { ColorDictionary, SDFTextStyleDictionary, TextStyleDictionary } from "../../../engine/utils/Constants";
+import { ColorDictionary, SDFTextStyleDictionary, TextStyleDictionary, WIDTH_PARTS } from "../../../engine/utils/Constants";
 import { setPivotToCenter } from "../../../engine/utils/MathUtils";
-import { ScaleHelper } from "../../../engine/utils/ScaleHelper";
 
 export class DressCode extends BaseParts {
 	constructor() {
 		super(1, ColorDictionary.black);
-		this.setBackgroundSize(ScaleHelper.IDEAL_WIDTH, 888);
+		this.setBackgroundSize(WIDTH_PARTS, 888);
 
 		const title: SDFBitmapText = new SDFBitmapText(i18next.t("DressCode.title"), SDFTextStyleDictionary.titleWhite);
 		setPivotToCenter(title);

@@ -19,3 +19,5 @@ export const TextStyleDictionary = {
 	textBlack: new TextStyle({ fontSize: 48, fontFamily: "Poppins", fill: ColorDictionary.black, align: "center" }),
 	textWhite: new TextStyle({ fontSize: 48, fontFamily: "Poppins", fill: ColorDictionary.white, align: "center" }),
 };
+
+export const WIDTH_PARTS: number = 1920;
