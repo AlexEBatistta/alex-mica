@@ -7,50 +7,48 @@ import { Button } from "../../../engine/ui/button/Button";
 import { GraphicsHelper } from "../../../engine/utils/GraphicsHelper";
 import { SDFBitmapText } from "../../../engine/sdftext/SDFBitmapText";
 import i18next from "i18next";
-import { ColorDictionary, SDFTextStyleDictionary, TextStyleDictionary, WIDTH_PARTS } from "../../../engine/utils/Constants";
+import { ColorDictionary, Offsets, SDFTextStyleDictionary, TextStyleDictionary, WIDTH_PARTS } from "../../../engine/utils/Constants";
 import { setPivotToCenter } from "../../../engine/utils/MathUtils";
 
 export class Location extends BaseParts {
+	private backTitle: Graphics;
+	private subtitle: SDFBitmapText;
 	constructor() {
-		super(1, ColorDictionary.white);
-		this.setBackgroundSize(WIDTH_PARTS, 1542);
+		super(1, ColorDictionary.white, 1542);
 
-		const backTitle: Graphics = GraphicsHelper.pixel(ColorDictionary.black);
-		backTitle.pivot.set(0.5, 0);
-		backTitle.scale.set(WIDTH_PARTS, 238);
-		this.addChild(backTitle);
+		this.backTitle = GraphicsHelper.pixel(ColorDictionary.black);
+		this.backTitle.pivot.x = 0.5;
+		this.backTitle.scale.set(WIDTH_PARTS, 238);
+		this.addChild(this.backTitle);
 
-		const title: SDFBitmapText = new SDFBitmapText(i18next.t("Location.title"), SDFTextStyleDictionary.titleWhite);
-		setPivotToCenter(title);
-		title.y = 120;
-		this.addChild(title);
+		this.title = new SDFBitmapText(i18next.t("Location.title"), SDFTextStyleDictionary.titleWhite);
+		this.title.anchor.set(0.5);
+		this.addChild(this.title);
 
-		const icon: Sprite = Sprite.from("package-1/alliances.png");
-		icon.anchor.set(0.5);
-		icon.tint = ColorDictionary.black;
-		icon.y = 525;
-		this.addChild(icon);
+		this.icon = Sprite.from("package-1/alliances.png");
+		this.icon.anchor.x = 0.5;
+		this.icon.tint = ColorDictionary.black;
+		this.addChild(this.icon);
 
-		const subtitle: SDFBitmapText = new SDFBitmapText(i18next.t("Location.subtitle"), SDFTextStyleDictionary.titleBlack);
-		setPivotToCenter(subtitle);
-		subtitle.y = 835;
-		this.addChild(subtitle);
+		this.subtitle = new SDFBitmapText(i18next.t("Location.subtitle"), SDFTextStyleDictionary.titleBlack);
+		this.subtitle.anchor.x = 0.5;
+		this.addChild(this.subtitle);
 
-		const text: Text = new Text(i18next.t("Location.text"), TextStyleDictionary.textBlack);
-		setPivotToCenter(text);
-		text.y = 1150;
-		this.addChild(text);
+		this.text = new Text(i18next.t("Location.text"), TextStyleDictionary.textBlack);
+		this.text.anchor.x = 0.5;
+		this.addChild(this.text);
 
 		const btnContent: Container = new Container();
 		const btnBack: Graphics = GraphicsHelper.pixel(ColorDictionary.black);
-		btnBack.pivot.set(0.5);
+		btnBack.pivot.x = 0.5;
 		btnBack.scale.set(520, 90);
 		btnContent.addChild(btnBack);
 		const btnText: Text = new Text(i18next.t("Location.button"), TextStyleDictionary.buttonWhite);
 		setPivotToCenter(btnText);
+		btnText.y = btnBack.height / 2;
 		btnContent.addChild(btnText);
 
-		const button = new Button({
+		this.button = new Button({
 			defaultState: { content: btnContent, scale: 1 },
 			highlightState: { scale: 1.05, tween: true },
 			onClick: () => {
@@ -65,7 +63,19 @@ export class Location extends BaseParts {
 			},
 			fixedCursor: "pointer",
 		});
-		button.y = 1425;
-		this.addChild(button);
+		this.addChild(this.button);
+
+		this.onChangeOrientation();
+	}
+
+	public override onChangeOrientation(): void {
+		super.onChangeOrientation();
+
+		this.backTitle.height = Offsets.top * 2 + this.title.height;
+		this.title.y = this.backTitle.height / 2;
+		this.icon.y = this.backTitle.height + Offsets.icon;
+		this.text.y = this.icon.y + this.icon.height + Offsets.text;
+		this.button.y = this.text.y + this.text.height + Offsets.button;
+		this.background.height = this.button.y + this.button.height + Offsets.bottom;
 	}
 }

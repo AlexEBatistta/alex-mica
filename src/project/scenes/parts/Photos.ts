@@ -4,7 +4,7 @@ import { Graphics, Sprite, Texture } from "pixi.js";
 import { BaseParts } from "./BaseParts";
 import { SDFBitmapText } from "../../../engine/sdftext/SDFBitmapText";
 import i18next from "i18next";
-import { ColorDictionary, SDFTextStyleDictionary, WIDTH_PARTS } from "../../../engine/utils/Constants";
+import { ColorDictionary, SDFTextStyleDictionary } from "../../../engine/utils/Constants";
 import { setPivotToCenter } from "../../../engine/utils/MathUtils";
 import { Grid } from "../../../engine/ui/grid/Grid";
 import { Easing, Tween } from "tweedle.js";
@@ -26,17 +26,17 @@ export class Photos extends BaseParts {
 	constructor() {
 		super(1, ColorDictionary.white);
 
-		const title: SDFBitmapText = new SDFBitmapText(i18next.t("Photos.title"), SDFTextStyleDictionary.titleBlack);
-		setPivotToCenter(title);
-		title.y = 25;
-		this.addChild(title);
+		this.title = new SDFBitmapText(i18next.t("Photos.title"), SDFTextStyleDictionary.titleBlack);
+		setPivotToCenter(this.title);
+		this.title.y = 25;
+		this.addChild(this.title);
 
 		this.createGrid();
 
-		this.setBackgroundSize(WIDTH_PARTS, this.grid.y + this.grid.height - (this.photoSize.height * this.defaultScale) / 2 + spacing * 2);
+		this.background.height = this.grid.y + this.grid.height - (this.photoSize.height * this.defaultScale) / 2 + spacing * 2;
 	}
 
-	public override setBackgroundSize(_width: number, _height?: number): void {
+	public override onChangeOrientation(): void {
 		this.removeChild(this.content);
 
 		if ((this.columns == 2 && !Manager.isPortrait) || (this.columns == 3 && Manager.isPortrait)) {
@@ -46,7 +46,7 @@ export class Photos extends BaseParts {
 			this.createGrid();
 		}
 
-		super.setBackgroundSize(WIDTH_PARTS, this.grid.y + this.grid.height - (this.photoSize.height * this.defaultScale) / 2 + spacing * 2);
+		this.background.height = this.grid.y + this.grid.height - (this.photoSize.height * this.defaultScale) / 2 + spacing * 2;
 	}
 
 	private createGrid(): void {

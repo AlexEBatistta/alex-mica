@@ -3,7 +3,7 @@ import { SceneManager } from "./engine/scenemanager/SceneManager";
 import { DataManager } from "./engine/datamanager/DataManager";
 import { DEBUG, SAVEDATA_VERSION } from "./flags";
 import * as ALL_FLAGS from "./flags";
-import { forceFocus, preventDrag, preventKeys, forceFullscreen } from "./engine/utils/browserFunctions";
+import { forceFocus, forceFullscreen, preventDrag, preventKeys, screenOrientation } from "./engine/utils/browserFunctions";
 import { ScaleHelper } from "./engine/utils/ScaleHelper";
 import { ForagePersistanceProvider } from "./engine/datamanager/ForagePersistanceProvider";
 import { PixiRenderer } from "./engine/scenemanager/renderers/PixiRenderer";
@@ -37,6 +37,8 @@ forceFullscreen(document.getElementById("pixi-content"));
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export const Manager = new SceneManager(new PixiRenderer(pixiSettings));
+
+screenOrientation();
 
 DataManager.initialize(new ForagePersistanceProvider(), SAVEDATA_VERSION);
 DataManager.load();

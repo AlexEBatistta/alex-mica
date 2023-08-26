@@ -154,7 +154,7 @@ export class ScrollView extends Container {
 	private wheelFunction: any;
 	private onMouseWheel(delta: WheelEvent): void {
 		if (!this.dragging && this.worldVisible) {
-			this.scrollInnertia(0, this.content.y - delta.deltaY);
+			this.scrollInnertia(0, this.content.y - delta.deltaY * 1.75);
 			// this.content.y -= delta.deltaY;
 			// this.constraintRectangle();
 		}
@@ -320,8 +320,8 @@ export class ScrollView extends Container {
 	}
 
 	public scrollInnertia(posX: number = 0, posY: number = 0): void {
-		if (this.scrollLimits.height <= Math.abs(posY) + Manager.height * 2) {
-			return;
+		if (-Math.max(this.scrollLimits.height - this.scrollHeight, 0) >= posY) {
+			posY = -Math.max(this.scrollLimits.height - this.scrollHeight, 0);
 		}
 		const differenceX: number = this.content.x - posX;
 		const differenceY: number = this.content.y - posY;

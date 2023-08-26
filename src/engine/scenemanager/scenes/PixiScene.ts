@@ -162,4 +162,6 @@ export abstract class PixiScene extends Container implements IScene {
 		this.events.removeAllListeners();
 		super.destroy({ children: true });
 	}
+
+	public onChangeOrientation(): void {}
 }

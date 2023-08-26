@@ -1,6 +1,7 @@
 import XSadd from "ml-xsadd";
 import { utils } from "pixi.js";
 import screenfull from "screenfull";
+import { Manager } from "../..";
 import { DEBUG } from "../../flags";
 import { Key } from "../input/Key";
 import { legacyKeyboardHelper } from "../input/legacyKeyboardHelper";
@@ -129,4 +130,11 @@ export function forceFullscreen(_element: HTMLElement): void {
 	window.addEventListener("reset", callback);
 	window.addEventListener("submit", callback);
 	window.addEventListener("touchend", callback);
+}
+
+export function screenOrientation(): void {
+	window.addEventListener("orientationchange", () => {
+		const newOrientation = window.screen.orientation.type.split("-")[0];
+		Manager.onChangeOrientation(newOrientation as "portrait" | "landscape");
+	});
 }

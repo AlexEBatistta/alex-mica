@@ -19,7 +19,7 @@ import { DressCode } from "./parts/DressCode";
 import { SongsList } from "./parts/SongsList";
 import { FinalGreeting } from "./parts/FinalGreeting";
 import type { BaseParts } from "./parts/BaseParts";
-import { WIDTH_PARTS } from "../../engine/utils/Constants";
+import { Manager } from "../..";
 
 // https://alexebatistta.github.io/invitations
 export class MainScene extends PixiScene {
@@ -27,6 +27,7 @@ export class MainScene extends PixiScene {
 	private photoBackground: Sprite;
 	private scrollView: ScrollView;
 	private centerContainer: Container;
+	private contentScale: number;
 
 	private button: Button;
 	private checkbox: CheckBox;
@@ -136,34 +137,39 @@ export class MainScene extends PixiScene {
 		this.scrollView.updateDragging();
 	}
 
-	public override onResize(newW: number, newH: number): void {
-		ScaleHelper.setScaleRelativeToScreen(this.photoBackground, newW, newH, 1, 1, Math.max);
-		this.photoBackground.position.set(newW / 2, newH / 2);
-
-		let contentScale: number = ScaleHelper.screenScale(ScaleHelper.IDEAL_WIDTH, ScaleHelper.IDEAL_HEIGHT, newW, newH, 1, 1, Math.max);
-
-		this.scrollView.scale.set(contentScale);
-
-		if (this.scrollView.width > newW) {
-			contentScale = ScaleHelper.screenScale(ScaleHelper.IDEAL_WIDTH, ScaleHelper.IDEAL_HEIGHT, newW, newH, 1, 1, Math.min);
-			this.scrollView.scale.set(contentScale);
-		}
-
-		this.scrollView.position.set(newW / 2, 0);
-
+	public override onChangeOrientation(): void {
 		const contentParts: BaseParts[] = this.scrollView.content.children[0].children as BaseParts[];
 		for (let i = 0; i < contentParts.length; i++) {
 			const part = contentParts[i];
-			if (part instanceof Photos) {
-				part.setBackgroundSize(WIDTH_PARTS);
-			}
+			part.onChangeOrientation();
+
 			if (i > 0) {
 				part.y = contentParts[i - 1].y + contentParts[i - 1].height;
 			}
 		}
 
 		this.scrollView.updateScrollLimits(undefined, this.centerContainer.height);
-		this.scrollView.scrollHeight = newH / contentScale;
+		this.scrollView.scrollHeight = Manager.height / (this.contentScale ?? 1);
+		this.scrollView.constraintRectangle();
+	}
+
+	public override onResize(newW: number, newH: number): void {
+		ScaleHelper.setScaleRelativeToScreen(this.photoBackground, newW, newH, 1, 1, Math.max);
+		this.photoBackground.position.set(newW / 2, newH / 2);
+
+		this.contentScale = ScaleHelper.screenScale(ScaleHelper.IDEAL_WIDTH, ScaleHelper.IDEAL_HEIGHT, newW, newH, 1, 1, Math.max);
+
+		this.scrollView.scale.set(this.contentScale);
+
+		if (this.scrollView.width > newW) {
+			this.contentScale = ScaleHelper.screenScale(ScaleHelper.IDEAL_WIDTH, ScaleHelper.IDEAL_HEIGHT, newW, newH, 1, 1, Math.min);
+			this.scrollView.scale.set(this.contentScale);
+		}
+
+		this.scrollView.position.set(newW / 2, 0);
+
+		this.scrollView.updateScrollLimits(undefined, this.centerContainer.height);
+		this.scrollView.scrollHeight = newH / this.contentScale;
 		this.scrollView.constraintRectangle();
 	}
 }

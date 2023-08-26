@@ -140,11 +140,16 @@ export class SceneManager<R extends IRenderer> {
 			this._currentOrientation = orientation;
 			ScaleHelper.IDEAL_HEIGHT = this.isPortrait ? 1920 : 1080;
 			ScaleHelper.IDEAL_WIDTH = this.isPortrait ? 1080 : 1920;
+			this.onChangeOrientation(this._currentOrientation);
 		}
 	}
 	private _currentOrientation: "portrait" | "landscape" = "portrait";
 	public get isPortrait(): boolean {
 		return this._currentOrientation == "portrait";
+	}
+	public onChangeOrientation(orientation: "portrait" | "landscape"): void {
+		this.currentOrientation = orientation;
+		this.mainScene?.onChangeOrientation();
 	}
 
 	private ticker: Ticker;

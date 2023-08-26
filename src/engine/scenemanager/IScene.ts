@@ -140,4 +140,6 @@ export interface IScene {
 	 * (however you might want to add stuff here...)
 	 */
 	destroy(): void;
+
+	onChangeOrientation(): void;
 }

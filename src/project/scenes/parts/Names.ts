@@ -6,10 +6,11 @@ import { GraphicsHelper } from "../../../engine/utils/GraphicsHelper";
 import i18next from "i18next";
 import { SDFBitmapText } from "../../../engine/sdftext/SDFBitmapText";
 import { AnimatedArrow } from "../../../engine/ui/button/AnimatedArrow";
-import { SDFTextStyleDictionary, TextStyleDictionary, WIDTH_PARTS } from "../../../engine/utils/Constants";
+import { ColorDictionary, SDFTextStyleDictionary, TextStyleDictionary } from "../../../engine/utils/Constants";
 export class Names extends BaseParts {
 	constructor(callbackArrow: Function) {
-		super(0.8);
+		super(0.8, ColorDictionary.black);
+
 		const coverPhoto = Sprite.from("cover_photo");
 		coverPhoto.anchor.set(0.5, 0);
 		coverPhoto.filters = [new AdjustmentFilter({ saturation: 0.4 })];
@@ -45,6 +46,6 @@ export class Names extends BaseParts {
 		arrow.y = coverPhoto.height - arrow.height * 3.5;
 		this.addChild(arrow);
 
-		this.setBackgroundSize(WIDTH_PARTS, this.height);
+		this.background.height = coverPhoto.height;
 	}
 }
