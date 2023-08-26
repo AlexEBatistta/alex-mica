@@ -1,9 +1,8 @@
-import type { Graphics } from "pixi.js";
+import { Texture } from "pixi.js";
 import { Sprite } from "pixi.js";
 import { Rectangle } from "pixi.js";
 import { Container } from "pixi.js";
 import { PixiScene } from "../../engine/scenemanager/scenes/PixiScene";
-import { GraphicsHelper } from "../../engine/utils/GraphicsHelper";
 import { ScaleHelper } from "../../engine/utils/ScaleHelper";
 import { Button } from "../../engine/ui/button/Button";
 import { CheckBox } from "../../engine/ui/button/CheckBox";
@@ -20,18 +19,21 @@ import { SongsList } from "./parts/SongsList";
 import { FinalGreeting } from "./parts/FinalGreeting";
 import type { BaseParts } from "./parts/BaseParts";
 import { Manager } from "../..";
+import { SoundLib } from "../../engine/sound/SoundLib";
+import { DataManager } from "../../engine/datamanager/DataManager";
 
 // https://alexebatistta.github.io/invitations
 export class MainScene extends PixiScene {
-	public static readonly BUNDLES = ["package-1"];
+	public static readonly BUNDLES = ["package-1", "music"];
 	private photoBackground: Sprite;
 	private scrollView: ScrollView;
 	private centerContainer: Container;
 	private contentScale: number;
+	private btnSound: Button;
 
-	private button: Button;
 	private checkbox: CheckBox;
 	private inputBox: TextInput;
+
 	constructor() {
 		super();
 
@@ -77,19 +79,6 @@ export class MainScene extends PixiScene {
 		finalGreeting.y = songsList.y + songsList.height;
 		this.centerContainer.addChild(finalGreeting);
 
-		const btnContent: Container = new Container();
-		const btnBack: Graphics = GraphicsHelper.pixel(0xff0000);
-		btnBack.pivot.set(0.5);
-		btnBack.scale.set(100, 50);
-		btnContent.addChild(btnBack);
-
-		this.button = new Button({
-			defaultState: { content: btnContent, scale: 1 },
-			highlightState: { scale: 1.1 },
-			onClick: () => console.log("BOTON"),
-			fixedCursor: "pointer",
-		});
-		this.button.x = -100;
 		// this.centerContainer.addChild(this.button);
 
 		this.checkbox = new CheckBox(false, (check: boolean) => console.log("CHECKED", check));
@@ -131,6 +120,21 @@ export class MainScene extends PixiScene {
 		});
 		this.scrollView.pivot.x = this.scrollView.width / 2;
 		this.addChild(this.scrollView);
+
+		SoundLib.playMusic("music");
+		SoundLib.muteMusic = DataManager.getValue("sound") ?? true;
+		const btnSprite: Sprite = Sprite.from(`package-1/${SoundLib.muteMusic ? "soundOff" : "soundOn"}.png`);
+		this.btnSound = new Button({
+			defaultState: { content: btnSprite },
+			onClick: () => {
+				SoundLib.muteMusic = !SoundLib.muteMusic;
+				btnSprite.texture = Texture.from(`package-1/${SoundLib.muteMusic ? "soundOff" : "soundOn"}.png`);
+				DataManager.setValue("sound", SoundLib.muteMusic);
+				DataManager.save();
+			},
+			fixedCursor: "pointer",
+		});
+		this.addChild(this.btnSound);
 	}
 
 	public override update(_dt: number): void {
@@ -171,5 +175,8 @@ export class MainScene extends PixiScene {
 		this.scrollView.updateScrollLimits(undefined, this.centerContainer.height);
 		this.scrollView.scrollHeight = newH / this.contentScale;
 		this.scrollView.constraintRectangle();
+
+		ScaleHelper.setScaleRelativeToIdeal(this.btnSound, newW, newH);
+		this.btnSound.position.set(10);
 	}
 }

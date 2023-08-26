@@ -43,6 +43,12 @@
 				"photo5": "./img/photo5.png",
 				"photo6": "./img/photo6.png"
 			}
+		},
+		{
+			"name": "music",
+			"assets": {
+				"music": "./music/music.mp3"
+			}
 		}
 		/* {
 			"name": "sfx",
@@ -50,11 +56,6 @@
 				"beep": "./sfx/beep.mp3"
 			}
 		},
-		{
-			"name": "music",
-			"assets": {
-				"music": "./music/musical.mp3"
-			}
-		}, */
+		, */
 	]
 }
