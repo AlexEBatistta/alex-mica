@@ -29,6 +29,18 @@
 				{ 
 					"name": "monbaitiSmall",
 					"srcs": "./fonts/sdf/monbaitiSmall.json" 
+				},
+				{
+					"name": "cover_photo",
+					"srcs": "./img/cover_photo.png"
+				},
+				{
+					"name": "loading_1",
+					"srcs": "./img/loading_1.png"
+				},
+				{
+					"name": "loading_2",
+					"srcs": "./img/loading_2.png"
 				}
 			]
 		},

@@ -10,6 +10,9 @@ import { PixiRenderer } from "./engine/scenemanager/renderers/PixiRenderer";
 import { settings } from "pixi.js";
 import { DEFAULTS } from "tweedle.js";
 import { MainScene } from "./project/scenes/MainScene";
+import { LoadingTransition } from "./engine/scenemanager/transitions/LoadingTransition";
+import * as firebase from "firebase/app";
+import "firebase/database";
 
 settings.RENDER_OPTIONS.hello = false;
 
@@ -59,8 +62,20 @@ window.addEventListener("resize", () => {
 
 window.dispatchEvent(new Event("resize"));
 
+const firebaseConfig = {
+	apiKey: "AIzaSyCmoophIsOPgVPaxYgvudvR4H4M17FfoQM",
+	authDomain: "invitations-327e5.firebaseapp.com",
+	databaseURL: "https://invitations-327e5-default-rtdb.firebaseio.com",
+	projectId: "invitations-327e5",
+	storageBucket: "invitations-327e5.appspot.com",
+	messagingSenderId: "532259494918",
+	appId: "1:532259494918:web:c55129ebb04a541b8df787",
+};
+
+export const firebaseApp = firebase.initializeApp(firebaseConfig);
+
 const initializeCb = function (): void {
-	Manager.changeScene(MainScene);
+	Manager.changeScene(MainScene, { transitionClass: LoadingTransition });
 };
 
 initializeCb();

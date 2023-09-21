@@ -1,3 +1,4 @@
+import type { Rectangle } from "pixi.js";
 import { Sprite, Text } from "pixi.js";
 import { BaseParts } from "./BaseParts";
 import { setPivotToCenter } from "../../../engine/utils/MathUtils";
@@ -8,7 +9,8 @@ import { SDFBitmapText } from "../../../engine/sdftext/SDFBitmapText";
 import { AnimatedArrow } from "../../../engine/ui/button/AnimatedArrow";
 import { ColorDictionary, SDFTextStyleDictionary, TextStyleDictionary } from "../../../engine/utils/Constants";
 export class Names extends BaseParts {
-	constructor(callbackArrow: Function) {
+	private arrow: AnimatedArrow;
+	constructor() {
 		super(0.8, ColorDictionary.black);
 
 		const coverPhoto = Sprite.from("cover_photo");
@@ -42,10 +44,15 @@ export class Names extends BaseParts {
 		heart.position.set(0, 1758);
 		this.addChild(heart);
 
-		const arrow: AnimatedArrow = new AnimatedArrow(callbackArrow);
-		arrow.y = coverPhoto.height - arrow.height * 3.5;
-		this.addChild(arrow);
+		this.arrow = new AnimatedArrow();
+		this.arrow.y = coverPhoto.height - this.arrow.height * 3.5;
+		this.addChild(this.arrow);
 
 		this.background.height = coverPhoto.height;
+		this.background.visible = false;
+	}
+
+	public getArrowBounds(): Rectangle {
+		return this.arrow.getLocalBounds();
 	}
 }
