@@ -1,58 +1,62 @@
 import type { Rectangle } from "pixi.js";
+import { Point } from "pixi.js";
+import { Container } from "pixi.js";
 import { Sprite, Text } from "pixi.js";
 import { BaseParts } from "./BaseParts";
 import { setPivotToCenter } from "../../../engine/utils/MathUtils";
-import { AdjustmentFilter } from "@pixi/filter-adjustment";
-import { GraphicsHelper } from "../../../engine/utils/GraphicsHelper";
 import i18next from "i18next";
 import { SDFBitmapText } from "../../../engine/sdftext/SDFBitmapText";
 import { AnimatedArrow } from "../../../engine/ui/button/AnimatedArrow";
 import { ColorDictionary, SDFTextStyleDictionary, TextStyleDictionary } from "../../../engine/utils/Constants";
+import { Manager } from "../../..";
 export class Names extends BaseParts {
 	private arrow: AnimatedArrow;
+	private bottomContent: Container;
+	private rightContent: Container;
 	constructor() {
-		super(0.8, ColorDictionary.black);
+		super(0.001, ColorDictionary.black);
 
-		const coverPhoto = Sprite.from("cover_photo");
-		coverPhoto.anchor.set(0.5, 0);
-		coverPhoto.filters = [new AdjustmentFilter({ saturation: 0.4 })];
-		this.addChild(coverPhoto);
+		this.bottomContent = new Container();
+		this.addChild(this.bottomContent);
 
-		const overPhoto = GraphicsHelper.pixel(0x000000, 0.35);
-		overPhoto.pivot.x = 0.5;
-		overPhoto.scale.set(coverPhoto.width, coverPhoto.height);
-		this.addChild(overPhoto);
+		this.rightContent = new Container();
+		this.addChild(this.rightContent);
 
 		const date = new SDFBitmapText(i18next.t("Names.date"), SDFTextStyleDictionary.namesDate);
 		setPivotToCenter(date);
-		date.position.set(395, 400);
-		this.addChild(date);
+		this.rightContent.addChild(date);
 
 		const names = new SDFBitmapText(i18next.t("Names.names"), SDFTextStyleDictionary.namesTitle);
 		setPivotToCenter(names);
-		names.position.set(0, 1490);
-		// names.filters = [new DropShadowFilter({ quality: 5 })];
-		this.addChild(names);
+		names.y = 0;
+		this.bottomContent.addChild(names);
 
 		const subtitle = new Text(i18next.t("Names.subtitle"), TextStyleDictionary.namesSubtitle);
 		setPivotToCenter(subtitle);
-		subtitle.position.set(0, 1632);
-		this.addChild(subtitle);
+		subtitle.y = 142;
+		this.bottomContent.addChild(subtitle);
 
 		const heart = Sprite.from("package-1/heart.png");
 		heart.anchor.set(0.5);
-		heart.position.set(0, 1758);
-		this.addChild(heart);
+		heart.y = 268;
+		this.bottomContent.addChild(heart);
 
 		this.arrow = new AnimatedArrow();
-		this.arrow.y = coverPhoto.height - this.arrow.height * 3.5;
-		this.addChild(this.arrow);
+		this.arrow.y = 340;
+		this.bottomContent.addChild(this.arrow);
 
-		this.background.height = coverPhoto.height;
-		this.background.visible = false;
+		this.background.height = 1920;
 	}
 
 	public getArrowBounds(): Rectangle {
 		return this.arrow.getLocalBounds();
+	}
+
+	public override onChangeOrientation(): void {
+		super.onChangeOrientation();
+		const offset = new Point(this.rightContent.width / 1.25, Manager.isPortrait ? 5 : 2.75);
+		const pos = this.toLocal(new Point(Manager.width, Manager.height / offset.y));
+		this.rightContent.position.set(pos.x - offset.x, pos.y);
+		this.bottomContent.y = this.toLocal(new Point(0, Manager.height)).y - this.bottomContent.height * 1.2;
 	}
 }

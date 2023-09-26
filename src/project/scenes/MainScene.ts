@@ -24,6 +24,7 @@ import { SoundLib } from "../../engine/sound/SoundLib";
 import { DataManager } from "../../engine/datamanager/DataManager";
 import { GraphicsHelper } from "../../engine/utils/GraphicsHelper";
 import { ColorDictionary } from "../../engine/utils/Constants";
+import { AdjustmentFilter } from "@pixi/filter-adjustment";
 // import { getDatabase, ref, set, update, get } from "firebase/database";
 // import { saveAs } from "file-saver";
 
@@ -71,9 +72,10 @@ export class MainScene extends PixiScene {
 
 		const photo: Sprite = Sprite.from("cover_photo");
 		photo.anchor.set(0.5);
+		photo.filters = [new AdjustmentFilter({ saturation: 0.4 })];
 		this.photoBackground.addChild(photo);
 
-		const overPhoto: Graphics = GraphicsHelper.pixel(ColorDictionary.black, 0.8);
+		const overPhoto: Graphics = GraphicsHelper.pixel(ColorDictionary.black, 0.35);
 		overPhoto.pivot.set(0.5);
 		overPhoto.scale.set(photo.width, photo.height);
 		this.photoBackground.addChild(overPhoto);
@@ -247,8 +249,12 @@ export class MainScene extends PixiScene {
 		this.arrowInput.pivot.set(0.5, 0);
 		this.arrowInput.interactive = true;
 		this.arrowInput.cursor = "pointer";
-		this.arrowInput.on("pointertap", () => this.scrollView.scrollInnertia(0, -1920));
+		this.arrowInput.on("pointertap", () => this.scrollView.scrollInnertia(0, -this.centerContainer.y));
 		this.addChild(this.arrowInput);
+	}
+
+	public override onShow(): void {
+		this.namesContainer.onChangeOrientation();
 	}
 
 	/* private convertToCSV(data: any): string {
@@ -276,6 +282,7 @@ export class MainScene extends PixiScene {
 	}
 
 	public override onChangeOrientation(): void {
+		this.namesContainer.onChangeOrientation();
 		const contentParts: BaseParts[] = this.scrollView.content.children[0].children as BaseParts[];
 		for (let i = 0; i < contentParts.length; i++) {
 			const part = contentParts[i];
@@ -295,24 +302,23 @@ export class MainScene extends PixiScene {
 		ScaleHelper.setScaleRelativeToScreen(this.photoBackground, newW, newH, 1, 1, Math.max);
 		this.photoBackground.position.set(newW / 2, newH / 2);
 
-		ScaleHelper.setScaleRelativeToScreen(this.namesContainer, newW, newH, 1, 1, Math.min);
-		this.namesContainer.position.set(newW / 2, 0);
-
-		const arrow = this.namesContainer.getArrowBounds();
-		this.arrowInput.scale.set(arrow.width * 2 * this.namesContainer.scale.x, arrow.height * 3 * this.namesContainer.scale.y);
-		this.arrowInput.position.set(newW / 2, this.namesContainer.height - this.arrowInput.height * 1.5);
-
 		this.contentScale = ScaleHelper.screenScale(ScaleHelper.IDEAL_WIDTH, ScaleHelper.IDEAL_HEIGHT, newW, newH, 1, 1, Math.max);
 
-		this.centerContainer.y = this.namesContainer.height / this.namesContainer.scale.y;
+		this.namesContainer.scale.set(this.contentScale);
 
+		this.centerContainer.y = newH / this.contentScale;
 		this.scrollView.scale.set(this.contentScale);
 
 		if (this.scrollView.width > newW) {
 			this.contentScale = ScaleHelper.screenScale(ScaleHelper.IDEAL_WIDTH, ScaleHelper.IDEAL_HEIGHT, newW, newH, 1, 1, Math.min);
+
+			this.namesContainer.scale.set(this.contentScale);
+
+			this.centerContainer.y = newH / this.contentScale;
 			this.scrollView.scale.set(this.contentScale);
 		}
 
+		this.namesContainer.position.set(newW / 2, 0);
 		this.scrollView.position.set(newW / 2, 0);
 
 		this.scrollView.updateScrollLimits(undefined, this.centerContainer.height + this.namesContainer.height / this.namesContainer.scale.y);
@@ -321,5 +327,11 @@ export class MainScene extends PixiScene {
 
 		ScaleHelper.setScaleRelativeToIdeal(this.btnSound, newW, newH);
 		this.btnSound.position.set(10);
+
+		this.namesContainer.onChangeOrientation();
+
+		const arrow = this.namesContainer.getArrowBounds();
+		this.arrowInput.scale.set(arrow.width * 2 * this.namesContainer.scale.x, arrow.height * 3 * this.namesContainer.scale.y);
+		this.arrowInput.position.set(newW / 2, newH - this.arrowInput.height * 1.5);
 	}
 }

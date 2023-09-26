@@ -123,7 +123,7 @@ export class PixiRenderer implements IRenderer {
 	public resize(w: number, h: number, devicePixelRatio?: number): void {
 		document
 			.getElementById("viewport")
-			.setAttribute("content", "width=device-width, minimum-scale=1.0, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no, viewport-fit=cover");
+			.setAttribute("content", "width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no,");
 
 		this.devicePixelRatio = devicePixelRatio || 1;
 		this.width = w;

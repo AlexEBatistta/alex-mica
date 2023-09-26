@@ -28,15 +28,23 @@ export function forceFocus(): void {
 	// It happened that touch events woudn't focus the body element of our iframe.
 	// without focus we can't lose it and trigger the blur event.
 	// this forces the touch event to give focus to our window.
-	document.addEventListener("click", () => window.focus());
-	document.addEventListener("mouseup", () => window.focus());
-	document.addEventListener("pointerup", () => window.focus());
-	document.addEventListener("touchend", () => window.focus());
-	document.addEventListener("touchstart", () => window.focus());
-	document.addEventListener("pointerup", () => window.focus());
-	document.addEventListener("mouseup", () => window.focus());
-	document.addEventListener("pointerdown", () => window.focus());
-	document.addEventListener("mousedown", () => window.focus());
+	document.addEventListener("click", () => callback());
+	document.addEventListener("mouseup", () => callback());
+	document.addEventListener("pointerup", () => callback());
+	document.addEventListener("touchend", () => callback());
+	document.addEventListener("touchstart", () => callback());
+	document.addEventListener("mouseup", () => callback());
+	document.addEventListener("pointerdown", () => callback());
+	document.addEventListener("mousedown", () => callback());
+
+	const callback = (): void => {
+		window.focus();
+		if (utils.isMobile.any) {
+			if (screenfull.isEnabled && !screenfull.isFullscreen) {
+				screenfull.request(document.getElementById("pixi-content"));
+			}
+		}
+	};
 }
 
 export function registerWorker(): void {
@@ -108,28 +116,6 @@ export function makeGroupLogger(tag: string, color?: string, collapsed?: boolean
 	} else {
 		return Function.prototype.bind.apply(collapsed ? console.groupCollapsed : console.group, [console, `[${tag}]`]);
 	}
-}
-
-export function forceFullscreen(_element: HTMLElement): void {
-	// const done = false;
-	const callback = (): void => {
-		if (utils.isMobile.any) {
-			if (screenfull.isEnabled && !screenfull.isFullscreen) {
-				// screenfull.request(element, { navigationUI: "hide" });
-				screenfull.request(undefined, { navigationUI: "hide" });
-			}
-		}
-	};
-	// all "user initiated" events
-	window.addEventListener("change", callback);
-	window.addEventListener("click", callback);
-	window.addEventListener("contextmenu", callback);
-	window.addEventListener("dblclick", callback);
-	window.addEventListener("mouseup", callback);
-	window.addEventListener("pointerup", callback);
-	window.addEventListener("reset", callback);
-	window.addEventListener("submit", callback);
-	window.addEventListener("touchend", callback);
 }
 
 export function screenOrientation(): void {

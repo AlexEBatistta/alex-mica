@@ -3,7 +3,7 @@ import { SceneManager } from "./engine/scenemanager/SceneManager";
 import { DataManager } from "./engine/datamanager/DataManager";
 import { DEBUG, SAVEDATA_VERSION } from "./flags";
 import * as ALL_FLAGS from "./flags";
-import { forceFocus, forceFullscreen, preventDrag, preventKeys, screenOrientation } from "./engine/utils/browserFunctions";
+import { forceFocus, preventDrag, preventKeys, screenOrientation } from "./engine/utils/browserFunctions";
 import { ScaleHelper } from "./engine/utils/ScaleHelper";
 import { ForagePersistanceProvider } from "./engine/datamanager/ForagePersistanceProvider";
 import { PixiRenderer } from "./engine/scenemanager/renderers/PixiRenderer";
@@ -19,7 +19,7 @@ settings.RENDER_OPTIONS.hello = false;
 DEFAULTS.safetyCheckFunction = (obj: any) => !obj?.destroyed;
 
 const pixiSettings = {
-	backgroundColor: 0xffffff,
+	backgroundColor: 0x222222,
 	width: ScaleHelper.IDEAL_WIDTH,
 	resolution: window.devicePixelRatio || 1,
 	autoDensity: true,
@@ -29,13 +29,13 @@ const pixiSettings = {
 	interactionTestsAllScenes: true,
 };
 
-document.getElementById("pixi-content").style.background = "#" + "ffffff"; // app.renderer.backgroundColor.toString(16);
+document.getElementById("pixi-content").style.background = "#" + "222222"; // app.renderer.backgroundColor.toString(16);
 document.getElementById("pixi-content").appendChild(pixiSettings.view);
 
 preventDrag(); // prevents scrolling by dragging.
 preventKeys(); // prevents scrolling by keyboard keys. (usually required for latam)
 forceFocus();
-forceFullscreen(document.getElementById("pixi-content"));
+
 // registerWorker(); // registers the service worker for pwa
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
