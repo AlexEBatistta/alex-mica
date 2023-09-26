@@ -300,7 +300,7 @@ export class MainScene extends PixiScene {
 
 	public override onResize(newW: number, newH: number): void {
 		ScaleHelper.setScaleRelativeToScreen(this.photoBackground, newW, newH, 1, 1, Math.max);
-		this.photoBackground.position.set(newW / 2, newH / 2);
+		this.photoBackground.position.set(newW / 2, Manager.isPortrait ? newH / 2 : newH / 2 + 200);
 
 		this.contentScale = ScaleHelper.screenScale(ScaleHelper.IDEAL_WIDTH, ScaleHelper.IDEAL_HEIGHT, newW, newH, 1, 1, Math.max);
 
