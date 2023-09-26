@@ -9,13 +9,13 @@ import { MTSDFSprite } from "../../mtsdfSprite/MTSDFSprite";
 import { GraphicsHelper } from "../../utils/GraphicsHelper";
 import { clamp, magnitudeSquared, multiplyScalar, ruleOfFive, subtract } from "../../utils/MathUtils";
 
-export enum ScrollViewEvents {
+export namespace ScrollViewEvents {
 	/** this event is emitted every time the scroll changes position (or if it tries and clamps) and is emitted along with 2 arguments. The positive Y scroll position, and scrollHeight  */
-	ON_SCROLL = "scroll",
-	SCROLL_BEGIN = "scroll begin",
-	SCROLL_END = "scroll end",
+	export const ON_SCROLL = Symbol("scroll");
+	export const SCROLL_BEGIN = Symbol("scroll begin");
+	export const SCROLL_END = Symbol("scroll end");
 	/** If for some reason you need to edit the hit area, do it when this event is emitted, because if you don't do it at the right time, the class itself may override the data that you put in it. */
-	CAN_EDIT_HIT_AREA = "edit_hitArea",
+	export const CAN_EDIT_HIT_AREA = Symbol("edit_hitArea");
 }
 
 export class ScrollView extends Container {
@@ -69,11 +69,11 @@ export class ScrollView extends Container {
 	private innertiaDistanceMultiplier: number;
 	private innertiaTimeMultiplier: number;
 
-	private events: utils.EventEmitter;
+	public events: utils.EventEmitter<symbol>;
 
 	constructor(scrollWidth: number | "disabled", height: number | "disabled", options?: ScrollOptions) {
 		super();
-		this.events = new utils.EventEmitter();
+		this.events = options?.events ?? new utils.EventEmitter();
 		this.myMask = GraphicsHelper.pixel();
 		this.content = new Container();
 		this.scrollWidth = scrollWidth == "disabled" ? 1000 : scrollWidth; // the 10000 will be overwritten by the correct value before the first render, relax
@@ -273,7 +273,10 @@ export class ScrollView extends Container {
 					.to({ x: pretendedX, y: pretendedY }, distance * this.innertiaTimeMultiplier)
 					.onUpdate(() => this.updateGradients())
 					.easing(Easing.Quadratic.Out)
-					.onComplete(() => (this.dragTween = null))
+					.onComplete(() => {
+						this.dragTween = null;
+						this.events.emit(ScrollViewEvents.SCROLL_END, this.content.y);
+					})
 					.start();
 			}
 		}
@@ -282,7 +285,6 @@ export class ScrollView extends Container {
 		this.dragInitPosition = null;
 		this.content.interactiveChildren = true;
 		this.constraintRectangle();
-		this.events.emit(ScrollViewEvents.SCROLL_END);
 	}
 
 	/** should be call each frame */
@@ -313,6 +315,7 @@ export class ScrollView extends Container {
 		}
 		if (this.scrollVertical) {
 			this.content.y = posY;
+			this.events.emit(ScrollViewEvents.SCROLL_END, this.content.y);
 		}
 		if (constraint) {
 			this.constraintRectangle();
@@ -329,7 +332,10 @@ export class ScrollView extends Container {
 			.to({ x: posX, y: posY }, distance * (this.innertiaTimeMultiplier / 2))
 			.onUpdate(() => this.updateGradients())
 			.easing(Easing.Quadratic.Out)
-			.onComplete(() => (this.dragTween = null))
+			.onComplete(() => {
+				this.dragTween = null;
+				this.events.emit(ScrollViewEvents.SCROLL_END, this.content.y);
+			})
 			.start();
 	}
 
@@ -343,7 +349,10 @@ export class ScrollView extends Container {
 			.to({ y: pretendedY }, distance * this.innertiaTimeMultiplier)
 			.onUpdate(() => this.updateGradients())
 			.easing(Easing.Quadratic.Out)
-			.onComplete(() => (this.dragTween = null))
+			.onComplete(() => {
+				this.dragTween = null;
+				this.events.emit(ScrollViewEvents.SCROLL_END, this.content.y);
+			})
 			.start();
 
 		// set the interaction data to null
@@ -351,7 +360,6 @@ export class ScrollView extends Container {
 		this.dragInitPosition = null;
 		this.content.interactiveChildren = true;
 		this.constraintRectangle();
-		this.events.emit(ScrollViewEvents.SCROLL_END);
 	}
 
 	public getScrollPosition(): IPointData {
@@ -497,4 +505,5 @@ interface ScrollOptions {
 
 	bleedOut?: boolean;
 	useMouseWheel?: boolean;
+	events?: utils.EventEmitter<symbol>;
 }

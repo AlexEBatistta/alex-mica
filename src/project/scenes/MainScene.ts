@@ -10,7 +10,7 @@ import { CheckBox } from "../../engine/ui/button/CheckBox";
 import { TextInput, TextInputEvents } from "../../engine/textinput/TextInput";
 import { setPivotToCenter } from "../../engine/utils/MathUtils";
 import { Names } from "./parts/Names";
-import { ScrollView } from "../../engine/ui/scrollview/ScrollView";
+import { ScrollView, ScrollViewEvents } from "../../engine/ui/scrollview/ScrollView";
 import { Location } from "./parts/Location";
 import { Photos } from "./parts/Photos";
 import { Payment } from "./parts/Payment";
@@ -206,6 +206,7 @@ export class MainScene extends PixiScene {
 			useInnertia: true,
 			scrollLimits: new Rectangle(0, 0, this.centerContainer.width, this.centerContainer.height),
 			useMouseWheel: true,
+			events: this.events,
 		});
 		this.scrollView.pivot.x = this.scrollView.width / 2;
 		this.addChild(this.scrollView);
@@ -245,11 +246,15 @@ export class MainScene extends PixiScene {
 
 		// this.centerContainer.addChild(this.inputBox);
 
-		this.arrowInput = GraphicsHelper.pixel(0xffffff, 0.001);
+		this.arrowInput = GraphicsHelper.pixel(0xffffff);
 		this.arrowInput.pivot.set(0.5, 0);
+		this.arrowInput.alpha = 0.001;
 		this.arrowInput.interactive = true;
 		this.arrowInput.cursor = "pointer";
 		this.arrowInput.on("pointertap", () => this.scrollView.scrollInnertia(0, -this.centerContainer.y));
+		this.events.on(ScrollViewEvents.SCROLL_END, (posY: number) => {
+			this.arrowInput.interactive = Math.abs(posY) < 100;
+		});
 		this.addChild(this.arrowInput);
 	}
 
@@ -332,6 +337,6 @@ export class MainScene extends PixiScene {
 
 		const arrow = this.namesContainer.getArrowBounds();
 		this.arrowInput.scale.set(arrow.width * 2 * this.namesContainer.scale.x, arrow.height * 3 * this.namesContainer.scale.y);
-		this.arrowInput.position.set(newW / 2, newH - this.arrowInput.height * 1.5);
+		this.arrowInput.position.set(newW / 2, newH - this.arrowInput.height * 1.75);
 	}
 }
