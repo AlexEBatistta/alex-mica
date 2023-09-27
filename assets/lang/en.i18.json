@@ -31,5 +31,15 @@
 		"text": "¡Ayudanos sugiriendo las canciones que pensás que no pueden faltar en la fiesta!",
 		"button": "CONFIRMAR ASISTENCIA"
 	},
-	"FinalGreeting": "¡Gracias por acompañarnos en este momento tan importante!"
+	"FinalGreeting": "¡Gracias por acompañarnos en este momento tan importante!",
+	"Invitados":{
+		"invi1": "Invitados 1",
+		"invi2": "Invitados 2",
+		"invi3": "Invitados 3",
+		"invi4": "Invitados 4",
+		"invi5": "Invitados 5",
+		"invi6": "Invitados 6",
+		"invi7": "Invitados 7",
+		"invi8": "Invitados 8"
+	}
 }
