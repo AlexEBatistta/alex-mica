@@ -15,7 +15,7 @@ import { GraphicsHelper } from "../../../engine/utils/GraphicsHelper";
 
 const spacing: number = 10;
 export class Photos extends BaseParts {
-	private titleBack: Graphics;
+	private backTitle: Graphics;
 	private photos: Array<Sprite>;
 	private grid: Grid;
 	private defaultScale: number;
@@ -28,10 +28,10 @@ export class Photos extends BaseParts {
 	constructor() {
 		super(1, ColorDictionary.white);
 
-		this.titleBack = GraphicsHelper.pixel(ColorDictionary.black);
-		this.titleBack.pivot.x = 0.5;
-		this.titleBack.scale.set(1920, 238);
-		this.addChild(this.titleBack);
+		this.backTitle = GraphicsHelper.pixel(ColorDictionary.black);
+		this.backTitle.pivot.x = 0.5;
+		this.backTitle.scale.set(1920, 238);
+		this.addChild(this.backTitle);
 
 		this.title = new SDFBitmapText(i18next.t("Photos.title"), SDFTextStyleDictionary.titleWhite);
 		setPivotToCenter(this.title);
@@ -104,7 +104,7 @@ export class Photos extends BaseParts {
 		});
 		this.grid.x = (this.photoSize.width * this.defaultScale) / 2;
 		this.grid.x -= this.grid.width / 2;
-		this.grid.y = this.titleBack.height + spacing * 2 + (this.photoSize.height * this.defaultScale) / 2;
+		this.grid.y = this.backTitle.height + spacing * 2 + (this.photoSize.height * this.defaultScale) / 2;
 		this.addChild(this.grid);
 	}
 

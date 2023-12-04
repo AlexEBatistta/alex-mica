@@ -74,7 +74,8 @@ export class Location extends BaseParts {
 		this.backTitle.height = Offsets.top * 2 + this.title.height;
 		this.title.y = this.backTitle.height / 2;
 		this.icon.y = this.backTitle.height + Offsets.icon;
-		this.text.y = this.icon.y + this.icon.height + Offsets.text;
+		this.subtitle.y = this.icon.y + this.icon.height + Offsets.text;
+		this.text.y = this.subtitle.y + this.subtitle.height + Offsets.text;
 		this.button.y = this.text.y + this.text.height + Offsets.button;
 		this.background.height = this.button.y + this.button.height + Offsets.bottom;
 	}

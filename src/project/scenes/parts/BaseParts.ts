@@ -30,7 +30,7 @@ export class BaseParts extends Container {
 
 	public onChangeOrientation(): void {
 		if (this.text != undefined) {
-			this.text.style.wordWrapWidth = ScaleHelper.IDEAL_WIDTH - (Manager.isPortrait ? 200 : 300);
+			this.text.style.wordWrapWidth = ScaleHelper.IDEAL_WIDTH - (Manager.isPortrait ? 150 : 300);
 		}
 	}
 

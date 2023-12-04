@@ -18,7 +18,7 @@
 		"title": "NOSOTROS"
 	},
 	"Payment":{
-		"text": "El costo de la tarjeta es el siguiente:\nAdultos: $3.500\nMenores de 10: Exento de pago",
+		"text": "El costo de la tarjeta es:\nAdultos: $3.500\nMenores de 10: Exento de pago",
 		"button": "ABONAR AHORA"
 	},
 	"DressCode":{
