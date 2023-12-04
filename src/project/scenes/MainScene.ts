@@ -173,7 +173,7 @@ export class MainScene extends PixiScene {
 		this.namesContainer.position.set(newW / 2, 0);
 		this.scrollView.position.set(newW / 2, 0);
 
-		this.scrollView.updateScrollLimits(undefined, this.centerContainer.height + this.namesContainer.height / this.namesContainer.scale.y);
+		this.scrollView.updateScrollLimits(undefined, this.centerContainer.height + this.centerContainer.y);
 		this.scrollView.scrollHeight = newH / this.contentScale;
 		this.scrollView.constraintRectangle();
 
