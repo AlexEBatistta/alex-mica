@@ -11,9 +11,11 @@ import { Easing, Tween } from "tweedle.js";
 import { Manager } from "../../..";
 import { ScaleHelper } from "../../../engine/utils/ScaleHelper";
 import { PhotoViewer } from "../PhotoViewer";
+import { GraphicsHelper } from "../../../engine/utils/GraphicsHelper";
 
 const spacing: number = 10;
 export class Photos extends BaseParts {
+	private titleBack: Graphics;
 	private photos: Array<Sprite>;
 	private grid: Grid;
 	private defaultScale: number;
@@ -26,9 +28,14 @@ export class Photos extends BaseParts {
 	constructor() {
 		super(1, ColorDictionary.white);
 
-		this.title = new SDFBitmapText(i18next.t("Photos.title"), SDFTextStyleDictionary.titleBlack);
+		this.titleBack = GraphicsHelper.pixel(ColorDictionary.black);
+		this.titleBack.pivot.x = 0.5;
+		this.titleBack.scale.set(1920, 238);
+		this.addChild(this.titleBack);
+
+		this.title = new SDFBitmapText(i18next.t("Photos.title"), SDFTextStyleDictionary.titleWhite);
 		setPivotToCenter(this.title);
-		this.title.y = 25;
+		this.title.y = 238 / 2;
 		this.addChild(this.title);
 
 		this.createGrid();
@@ -97,7 +104,7 @@ export class Photos extends BaseParts {
 		});
 		this.grid.x = (this.photoSize.width * this.defaultScale) / 2;
 		this.grid.x -= this.grid.width / 2;
-		this.grid.y = 120 + spacing + (this.photoSize.height * this.defaultScale) / 2;
+		this.grid.y = this.titleBack.height + spacing * 2 + (this.photoSize.height * this.defaultScale) / 2;
 		this.addChild(this.grid);
 	}
 

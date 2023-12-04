@@ -10,22 +10,22 @@ import { BaseParts } from "./BaseParts";
 
 export class SongsList extends BaseParts {
 	constructor() {
-		super(1, ColorDictionary.white, 721);
+		super(1, ColorDictionary.black, 721);
 
-		this.title = new SDFBitmapText(i18next.t("SongsList.title"), SDFTextStyleDictionary.titleBlack);
+		this.title = new SDFBitmapText(i18next.t("SongsList.title"), SDFTextStyleDictionary.titleWhite);
 		this.title.anchor.x = 0.5;
 		this.addChild(this.title);
 
-		this.text = new Text(i18next.t("SongsList.text"), TextStyleDictionary.textBlack);
+		this.text = new Text(i18next.t("SongsList.text"), TextStyleDictionary.textWhite);
 		this.text.anchor.x = 0.5;
 		this.addChild(this.text);
 
 		const btnContent: Container = new Container();
-		const btnBack: Graphics = GraphicsHelper.pixel(ColorDictionary.black);
+		const btnBack: Graphics = GraphicsHelper.pixel(ColorDictionary.white);
 		btnBack.pivot.x = 0.5;
 		btnBack.scale.set(520, 90);
 		btnContent.addChild(btnBack);
-		const btnText: Text = new Text(i18next.t("SongsList.button"), TextStyleDictionary.buttonWhite);
+		const btnText: Text = new Text(i18next.t("SongsList.button"), TextStyleDictionary.buttonBlack);
 		setPivotToCenter(btnText);
 		btnText.y = btnBack.height / 2;
 		btnContent.addChild(btnText);

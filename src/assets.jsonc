@@ -39,7 +39,8 @@
 		{
 			"name": "package-1",
 			"assets": {
-				"cover_photo": "./img/cover_photo.png",
+				"gradient": "./img/gradient.png",
+				"cover_photo": "./img/cover_photo.jpg",
 				"photo1": "./img/photo1.png",
 				"photo2": "./img/photo2.png",
 				"photo3": "./img/photo3.png",

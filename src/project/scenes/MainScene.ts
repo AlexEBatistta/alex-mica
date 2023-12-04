@@ -18,7 +18,6 @@ import { Manager } from "../..";
 import { SoundLib } from "../../engine/sound/SoundLib";
 import { GraphicsHelper } from "../../engine/utils/GraphicsHelper";
 import { ColorDictionary } from "../../engine/utils/Constants";
-import { AdjustmentFilter } from "@pixi/filter-adjustment";
 import i18next from "i18next";
 import { DEBUG } from "../../flags";
 // import { getDatabase, ref, set, update, get } from "firebase/database";
@@ -57,7 +56,7 @@ export class MainScene extends PixiScene {
 			addToContent: this.centerContainer,
 			useInnertia: true,
 			scrollLimits: new Rectangle(0, 0, this.centerContainer.width, this.centerContainer.height),
-			useMouseWheel: true,
+			useMouseWheel: false,
 			events: this.events,
 		});
 		this.scrollView.pivot.x = this.scrollView.width / 2;
@@ -78,14 +77,22 @@ export class MainScene extends PixiScene {
 		SoundLib.muteMusic = DEBUG;
 	}
 
+	public override onShow(): void {
+		this.scrollView.enableMouseWheel();
+	}
+
 	public createParts(): void {
 		this.photoBackground = new Container();
 		this.addChild(this.photoBackground);
 
 		const photo: Sprite = Sprite.from("cover_photo");
 		photo.anchor.set(0.5);
-		photo.filters = [new AdjustmentFilter({ saturation: 0.4 })];
+		// photo.filters = [new AdjustmentFilter({ saturation: 0.4 })];
 		this.photoBackground.addChild(photo);
+
+		const gradient: Sprite = Sprite.from("gradient");
+		gradient.anchor.set(0.5);
+		this.photoBackground.addChild(gradient);
 
 		const overPhoto: Graphics = GraphicsHelper.pixel(ColorDictionary.black, 0.35);
 		overPhoto.pivot.set(0.5);
@@ -99,32 +106,14 @@ export class MainScene extends PixiScene {
 
 		this.centerContainer.y = this.namesContainer.height;
 
-		const location: Location = new Location();
-		this.centerContainer.addChild(location);
+		const parts: Array<BaseParts> = new Array(new Location(), new Photos(), new Payment(), new DressCode(), new SongsList(), new Confirmation(), new FinalGreeting());
 
-		const photos: Photos = new Photos();
-		photos.y = location.y + location.height;
-		this.centerContainer.addChild(photos);
-
-		const payment: Payment = new Payment();
-		payment.y = photos.y + photos.height;
-		this.centerContainer.addChild(payment);
-
-		const confirmation: Confirmation = new Confirmation();
-		confirmation.y = payment.y + payment.height;
-		this.centerContainer.addChild(confirmation);
-
-		const dressCode: DressCode = new DressCode();
-		dressCode.y = confirmation.y + confirmation.height;
-		this.centerContainer.addChild(dressCode);
-
-		const songsList: SongsList = new SongsList();
-		songsList.y = dressCode.y + dressCode.height;
-		this.centerContainer.addChild(songsList);
-
-		const finalGreeting: FinalGreeting = new FinalGreeting();
-		finalGreeting.y = songsList.y + songsList.height;
-		this.centerContainer.addChild(finalGreeting);
+		for (let i = 0; i < parts.length; i++) {
+			if (i > 0) {
+				parts[i].y = parts[i - 1].y + parts[i - 1].height;
+			}
+			this.centerContainer.addChild(parts[i]);
+		}
 
 		this.centerContainer.pivot.set(-this.centerContainer.width * 0.5, 0);
 	}
@@ -152,7 +141,7 @@ export class MainScene extends PixiScene {
 
 	public override onResize(newW: number, newH: number): void {
 		ScaleHelper.setScaleRelativeToScreen(this.photoBackground, newW, newH, 1, 1, Math.max);
-		this.photoBackground.position.set(newW / 2, Manager.isPortrait ? newH / 2 : newH / 2 + 200);
+		this.photoBackground.position.set(newW / 2, Manager.isPortrait ? newH / 2 : newH / 2);
 
 		this.contentScale = ScaleHelper.screenScale(ScaleHelper.IDEAL_WIDTH, ScaleHelper.IDEAL_HEIGHT, newW, newH, 1, 1, Math.max);
 

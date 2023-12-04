@@ -151,6 +151,10 @@ export class ScrollView extends Container {
 		}
 	}
 
+	public enableMouseWheel(): void {
+		this.wheelFunction = this.onMouseWheel.bind(this);
+		window.addEventListener("wheel", this.wheelFunction);
+	}
 	private wheelFunction: any;
 	private onMouseWheel(delta: WheelEvent): void {
 		if (!this.dragging && this.worldVisible) {
@@ -324,7 +328,7 @@ export class ScrollView extends Container {
 
 	public scrollInnertia(posX: number = 0, posY: number = 0): void {
 		posY = clamp(posY, -Math.max(this.scrollLimits.height - this.scrollHeight, 0), 0);
-		console.log(posY, this.scrollLimits.height, this.scrollHeight);
+
 		const differenceX: number = this.content.x - posX;
 		const differenceY: number = this.content.y - posY;
 		const distance: number = Math.sqrt(differenceX ** 2 + differenceY ** 2);
