@@ -44,13 +44,14 @@ export class MainScene extends PixiScene {
 			// ESTO ES PARA EL ADMIN
 		}
 
-		// ?id=invi1
-		const id: string = new URLSearchParams(window.location.search).get("id");
+		// ?sd=invi1
+		const id: string = new URLSearchParams(window.location.search).get("sd");
 		if (Boolean(id)) {
 			this.nameKey = i18next.t(`Invitados.${id}`);
 			console.log(this.nameKey);
 		}
 
+		// savedate.com.ar/alex&mica?sd=ml
 		this.createParts();
 		this.scrollView = new ScrollView(this.centerContainer.width, this.centerContainer.height, {
 			addToContent: this.centerContainer,

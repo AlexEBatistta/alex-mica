@@ -2,10 +2,9 @@ import Hammer from "hammerjs";
 import type { Graphics } from "pixi.js";
 import { Point } from "pixi.js";
 import { Sprite } from "pixi.js";
-import { Easing, Tween } from "tweedle.js";
+import { Tween } from "tweedle.js";
 import { Manager } from "../..";
 import { PixiScene } from "../../engine/scenemanager/scenes/PixiScene";
-import { Timer } from "../../engine/tweens/Timer";
 import { GraphicsHelper } from "../../engine/utils/GraphicsHelper";
 import { addScalar, clamp } from "../../engine/utils/MathUtils";
 import { ScaleHelper } from "../../engine/utils/ScaleHelper";
@@ -23,7 +22,6 @@ const enum HammerEvents {
 }
 
 const ZOOM: number = 2;
-const TIME_PHOTO: number = 2000;
 export class PhotoViewer extends PixiScene {
 	private background: Graphics;
 	private photos: Array<Sprite>;
@@ -35,7 +33,6 @@ export class PhotoViewer extends PixiScene {
 	private zoomPosition: Point;
 	private pinchStart: number;
 	private currentZoom: Point;
-	private timer: Timer;
 	constructor(photos: Array<Sprite>, index: number) {
 		super();
 		this.photos = photos;
@@ -49,22 +46,6 @@ export class PhotoViewer extends PixiScene {
 		this.mainPhoto = Sprite.from(this.photos[index].texture.clone());
 		this.mainPhoto.anchor.set(0.5);
 		this.addChild(this.mainPhoto);
-
-		this.timer = new Timer()
-			.to(TIME_PHOTO)
-			.onRepeat(() => {
-				new Tween(this.mainPhoto)
-					.to({ alpha: 0 }, 150)
-					.easing(Easing.Sinusoidal.Out)
-					.onComplete(() => {
-						this.currentIndex = (this.currentIndex + 1) % this.photos.length;
-						this.mainPhoto.texture = this.photos[this.currentIndex].texture.clone();
-						new Tween(this.mainPhoto).to({ alpha: 1 }, 150).easing(Easing.Sinusoidal.In).start();
-					})
-					.start();
-			})
-			.repeat(Infinity)
-			.start();
 	}
 
 	public override onShow(): void {
@@ -73,7 +54,7 @@ export class PhotoViewer extends PixiScene {
 		this.hammer = new Hammer(myElement);
 		this.hammer.get("pan").set({ direction: Hammer.DIRECTION_ALL, threshold: 10 });
 		this.hammer.on("panleft panright panup pandown panend", this.handlePanEvents.bind(this));
-		this.hammer.get("press").set({ time: 0 });
+		this.hammer.get("press").set({ time: 0.1 });
 		this.hammer.on("doubletap press", this.handleZoom.bind(this));
 		this.hammer.get("pinch").set({ enable: true });
 		this.hammer.on("pinch pinchstart", this.handleZoom.bind(this));
@@ -88,8 +69,9 @@ export class PhotoViewer extends PixiScene {
 
 	private handlePanEvents(ev: HammerInput): void {
 		if (this.inZoom) {
-			this.mainPhoto.x = clamp(this.zoomPosition.x + ev.deltaX, 0, Manager.width);
-			this.mainPhoto.y = clamp(this.zoomPosition.y + ev.deltaY, this.mainPhoto.height / 4, this.mainPhoto.height / 2);
+			this.mainPhoto.x = clamp(this.zoomPosition.x + ev.deltaX, 0, this.mainPhoto.width);
+			this.mainPhoto.y = clamp(this.zoomPosition.y + ev.deltaY, -this.mainPhoto.height / 4, Manager.height + this.mainPhoto.height / 4);
+			console.log(this.mainPhoto.y, -this.mainPhoto.height / 4, Manager.height + this.mainPhoto.height / 4);
 			return;
 		}
 
@@ -97,19 +79,8 @@ export class PhotoViewer extends PixiScene {
 		if (ev.type == HammerEvents.PANEND) {
 			if (this.mainPhoto.x != center.x) {
 				const toLeft: boolean = this.mainPhoto.x < center.x;
-				if (toLeft) {
-					if (this.mainPhoto.x > center.x - this.mainPhoto.width / 4) {
-						this.mainPhoto.x = center.x;
-						return;
-					}
-					this.currentIndex = (this.currentIndex + 1) % this.photos.length;
-				} else {
-					if (this.mainPhoto.x < center.x + this.mainPhoto.width / 4) {
-						this.mainPhoto.x = center.x;
-						return;
-					}
-					this.currentIndex = (this.currentIndex - 1 + this.photos.length) % this.photos.length;
-				}
+				this.currentIndex = toLeft ? (this.currentIndex + 1) % this.photos.length : (this.currentIndex - 1 + this.photos.length) % this.photos.length;
+
 				new Tween(this.mainPhoto)
 					.to({ x: toLeft ? -this.mainPhoto.width / 2 : Manager.width + this.mainPhoto.width / 2, y: center.y }, 100)
 					.onComplete(() => {
@@ -120,7 +91,6 @@ export class PhotoViewer extends PixiScene {
 								x: toLeft ? Manager.width + this.mainPhoto.width / 2 : -this.mainPhoto.width / 2,
 								y: center.y,
 							})
-							.onComplete(() => this.timer.restart())
 							.start();
 					})
 					.start();
@@ -129,12 +99,13 @@ export class PhotoViewer extends PixiScene {
 			if (this.mainPhoto.y != center.y) {
 				const toUp: boolean = this.mainPhoto.y < center.y;
 				if (toUp) {
-					if (this.mainPhoto.y > center.y - this.mainPhoto.height / 5) {
+					if (this.mainPhoto.y > center.y - this.mainPhoto.height / 6) {
 						this.mainPhoto.y = center.y;
+
 						return;
 					}
 				} else {
-					if (this.mainPhoto.y < center.y + this.mainPhoto.height / 5) {
+					if (this.mainPhoto.y < center.y + this.mainPhoto.height / 6) {
 						this.mainPhoto.y = center.y;
 						return;
 					}
@@ -157,10 +128,6 @@ export class PhotoViewer extends PixiScene {
 	}
 
 	private handleZoom(ev: HammerInput): void {
-		// console.log(ev.type);
-		if (this.timer.isPlaying()) {
-			this.timer.pause();
-		}
 		if (ev.type == HammerEvents.DOUBLETAP) {
 			if (this.inZoom) {
 				this.inZoom = false;
@@ -170,9 +137,6 @@ export class PhotoViewer extends PixiScene {
 				const localPos = this.mainPhoto.toLocal(ev.center);
 				this.mainPhoto.x = this.mainPhoto.x - localPos.x;
 				this.mainPhoto.y = this.mainPhoto.y - localPos.y;
-
-				// this.mainPhoto.x = clamp(this.mainPhoto.x, 0, Manager.width);
-				// this.mainPhoto.y = clamp(this.mainPhoto.y, this.mainPhoto.height / 4, this.mainPhoto.height / 2);
 				this.zoomPosition = this.mainPhoto.position.clone();
 				this.mainPhoto.scale.set(this.defaultScale.x * ZOOM);
 			}
@@ -182,19 +146,16 @@ export class PhotoViewer extends PixiScene {
 			if (this.inZoom) {
 				this.mainPhoto.scale.set(Math.max(addScalar(this.currentZoom, ev.scale - this.pinchStart).x, this.defaultScale.x));
 			}
-			console.log(this.mainPhoto.scale, this.defaultScale);
 			if (this.mainPhoto.scale.x == this.defaultScale.x && ev.scale != this.pinchStart) {
-				console.log("ENTRA");
 				this.inZoom = false;
 				this.mainPhoto.position.set(Manager.width / 2, Manager.height / 2);
-				// this.zoomPosition = undefined;
+				this.zoomPosition = this.mainPhoto.position;
 			}
 		} else if (ev.type == HammerEvents.PINCHSTART) {
 			this.pinchStart = ev.scale;
 			this.inZoom = true;
 			this.zoomPosition = new Point(ev.center.x, ev.center.y);
 			this.currentZoom = this.mainPhoto.scale.clone();
-			// console.info(this.pinchStart);
 		}
 	}
 

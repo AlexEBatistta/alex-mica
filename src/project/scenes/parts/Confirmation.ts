@@ -23,7 +23,7 @@ export class Confirmation extends BaseParts {
 		const btnContent: Container = new Container();
 		const btnBack: Graphics = GraphicsHelper.pixel(ColorDictionary.black);
 		btnBack.pivot.set(0.5, 0);
-		btnBack.scale.set(665, 90);
+		btnBack.scale.set(520, 90);
 		btnContent.addChild(btnBack);
 		const btnText: Text = new Text(i18next.t("Confirmation.button"), TextStyleDictionary.buttonWhite);
 		setPivotToCenter(btnText);

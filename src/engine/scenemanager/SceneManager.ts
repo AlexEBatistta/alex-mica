@@ -307,6 +307,23 @@ export class SceneManager<R extends IRenderer> {
 		});
 
 		// start uncovering the transition... ! WE DO NOT AWAIT FOR THIS ONE!
+		/* this.currentTransition.startUncovering().then(() => {
+			// when uncovered
+			this._isChangingScene = false;
+
+			// tell the new scene he is up
+			this.mainScene?.events.emit(SceneEvents.SHOW);
+			this.mainScene?.onShow();
+
+			// oh, remember to remove the "current transition"
+			this.destroyScene(this.currentTransition);
+			this.currentTransition = null;
+		}); */
+
+		return this.mainScene; // resolve as soon as we have the scene created.
+	}
+
+	public resumeTransition(): void {
 		this.currentTransition.startUncovering().then(() => {
 			// when uncovered
 			this._isChangingScene = false;
@@ -319,8 +336,6 @@ export class SceneManager<R extends IRenderer> {
 			this.destroyScene(this.currentTransition);
 			this.currentTransition = null;
 		});
-
-		return this.mainScene; // resolve as soon as we have the scene created.
 	}
 
 	// #region orientation detection and response

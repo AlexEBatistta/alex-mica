@@ -1,39 +1,44 @@
 {
+	"Loader":{
+		"title": "¡LLEGÓ EL GRAN DÍA!",
+		"button": "QUIERO SER PARTE"
+	},
 	"Names":{
 		"date": "30\n03\n24",
 		"names":"ALEX & MICA",
 		"subtitle": "¡NOS CASAMOS!"
 	},
 	"Location":{
-		"title": "¡LLEGÓ EL GRAN DÍA",
+		"title": "¡LLEGÓ EL GRAN DÍA!",
 		"subtitle": "CEREMONIA Y FIESTA",
-		"text": "Celebramos nuestro casamiento el 19 de Marzo a las 17:30 horas en La Herencia, Saraví 1867, Pilar (altura Km 47.5 Panamericana). Tocá el botón de abajo para recibir las indicaciones para llegar. ¡Te esperamos!",
+		"text": "Celebramos nuestro boda el 30 de Marzo a las 19:30 horas en el Salón Zoraida, Yapeyú y Entre Ríos - San José\n\n¡Te esperamos!",
 		"button": "CÓMO LLEGAR"
 	},
 	"Photos":{
 		"title": "NOSOTROS"
 	},
 	"Payment":{
-		"text": "El costo de la tarjeta es de\nAdultos: $3500\nMenores de 10: No abonan",
-		"button": "CÓMO LLEGAR"
-	},
-	"Confirmation":{
-		"title": "CONFIRMACIÓN DE ASISTENCIA",
-		"text": "Esperamos que seas parte de esta gran celebración. ¡Confirmanos tu asistencia! (TENES TIEMPO HASTA EL 99 DE ENERO)",
-		"button": "CONFIRMAR ASISTENCIA"
+		"text": "El costo de la tarjeta es el siguiente:\nAdultos: $3.500\nMenores de 10: Exento de pago",
+		"button": "ABONAR AHORA"
 	},
 	"DressCode":{
 		"title": "DRESS CODE",
-		"text": "FORMAL ELEGANTE\nSugerimos no utilizar prendas en color negro.\nNo se podra asistir con los siguientes colores:  blanco y gris"
+		"text": "FORMAL ELEGANTE\nTe recomendamos evitar utilizar ropa de color negro.\nPor favor, abstenerse de vestir de blanco",
+		"button": "INSPIRACIÓN"
 	},
 	"SongsList":{
 		"title": "¿QUÉ CANCIONES NO PUEDEN FALTAR?",
-		"text": "¡Ayudanos sugiriendo las canciones que pensás que no pueden faltar en la fiesta!",
-		"button": "CONFIRMAR ASISTENCIA"
+		"text": "¡Te invitamos a sugerir las canciones que crees que no deben faltar en la fiesta!",
+		"button": "AGREGAR A LA LISTA"
+	},
+	"Confirmation":{
+		"title": "CONFIRMACIÓN DE ASISTENCIA",
+		"text": "Esperamos que seas parte de esta nuestra celebración.\n¡Confirmanos tu asistencia!\nTENÉS TIEMPO HASTA EL 15 DE FEBRERO",
+		"button": "CONFIRMAR"
 	},
 	"FinalGreeting": "¡Gracias por acompañarnos en este momento tan importante!",
 	"Invitados":{
-		"invi1": "Invitados 1",
+		"ml": "Monica y Luis",
 		"invi2": "Invitados 2",
 		"invi3": "Invitados 3",
 		"invi4": "Invitados 4",

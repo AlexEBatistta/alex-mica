@@ -75,6 +75,7 @@
     "localforage": "1.10.0",
     "ml-xsadd": "^2.0.0",
     "papaparse": "^5.4.1",
+    "photoswipe": "^5.4.3",
     "pixi.js": "^7.2.4",
     "screenfull": "^6.0.2",
     "stats.js": "^0.17.0",
