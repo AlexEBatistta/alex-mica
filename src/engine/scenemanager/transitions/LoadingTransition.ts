@@ -20,6 +20,7 @@ export class LoadingTransition extends TransitionBase {
 
 	private background: Graphics;
 	private centerContainer: Container;
+	private loadingContainer: Container;
 	private logo: Sprite;
 	private title: SDFBitmapText;
 	private button: Button;
@@ -69,6 +70,28 @@ export class LoadingTransition extends TransitionBase {
 		this.button.visible = false;
 		this.centerContainer.addChild(this.button);
 
+		// Loading Animation
+		this.loadingContainer = new Container();
+		this.centerContainer.addChild(this.loadingContainer);
+		for (let i = 0; i < 3; i++) {
+			const dot = GraphicsHelper.pixel(ColorDictionary.white);
+			setPivotToCenter(dot);
+			dot.scale.set(25);
+			dot.x = i * 50;
+			dot.alpha = 0;
+			new Tween(dot, this.tweens)
+				.to({ alpha: 1 }, 500)
+				.delay(i == 1 ? 500 : 0)
+				.yoyo(true)
+				.repeat(Infinity)
+				.easing(Easing.Quadratic.Out)
+				.start();
+
+			this.loadingContainer.addChild(dot);
+		}
+		setPivotToCenter(this.loadingContainer);
+		this.loadingContainer.y = this.button.y;
+
 		this.fadeOutTime = 1000;
 
 		this.interactive = true;
@@ -90,6 +113,7 @@ export class LoadingTransition extends TransitionBase {
 	}
 	public override onDownloadProgress(_progress: number, bundlesProgress: Record<string, number>): void {
 		if (bundlesProgress["package-1"] == 1) {
+			this.loadingContainer.visible = false;
 			this.button.visible = true;
 		}
 	}
