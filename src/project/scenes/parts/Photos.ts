@@ -62,7 +62,7 @@ export class Photos extends BaseParts {
 		this.columns = Manager.isPortrait ? 2 : 3;
 
 		this.photoSize = { width: Texture.from("cover_photo").width, height: 1035 };
-		const offsetMask: number[] = [210, 15, 430, 320, 520, 390];
+		const offsetMask: number[] = [580, 360, 340, 405, 360, 0];
 		this.defaultScale = (ScaleHelper.IDEAL_WIDTH / this.columns - spacing * 2) / this.photoSize.width;
 		this.maxScale = (ScaleHelper.IDEAL_WIDTH / this.columns + spacing * 2.5) / this.photoSize.width;
 		for (let i = 0; i < 6; i++) {

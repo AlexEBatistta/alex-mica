@@ -8,6 +8,8 @@ import { ColorDictionary, Offsets, SDFTextStyleDictionary, TextStyleDictionary }
 import { GraphicsHelper } from "../../../engine/utils/GraphicsHelper";
 import { setPivotToCenter } from "../../../engine/utils/MathUtils";
 import { Button } from "../../../engine/ui/button/Button";
+import { Manager } from "../../..";
+import { BasePopup } from "../BasePopup";
 
 export class DressCode extends BaseParts {
 	constructor() {
@@ -40,7 +42,7 @@ export class DressCode extends BaseParts {
 			defaultState: { content: btnContent, scale: 1 },
 			highlightState: { scale: 1.05, tween: true },
 			onClick: () => {
-				console.log("Pop up Dress Code");
+				Manager.openPopup(BasePopup);
 			},
 			fixedCursor: "pointer",
 		});
