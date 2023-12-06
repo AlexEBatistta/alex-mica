@@ -54,9 +54,11 @@ export class Names extends BaseParts {
 
 	public override onChangeOrientation(): void {
 		super.onChangeOrientation();
+		this.scale.set(Math.min(0.5, this.scale.x));
 		const offset = new Point(this.rightContent.width / 1.25, Manager.isPortrait ? 5 : 2.75);
 		const pos = this.toLocal(new Point(Manager.width, Manager.height / offset.y));
 		this.rightContent.position.set(pos.x - offset.x, pos.y);
 		this.bottomContent.y = this.toLocal(new Point(0, Manager.height)).y - this.bottomContent.height * 1.2;
+		console.log(this.scale);
 	}
 }
