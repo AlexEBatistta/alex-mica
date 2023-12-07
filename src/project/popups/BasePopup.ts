@@ -23,7 +23,7 @@ export class BasePopup extends PixiScene {
 	protected btnClose: Button;
 	protected backgroundContainer: Container;
 	protected auxFrame: Graphics;
-	constructor() {
+	constructor(title: string) {
 		super();
 
 		this.overlay = GraphicsHelper.pixel(ColorDictionary.black, 1);
@@ -50,6 +50,10 @@ export class BasePopup extends PixiScene {
 
 		this.centerContainer = new Container();
 		this.addChild(this.centerContainer);
+
+		this.title = new SDFBitmapText(title, SDFTextStyleDictionary.titleWhite);
+		setPivotToCenter(this.title);
+		this.centerContainer.addChild(this.title);
 
 		this.logo = Sprite.from("package-1/miniLogo.png");
 		setPivotToCenter(this.logo);
@@ -88,6 +92,7 @@ export class BasePopup extends PixiScene {
 		this.auxFrame.clear();
 		this.auxFrame.lineStyle(1, ColorDictionary.white, 0.001).drawRect(-ScaleHelper.IDEAL_WIDTH / 2, 0, ScaleHelper.IDEAL_WIDTH, ScaleHelper.IDEAL_HEIGHT);
 
+		this.title.y = this.backTop.y + this.backTop.height / 2;
 		this.logo.height = this.backBottom.height - 77;
 		this.logo.scale.x = this.logo.scale.y;
 		this.logo.y = this.backBottom.y - this.backBottom.height / 2;
