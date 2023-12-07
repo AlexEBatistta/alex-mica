@@ -3,6 +3,7 @@ import { Sprite } from "pixi.js";
 import { Graphics } from "pixi.js";
 import { Container } from "pixi.js";
 import { Tween } from "tweedle.js";
+import { Manager } from "../..";
 import { PixiScene } from "../../engine/scenemanager/scenes/PixiScene";
 import { SDFBitmapText } from "../../engine/sdftext/SDFBitmapText";
 import { Button } from "../../engine/ui/button/Button";
@@ -21,6 +22,7 @@ export class BasePopup extends PixiScene {
 	protected logo: Sprite;
 	protected btnClose: Button;
 	protected backgroundContainer: Container;
+	protected auxFrame: Graphics;
 	constructor() {
 		super();
 
@@ -35,32 +37,22 @@ export class BasePopup extends PixiScene {
 
 		this.background = GraphicsHelper.pixel(ColorDictionary.white);
 		this.background.pivot.x = 0.5;
-		// setPivotToCenter(this.background);
-		this.background.scale.set(1080, 1920);
 		this.backgroundContainer.addChild(this.background);
 
 		this.backTop = GraphicsHelper.pixel(ColorDictionary.black);
 		this.backTop.pivot.x = 0.5;
-		this.backTop.scale.set(1080, 222);
 		this.backTop.y = 130;
 		this.backgroundContainer.addChild(this.backTop);
 
 		this.backBottom = GraphicsHelper.pixel(ColorDictionary.black);
 		this.backBottom.pivot.set(0.5, 1);
-		this.backBottom.scale.set(1080, 222);
-		this.backBottom.y = 1920;
 		this.backgroundContainer.addChild(this.backBottom);
-
-		setPivotToCenter(this.backgroundContainer);
 
 		this.centerContainer = new Container();
 		this.addChild(this.centerContainer);
 
-		this.logo = Sprite.from("logo");
+		this.logo = Sprite.from("package-1/miniLogo.png");
 		setPivotToCenter(this.logo);
-		this.logo.height = 145;
-		this.logo.scale.x = this.logo.scale.y;
-		this.logo.y = this.backBottom.y - this.backBottom.height / 2;
 		this.centerContainer.addChild(this.logo);
 
 		const btnContent: Container = new Container();
@@ -78,14 +70,31 @@ export class BasePopup extends PixiScene {
 			},
 			fixedCursor: "pointer",
 		});
-		this.btnClose.position.set(995 - 1080 / 2, 130 / 2);
 		this.centerContainer.addChild(this.btnClose);
 
-		const frame = new Graphics();
-		frame.lineStyle(1, ColorDictionary.white, 0.001).drawRect(-1080 / 2, 0, 1080, 1920);
-		this.centerContainer.addChild(frame);
-		setPivotToCenter(this.centerContainer);
+		this.auxFrame = new Graphics();
+		this.centerContainer.addChild(this.auxFrame);
+
+		this.scaleBackground();
 		this.centerContainer.visible = false;
+	}
+
+	private scaleBackground(): void {
+		this.background.scale.set(ScaleHelper.IDEAL_WIDTH, ScaleHelper.IDEAL_HEIGHT);
+		this.backTop.scale.set(ScaleHelper.IDEAL_WIDTH, Manager.isPortrait ? 222 : 155);
+		this.backBottom.scale.set(ScaleHelper.IDEAL_WIDTH, Manager.isPortrait ? 222 : 155);
+		this.backBottom.y = ScaleHelper.IDEAL_HEIGHT;
+
+		this.auxFrame.clear();
+		this.auxFrame.lineStyle(1, ColorDictionary.white, 0.001).drawRect(-ScaleHelper.IDEAL_WIDTH / 2, 0, ScaleHelper.IDEAL_WIDTH, ScaleHelper.IDEAL_HEIGHT);
+
+		this.logo.height = this.backBottom.height - 77;
+		this.logo.scale.x = this.logo.scale.y;
+		this.logo.y = this.backBottom.y - this.backBottom.height / 2;
+		this.btnClose.position.set(ScaleHelper.IDEAL_WIDTH / 2 - 85, 130 / 2);
+
+		setPivotToCenter(this.backgroundContainer);
+		setPivotToCenter(this.centerContainer);
 	}
 
 	public override onShow(): void {
@@ -115,6 +124,8 @@ export class BasePopup extends PixiScene {
 	public override onResize(newW: number, newH: number): void {
 		this.overlay.scale.set(newW, newH);
 		this.overlay.position.set(newW * 0.5, newH * 0.5);
+
+		this.scaleBackground();
 
 		ScaleHelper.setScaleRelativeToScreen(this.backgroundContainer, newW, newH, 0.9, 0.9);
 		this.backgroundContainer.position.set(newW * 0.5, newH * 0.5);
