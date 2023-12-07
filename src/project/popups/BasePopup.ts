@@ -1,11 +1,12 @@
+import i18next from "i18next";
 import { Sprite } from "pixi.js";
 import { Graphics } from "pixi.js";
 import { Container } from "pixi.js";
 import { Tween } from "tweedle.js";
 import { PixiScene } from "../../engine/scenemanager/scenes/PixiScene";
-import type { SDFBitmapText } from "../../engine/sdftext/SDFBitmapText";
-import type { Button } from "../../engine/ui/button/Button";
-import { ColorDictionary } from "../../engine/utils/Constants";
+import { SDFBitmapText } from "../../engine/sdftext/SDFBitmapText";
+import { Button } from "../../engine/ui/button/Button";
+import { ColorDictionary, SDFTextStyleDictionary } from "../../engine/utils/Constants";
 import { GraphicsHelper } from "../../engine/utils/GraphicsHelper";
 import { setPivotToCenter } from "../../engine/utils/MathUtils";
 import { ScaleHelper } from "../../engine/utils/ScaleHelper";
@@ -26,7 +27,6 @@ export class BasePopup extends PixiScene {
 		this.overlay = GraphicsHelper.pixel(ColorDictionary.black, 1);
 		this.overlay.alpha = 0;
 		this.overlay.interactive = true;
-		this.overlay.on("pointertap", this.closePopup.bind(this));
 		setPivotToCenter(this.overlay);
 		this.addChild(this.overlay);
 
@@ -62,6 +62,24 @@ export class BasePopup extends PixiScene {
 		this.logo.scale.x = this.logo.scale.y;
 		this.logo.y = this.backBottom.y - this.backBottom.height / 2;
 		this.centerContainer.addChild(this.logo);
+
+		const btnContent: Container = new Container();
+		const btnText: SDFBitmapText = new SDFBitmapText(i18next.t("X"), SDFTextStyleDictionary.titleBlack);
+		btnText.height = 50;
+		btnText.scale.x = btnText.scale.y;
+		setPivotToCenter(btnText);
+		btnContent.addChild(btnText);
+
+		this.btnClose = new Button({
+			defaultState: { content: btnContent, scale: 1 },
+			highlightState: { scale: 1.05, tween: true },
+			onClick: () => {
+				this.closePopup();
+			},
+			fixedCursor: "pointer",
+		});
+		this.btnClose.position.set(995 - 1080 / 2, 130 / 2);
+		this.centerContainer.addChild(this.btnClose);
 
 		const frame = new Graphics();
 		frame.lineStyle(1, ColorDictionary.white, 0.001).drawRect(-1080 / 2, 0, 1080, 1920);
