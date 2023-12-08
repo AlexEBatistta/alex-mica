@@ -20,6 +20,7 @@ import { GraphicsHelper } from "../../engine/utils/GraphicsHelper";
 import { ColorDictionary } from "../../engine/utils/Constants";
 import i18next from "i18next";
 import { DEBUG } from "../../flags";
+import type { IScene } from "../../engine/scenemanager/IScene";
 // import { getDatabase, ref, set, update, get } from "firebase/database";
 // import { saveAs } from "file-saver";
 
@@ -78,7 +79,7 @@ export class MainScene extends PixiScene {
 	}
 
 	public override onShow(): void {
-		this.scrollView.enableMouseWheel();
+		this.scrollView.setMouseWheel(true);
 	}
 
 	public createParts(): void {
@@ -137,6 +138,15 @@ export class MainScene extends PixiScene {
 		this.scrollView.updateScrollLimits(undefined, this.centerContainer.height);
 		this.scrollView.scrollHeight = Manager.height / (this.contentScale ?? 1);
 		this.scrollView.constraintRectangle();
+	}
+
+	public override onPopupOpen(_popupReference: IScene, _popupParams?: any[]): void {
+		console.log("OPEN");
+		this.scrollView.setMouseWheel(false);
+	}
+
+	public override onPopupClose(_popupClass: new (...args: any[]) => IScene, _lastWords?: any): void {
+		this.scrollView.setMouseWheel(true);
 	}
 
 	public override onResize(newW: number, newH: number): void {

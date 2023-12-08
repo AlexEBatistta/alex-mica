@@ -151,9 +151,13 @@ export class ScrollView extends Container {
 		}
 	}
 
-	public enableMouseWheel(): void {
-		this.wheelFunction = this.onMouseWheel.bind(this);
-		window.addEventListener("wheel", this.wheelFunction);
+	public setMouseWheel(enable: boolean): void {
+		if (enable) {
+			this.wheelFunction = this.onMouseWheel.bind(this);
+			window.addEventListener("wheel", this.wheelFunction);
+		} else {
+			window.removeEventListener("wheel", this.wheelFunction);
+		}
 	}
 	private wheelFunction: any;
 	private onMouseWheel(delta: WheelEvent): void {

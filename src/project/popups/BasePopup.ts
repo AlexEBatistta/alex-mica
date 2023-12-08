@@ -60,10 +60,15 @@ export class BasePopup extends PixiScene {
 		this.centerContainer.addChild(this.logo);
 
 		const btnContent: Container = new Container();
+		const btnBack: Graphics = GraphicsHelper.pixel(ColorDictionary.white);
+		setPivotToCenter(btnBack);
+		btnBack.scale.set(100);
+		btnContent.addChild(btnBack);
 		const btnText: SDFBitmapText = new SDFBitmapText(i18next.t("X"), SDFTextStyleDictionary.titleBlack);
 		btnText.height = 50;
 		btnText.scale.x = btnText.scale.y;
 		setPivotToCenter(btnText);
+		btnText.y = -10;
 		btnContent.addChild(btnText);
 
 		this.btnClose = new Button({
