@@ -1,5 +1,5 @@
 import i18next from "i18next";
-import type { Container } from "pixi.js";
+import type { Container, ISize } from "pixi.js";
 import { Point, Sprite, utils } from "pixi.js";
 import { Easing, Tween } from "tweedle.js";
 import { Manager } from "../..";
@@ -17,6 +17,7 @@ export class DressCodePopup extends BasePopup {
 	private tweensInOut: Array<{ in: Tween<Container>; out: Tween<Container> }>;
 	private auxPos: Point;
 	private columns: number;
+	private photoSize: ISize;
 	constructor() {
 		super(i18next.t("PPDressCode.title"));
 
@@ -28,9 +29,13 @@ export class DressCodePopup extends BasePopup {
 		this.tweensInOut = new Array();
 		this.columns = Manager.isPortrait ? 3 : 6;
 
+		this.photoSize = Manager.isPortrait ? { width: 325, height: 632 } : { width: 297, height: 580 };
+		this.defaultScale = this.photoSize.width / 505;
+		this.maxScale = this.defaultScale + 0.1;
 		for (let i = 0; i < 6; i++) {
 			const photo: Sprite = Sprite.from(`package-1/dressCode${i + 1}.png`);
 			photo.pivot.set(photo.width / 2, photo.height / 2);
+			photo.scale.set(this.defaultScale);
 			this.photos.push(photo);
 
 			this.tweensInOut.push({ in: new Tween(photo), out: new Tween(photo) });
@@ -48,8 +53,8 @@ export class DressCodePopup extends BasePopup {
 			photo.on("pointerup", (e: PointerEvent) => this.onPointerUp(e, photo, this.tweensInOut[i], i));
 			photo.on("pointerdown", this.onPointerDown.bind(this));
 		}
-		this.defaultScale = 1;
-		this.maxScale = 1.1;
+		// this.defaultScale = 1;
+		// this.maxScale = 1.1;
 		this.grid = new Grid({
 			elements: this.photos,
 			orientation: "columns",

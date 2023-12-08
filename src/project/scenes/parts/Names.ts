@@ -59,6 +59,5 @@ export class Names extends BaseParts {
 		const pos = this.toLocal(new Point(Manager.width, Manager.height / offset.y));
 		this.rightContent.position.set(pos.x - offset.x, pos.y);
 		this.bottomContent.y = this.toLocal(new Point(0, Manager.height)).y - this.bottomContent.height * 1.2;
-		console.log(this.scale);
 	}
 }
