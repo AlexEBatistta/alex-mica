@@ -38,7 +38,16 @@
 		"title": "SUGERÍ UNA CANCIÓN",
 		"subtitle": "Canciones recomendadas por otros invitados",
 		"text": "Pueden ser canciones para el baile o para escuchar de fondo en algún momento de la noche",
-		"input": "Recomendá una canción"
+		"input": "Recomendá una canción",
+		"music":[
+			"Imagine Dragons - Believer",
+			"Imagine Dragons - Demons",
+			"Imagine Dragons - Bad Liar",
+			"Imagine Dragons - Enemy (feat. J.I.D)",
+			"Imagine Dragons - Thunder",
+			"Imagine Dragons - Bones",
+			"Imagine Dragons - It's Time"
+		]
 	},
 	"Confirmation":{
 		"title": "CONFIRMACIÓN DE ASISTENCIA",
@@ -48,17 +57,8 @@
 	"PPConfirmation": {
 		"title": "CONFIRMACIÓN DE ASISTENCIA",
 		"name1": "Nombre & Apellido",
-		"name2": "Nombre & Apellido del acompañante"
+		"name2": "Nombre & Apellido del acompañante",
+		"button": "ENVIAR"
 	},
-	"FinalGreeting": "¡Gracias por acompañarnos en este momento tan importante!",
-	"Invitados":{
-		"ml": "Monica y Luis",
-		"invi2": "Invitados 2",
-		"invi3": "Invitados 3",
-		"invi4": "Invitados 4",
-		"invi5": "Invitados 5",
-		"invi6": "Invitados 6",
-		"invi7": "Invitados 7",
-		"invi8": "Invitados 8"
-	}
+	"FinalGreeting": "¡Gracias por acompañarnos en este momento tan importante!"
 }

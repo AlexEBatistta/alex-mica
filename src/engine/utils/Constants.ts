@@ -19,6 +19,28 @@ export const TextStyleDictionary = {
 	buttonWhite: new TextStyle({ fontSize: 50, fontFamily: "Poppins", fill: ColorDictionary.white }),
 	textBlack: new TextStyle({ fontSize: 48, fontFamily: "Poppins", fill: ColorDictionary.black, align: "center", wordWrap: true, wordWrapWidth: ScaleHelper.IDEAL_WIDTH - 200 }),
 	textWhite: new TextStyle({ fontSize: 48, fontFamily: "Poppins", fill: ColorDictionary.white, align: "center", wordWrap: true, wordWrapWidth: ScaleHelper.IDEAL_WIDTH - 200 }),
+	textBlackBig: new TextStyle({
+		fontSize: 72,
+		fontFamily: "Poppins",
+		fill: ColorDictionary.black,
+		align: "center",
+		wordWrap: true,
+		wordWrapWidth: ScaleHelper.IDEAL_WIDTH - 200,
+	}),
+};
+
+export const CSSStyle: Partial<CSSStyleDeclaration> = {
+	position: "absolute",
+	fontFamily: "Poppins",
+	fontWeight: "600",
+	fontSize: "35px",
+	color: "#222222",
+	border: "2px solid black",
+	textAlign: "center",
+	appearance: "none",
+	maxWidth: `775px`,
+	maxHeight: "90px",
+	cursor: "pointer",
 };
 
 export const WIDTH_PARTS: number = 1920;

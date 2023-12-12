@@ -1,4 +1,4 @@
-import type { Graphics } from "pixi.js";
+import type { Graphics, ISize } from "pixi.js";
 import { Sprite } from "pixi.js";
 import { Rectangle } from "pixi.js";
 import { Container } from "pixi.js";
@@ -33,8 +33,8 @@ export class MainScene extends PixiScene {
 	private namesContainer: Names;
 	private contentScale: number;
 	private arrowInput: Graphics;
-
 	private nameKey: string;
+	private previousSize: ISize;
 	constructor() {
 		super();
 
@@ -76,6 +76,42 @@ export class MainScene extends PixiScene {
 
 		SoundLib.playMusic("music");
 		SoundLib.muteMusic = DEBUG;
+
+		/* const input = GraphicsHelper.pixel(0xffffff);
+		setPivotToCenter(input);
+		input.scale.set(550, 75);
+		input.interactive = true;
+		input.y = -400;
+		const inputBox = new TextInput(
+			{
+				inputStyle: {
+					fontSize: `50px`,
+					width: `500px`,
+					height: `75px`,
+					color: "0x000000",
+					textAlign: "center",
+					fontFamily: "Neothic",
+				},
+				boxStyle: {
+					default: { alpha: 0.9, fill: 0xffffff, stroke: { color: 0x000000, width: 5 } },
+					focused: { alpha: 0.8, fill: 0xffffff, stroke: { color: 0x000000, width: 5 } },
+				},
+				initialText: "hh",
+				type: "text",
+				inputMode: "text",
+				blurOnReturn: true,
+			},
+			this.events
+		);
+		input.on("pointertap", () => {
+			input.tint = 0xff0000;
+			inputBox.select();
+		});
+		this.events.on(TextInputEvents.INPUT, (text) => console.log(text));
+		setPivotToCenter(inputBox);
+		inputBox.y = -200;
+		this.centerContainer.addChild(inputBox);
+		this.centerContainer.addChild(input); */
 	}
 
 	public override onShow(): void {
@@ -150,6 +186,15 @@ export class MainScene extends PixiScene {
 	}
 
 	public override onResize(newW: number, newH: number): void {
+		if (this.previousSize == undefined) {
+			this.previousSize = { width: newW, height: newH };
+		} else if (Math.abs(this.previousSize.width - newW) > 100 || Math.abs(this.previousSize.height - newH) > 100) {
+			console.log("RETURN");
+			return;
+		} else {
+			this.previousSize = { width: newW, height: newH };
+		}
+
 		ScaleHelper.setScaleRelativeToScreen(this.photoBackground, newW, newH, 1, 1, Math.max);
 		this.photoBackground.position.set(newW / 2, Manager.isPortrait ? newH / 2 : newH / 2);
 

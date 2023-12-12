@@ -150,6 +150,9 @@ export class SceneManager<R extends IRenderer> {
 	public onChangeOrientation(orientation: "portrait" | "landscape"): void {
 		this.currentOrientation = orientation;
 		this.mainScene?.onChangeOrientation();
+		for (const popup of this.currentPopups) {
+			popup.onChangeOrientation();
+		}
 	}
 
 	private ticker: Ticker;

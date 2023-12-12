@@ -53,8 +53,6 @@ export class DressCodePopup extends BasePopup {
 			photo.on("pointerup", (e: PointerEvent) => this.onPointerUp(e, photo, this.tweensInOut[i], i));
 			photo.on("pointerdown", this.onPointerDown.bind(this));
 		}
-		// this.defaultScale = 1;
-		// this.maxScale = 1.1;
 		this.grid = new Grid({
 			elements: this.photos,
 			orientation: "columns",

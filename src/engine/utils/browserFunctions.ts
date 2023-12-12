@@ -41,7 +41,7 @@ export function forceFocus(): void {
 		window.focus();
 		if (utils.isMobile.any) {
 			if (screenfull.isEnabled && !screenfull.isFullscreen) {
-				screenfull.request(document.getElementById("pixi-content"));
+				screenfull.request();
 			}
 		}
 	};
