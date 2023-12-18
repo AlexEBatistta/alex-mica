@@ -69,6 +69,7 @@
     "@pixi/ui": "^0.7.2",
     "@types/node": "^20.6.3",
     "firebase": "^10.4.0",
+    "firebase-admin": "^12.0.0",
     "googleapis": "^126.0.1",
     "hammerjs": "^2.0.8",
     "i18next": "22.4.14",

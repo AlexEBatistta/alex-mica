@@ -347,14 +347,14 @@ export class ScrollView extends Container {
 			.start();
 	}
 
-	public scrollToBottom(): void {
+	public scrollToBottom(time?: number): void {
 		this.dragTween?.stop();
 
 		const pretendedY: number = -Math.max(this.scrollLimits.height - this.scrollHeight, 0);
 		const differenceY: number = this.content.y - pretendedY;
 		const distance: number = Math.sqrt(differenceY ** 2);
 		this.dragTween = new Tween(this.content.position)
-			.to({ y: pretendedY }, distance * this.innertiaTimeMultiplier)
+			.to({ y: pretendedY }, time ?? distance * this.innertiaTimeMultiplier)
 			.onUpdate(() => this.updateGradients())
 			.easing(Easing.Quadratic.Out)
 			.onComplete(() => {

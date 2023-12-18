@@ -13,6 +13,7 @@ import { MainScene } from "./project/scenes/MainScene";
 import { LoadingTransition } from "./engine/scenemanager/transitions/LoadingTransition";
 import * as firebase from "firebase/app";
 import "firebase/database";
+import { getDatabase } from "firebase/database";
 
 settings.RENDER_OPTIONS.hello = false;
 
@@ -73,6 +74,15 @@ const firebaseConfig = {
 };
 
 export const firebaseApp = firebase.initializeApp(firebaseConfig);
+export const FB_DATABASE = getDatabase(firebaseApp);
+
+/* const admin = require("firebase-admin");
+const serviceAccount = require("./../credentials.json");
+const firebaseApp = admin.initializeApp({
+	credential: serviceAccount,
+	databaseURL: "https://invitations-327e5-default-rtdb.firebaseio.com",
+});
+export const FB_DATABASE = getDatabase(firebaseApp); */
 
 const initializeCb = function (): void {
 	Manager.changeScene(MainScene, { transitionClass: LoadingTransition });

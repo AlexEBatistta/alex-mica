@@ -28,7 +28,7 @@ export class TextInput extends Container {
 	private domAdded: boolean;
 	private _domVisible: boolean;
 	private _placeholder: string;
-	private placeholderColor: number;
+	private _placeholderColor: number;
 	private selection: number[];
 	private restrictValue: string;
 	private substituted: boolean;
@@ -98,7 +98,7 @@ export class TextInput extends Container {
 		this.domAdded = false;
 		this._domVisible = true;
 		this._placeholder = "";
-		this.placeholderColor = 0xa9a9a9;
+		this._placeholderColor = 0xa9a9a9;
 		this.selection = [0, 0];
 		this.restrictValue = "";
 		this._createDOMInput();
@@ -189,6 +189,14 @@ export class TextInput extends Container {
 		} else {
 			this.domInput.placeholder = text;
 		}
+	}
+
+	public get placeholderColor(): number {
+		return this._placeholderColor;
+	}
+
+	public set placeholderColor(color: number) {
+		this._placeholderColor = color;
 	}
 
 	public get disabled(): boolean {
@@ -636,7 +644,7 @@ export class TextInput extends Container {
 		}
 
 		if (this.domInput.value.length === 0) {
-			style.fill = this.placeholderColor;
+			style.fill = this._placeholderColor;
 		}
 
 		return style;

@@ -43,6 +43,19 @@ export const CSSStyle: Partial<CSSStyleDeclaration> = {
 	cursor: "pointer",
 };
 
+export const CSSStyleLeft: Partial<CSSStyleDeclaration> = {
+	position: "absolute",
+	fontFamily: "Poppins",
+	fontWeight: "600",
+	fontSize: "35px",
+	color: "#222222",
+	textAlign: "left",
+	appearance: "none",
+	maxWidth: `640px`,
+	maxHeight: "90px",
+	cursor: "pointer",
+};
+
 export const WIDTH_PARTS: number = 1920;
 
 export const Offsets = {

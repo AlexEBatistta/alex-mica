@@ -36,8 +36,8 @@ export class ConfirmationPopup extends BasePopup {
 		);
 		this.input1.pivot.set(this.input1.width * 0.5, this.input1.height * 0.5);
 		this.input1.cursor = "text";
-		this.events.on(TextInputEvents.INPUT, this.onInputInput.bind(this));
-		this.events.on(TextInputEvents.ENTER_BLUR, this.onInputInput.bind(this));
+		this.events.on(TextInputEvents.INPUT, this.onInput.bind(this));
+		this.events.on(TextInputEvents.ENTER_BLUR, this.onInput.bind(this));
 		this.events.on(TextInputEvents.BLUR, this.onInputBlur.bind(this));
 		this.events.on(TextInputEvents.FOCUS, this.onInputFocus.bind(this));
 		this.centerContainer.addChild(this.input1);
@@ -80,7 +80,7 @@ export class ConfirmationPopup extends BasePopup {
 
 	private onInputBlur(): void {}
 
-	private onInputInput(text: string): void {
+	private onInput(text: string): void {
 		console.log(text);
 	}
 
