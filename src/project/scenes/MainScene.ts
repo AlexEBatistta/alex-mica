@@ -14,13 +14,14 @@ import { DressCode } from "./parts/DressCode";
 import { SongsList } from "./parts/SongsList";
 import { FinalGreeting } from "./parts/FinalGreeting";
 import type { BaseParts } from "./parts/BaseParts";
-import { Manager } from "../..";
+import { FB_DATABASE, Manager } from "../..";
 import { SoundLib } from "../../engine/sound/SoundLib";
 import { GraphicsHelper } from "../../engine/utils/GraphicsHelper";
 import { ColorDictionary } from "../../engine/utils/Constants";
 import i18next from "i18next";
 import { DEBUG } from "../../flags";
 import type { IScene } from "../../engine/scenemanager/IScene";
+import { get, ref } from "firebase/database";
 // import { getDatabase, ref, set, update, get } from "firebase/database";
 // import { saveAs } from "file-saver";
 
@@ -35,6 +36,7 @@ export class MainScene extends PixiScene {
 	private arrowInput: Graphics;
 	private nameKey: string;
 	private previousSize: ISize;
+	public static songList: Array<string> = new Array();
 	constructor() {
 		super();
 
@@ -112,6 +114,22 @@ export class MainScene extends PixiScene {
 		inputBox.y = -200;
 		this.centerContainer.addChild(inputBox);
 		this.centerContainer.addChild(input); */
+
+		get(ref(FB_DATABASE, "songList"))
+			.then((snapshot) => {
+				if (snapshot.exists()) {
+					const data = snapshot.val();
+					console.log("Datos obtenidos:", data);
+					MainScene.songList = Object.values<string>(data).filter((_value, index) => {
+						return data.hasOwnProperty(`song ${index}`);
+					});
+				} else {
+					console.log("La ubicación no contiene datos.");
+				}
+			})
+			.catch((error) => {
+				console.error("Error al obtener datos:", error);
+			});
 	}
 
 	public override onShow(): void {

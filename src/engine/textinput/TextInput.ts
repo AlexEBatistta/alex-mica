@@ -1,4 +1,5 @@
-import type { TextStyleAlign, Renderer, Matrix, utils } from "pixi.js";
+import type { TextStyleAlign, Renderer, Matrix } from "pixi.js";
+import { utils } from "pixi.js";
 import { Container, Graphics, TextStyle, Text, TextMetrics } from "pixi.js";
 import { Dictionary } from "../dictionary/Dictionary";
 import { Key } from "../input/Key";
@@ -66,7 +67,7 @@ export class TextInput extends Container {
 		eventsListener: utils.EventEmitter<symbol>
 	) {
 		super();
-		this.events = eventsListener;
+		this.events = eventsListener ?? new utils.EventEmitter();
 
 		this.inputStyle = Object.assign(
 			{
@@ -336,7 +337,7 @@ export class TextInput extends Container {
 				const previousInputMode: InputMode = this.domInput.inputMode as InputMode;
 				this.blur();
 				this.domInput.inputMode = previousInputMode;
-				this.events.emit(TextInputEvents.ENTER_BLUR);
+				this.events.emit(TextInputEvents.ENTER_BLUR, this.name, this.text);
 			}
 		}
 
@@ -368,7 +369,7 @@ export class TextInput extends Container {
 		if (this.ignoreBlurEvent) {
 			this.ignoreBlurEvent = false;
 		} else {
-			this.events.emit(TextInputEvents.BLUR);
+			this.events.emit(TextInputEvents.BLUR, this.name, this.text);
 		}
 	}
 

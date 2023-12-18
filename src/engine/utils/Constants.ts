@@ -35,7 +35,6 @@ export const CSSStyle: Partial<CSSStyleDeclaration> = {
 	fontWeight: "600",
 	fontSize: "35px",
 	color: "#222222",
-	border: "2px solid black",
 	textAlign: "center",
 	appearance: "none",
 	maxWidth: `775px`,

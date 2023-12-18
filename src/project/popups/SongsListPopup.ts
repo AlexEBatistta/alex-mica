@@ -1,5 +1,6 @@
 import i18next from "i18next";
-import { Container, Graphics, Rectangle, Sprite, Text } from "pixi.js";
+import type { Graphics } from "pixi.js";
+import { Container, NineSlicePlane, Rectangle, Sprite, Text, Texture } from "pixi.js";
 import { FB_DATABASE, Manager } from "../..";
 import { TextInput, TextInputEvents } from "../../engine/textinput/TextInput";
 import { ScrollView } from "../../engine/ui/scrollview/ScrollView";
@@ -10,6 +11,7 @@ import { Button } from "../../engine/ui/button/Button";
 import { GraphicsHelper } from "../../engine/utils/GraphicsHelper";
 import { Tween } from "tweedle.js";
 import { ref, update } from "firebase/database";
+import { MainScene } from "../scenes/MainScene";
 
 const space: number = 50;
 export class SongsListPopup extends BasePopup {
@@ -18,8 +20,8 @@ export class SongsListPopup extends BasePopup {
 	private scrollView: ScrollView;
 	private input: TextInput;
 	private contentView: Container;
-	private boxView: Graphics;
-	private boxInput: Graphics;
+	private boxView: NineSlicePlane;
+	private boxInput: NineSlicePlane;
 	private btnArrow: Button;
 	constructor(list: Array<string>) {
 		super(i18next.t("PPSongsList.title"));
@@ -29,25 +31,13 @@ export class SongsListPopup extends BasePopup {
 		this.centerContainer.addChild(this.subtitle);
 
 		this.contentView = new Container();
-		this.boxView = new Graphics().lineStyle(5, ColorDictionary.black).drawRect(-775 / 2, 0, 775, 464);
+		this.boxView = new NineSlicePlane(Texture.from("package-1/frame.png"), 25, 25, 25, 25); // new Graphics().lineStyle(5, ColorDictionary.black).drawRect(-775 / 2, 0, 775, 464);
+		this.boxView.width = 775;
+		this.boxView.height = 464;
+		this.boxView.pivot.x = 775 / 2;
 		this.centerContainer.addChild(this.boxView);
 
-		/* get(ref(FB_DATABASE, "songList"))
-			.then((snapshot) => {
-				if (snapshot.exists()) {
-					const data = snapshot.val();
-					console.log("Datos obtenidos:", data);
-					list = Object.values<string>(data).filter((_value, index) => {
-						return data.hasOwnProperty(`song ${index}`);
-					});
-				} else {
-					console.log("La ubicación no contiene datos.");
-				}
-			})
-			.catch((error) => {
-				console.error("Error al obtener datos:", error);
-			}); */
-		list.forEach((title) => this.addSong(title));
+		list?.forEach((title) => this.addSong(title, false));
 
 		this.scrollView = new ScrollView(this.boxView.width - space, this.boxView.height - space, {
 			addToContent: this.contentView,
@@ -58,7 +48,10 @@ export class SongsListPopup extends BasePopup {
 		});
 		this.centerContainer.addChild(this.scrollView);
 
-		this.boxInput = new Graphics().lineStyle(5, ColorDictionary.black).drawRect(-775 / 2, -90 / 2, 775, 90);
+		this.boxInput = new NineSlicePlane(Texture.from("package-1/frame.png"), 25, 25, 25, 25); // new Graphics().lineStyle(5, ColorDictionary.black).drawRect(-775 / 2, -90 / 2, 775, 90);
+		this.boxInput.width = 775;
+		this.boxInput.height = 90;
+		this.boxInput.pivot.set(775 / 2, 90 / 2);
 		this.centerContainer.addChild(this.boxInput);
 		this.input = new TextInput(
 			{
@@ -131,8 +124,10 @@ export class SongsListPopup extends BasePopup {
 			this.scrollView.y = this.boxView.y + space / 2;
 			this.scrollView.x = -this.boxView.width / 2 + space;
 			this.input.position.set(-50, 1277);
+			this.boxInput.width = 775;
+			this.boxInput.height = 90;
+			this.boxInput.pivot.set(775 / 2, 90 / 2);
 			this.boxInput.y = this.input.y;
-			this.btnArrow.x = 330;
 			this.text.y = 1471;
 		} else {
 			this.subtitle.y = 356;
@@ -141,8 +136,9 @@ export class SongsListPopup extends BasePopup {
 			this.input.position.set(-50, 762);
 			this.boxInput.y = this.input.y;
 			this.text.y = 863;
-			this.btnArrow.x = 330;
 		}
+
+		this.btnArrow.position.set(this.boxInput.width - this.btnArrow.width / 2 - (this.boxInput.height - this.btnArrow.height) / 2, this.boxInput.height / 2);
 	}
 
 	private onInputFocus(): void {
@@ -158,12 +154,12 @@ export class SongsListPopup extends BasePopup {
 	}
 
 	private onBtnArrow(): void {
-		this.addSong(this.input.text);
+		this.addSong(this.input.text, true);
 		this.input.text = "";
 		this.input.placeholder = i18next.t("PPSongsList.input");
 	}
 
-	private addSong(title: string): void {
+	private addSong(title: string, updateList: boolean): void {
 		console.log(title);
 		const song: Text = new Text(title, TextStyleDictionary.textBlack);
 		const index = this.contentView.children.length;
@@ -173,6 +169,9 @@ export class SongsListPopup extends BasePopup {
 			this.scrollView.updateScrollLimits(this.contentView.width + space, this.contentView.height + space / 2);
 			this.scrollView.scrollToBottom();
 		}
-		update(ref(FB_DATABASE, "songList"), { [`song ${index}`]: title });
+		if (updateList) {
+			MainScene.songList.push(title);
+			update(ref(FB_DATABASE, "songList"), { [`song ${index}`]: title });
+		}
 	}
 }
