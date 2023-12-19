@@ -36,6 +36,8 @@ export class ConfirmationPopup extends BasePopup {
 				boxStyle: undefined,
 				inputStyle: CSSStyle,
 				type: "text",
+				inputMode: "text",
+				blurOnReturn: true,
 			},
 			this.events
 		);
@@ -58,6 +60,8 @@ export class ConfirmationPopup extends BasePopup {
 				boxStyle: undefined,
 				inputStyle: CSSStyle,
 				type: "text",
+				inputMode: "text",
+				blurOnReturn: true,
 			},
 			this.events
 		);

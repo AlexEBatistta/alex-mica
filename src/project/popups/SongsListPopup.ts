@@ -56,9 +56,7 @@ export class SongsListPopup extends BasePopup {
 		this.input = new TextInput(
 			{
 				inputStyle: CSSStyleLeft,
-				boxStyle: {
-					default: { alpha: 0.9, fill: 0xffffff },
-				},
+				boxStyle: undefined,
 				type: "text",
 				inputMode: "text",
 				blurOnReturn: true,

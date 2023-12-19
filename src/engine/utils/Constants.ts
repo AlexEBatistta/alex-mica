@@ -54,7 +54,7 @@ export const CSSStyleLeft: Partial<CSSStyleDeclaration> = {
 	appearance: "none",
 	width: "95%",
 	height: "95%",
-	maxWidth: `775px`,
+	maxWidth: `640px`,
 	maxHeight: "90px",
 	cursor: "pointer",
 };
