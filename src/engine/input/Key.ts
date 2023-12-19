@@ -8,7 +8,7 @@ export enum Key {
 	PAUSE = "Pause",
 	CAPS_LOCK = "CapsLock",
 	ESCAPE = "Escape",
-	SPACE = "Space",
+	SPACE = " ",
 	PAGE_UP = "PageUp",
 	PAGE_DOWN = "PageDown",
 	END = "End",

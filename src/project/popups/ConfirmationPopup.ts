@@ -33,9 +33,9 @@ export class ConfirmationPopup extends BasePopup {
 
 		this.input1 = new TextInput(
 			{
-				boxStyle: { default: { stroke: { color: ColorDictionary.white, width: 2, alpha: 0 }, rounded: 0, fill: ColorDictionary.white, alpha: 1 } },
+				boxStyle: undefined,
 				inputStyle: CSSStyle,
-				type: "textarea",
+				type: "text",
 			},
 			this.events
 		);
@@ -55,9 +55,9 @@ export class ConfirmationPopup extends BasePopup {
 
 		this.input2 = new TextInput(
 			{
-				boxStyle: { default: { stroke: { color: ColorDictionary.white, width: 2, alpha: 0 }, rounded: 0, fill: ColorDictionary.white, alpha: 1 } },
+				boxStyle: undefined,
 				inputStyle: CSSStyle,
-				type: "textarea",
+				type: "text",
 			},
 			this.events
 		);
@@ -133,8 +133,12 @@ export class ConfirmationPopup extends BasePopup {
 	private onConfirmation(): void {
 		console.log(this.names);
 		get(ref(FB_DATABASE, "invitados")).then((data: any) => {
-			console.log(data);
-			update(ref(FB_DATABASE, "invitados"), { inivitado1: `${this.names[0]} ${this.names[1]}` });
+			const inviList = Object.values<string>(data).filter((_value, index) => {
+				return data.hasOwnProperty(`invitado ${index}`);
+			});
+			console.log(inviList);
+
+			update(ref(FB_DATABASE, "invitados"), { [`invitado ${1}`]: `${this.names[0]} ${this.names[1]}` });
 		});
 	}
 }

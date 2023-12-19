@@ -79,42 +79,6 @@ export class MainScene extends PixiScene {
 		SoundLib.playMusic("music");
 		SoundLib.muteMusic = DEBUG;
 
-		/* const input = GraphicsHelper.pixel(0xffffff);
-		setPivotToCenter(input);
-		input.scale.set(550, 75);
-		input.interactive = true;
-		input.y = -400;
-		const inputBox = new TextInput(
-			{
-				inputStyle: {
-					fontSize: `50px`,
-					width: `500px`,
-					height: `75px`,
-					color: "0x000000",
-					textAlign: "center",
-					fontFamily: "Neothic",
-				},
-				boxStyle: {
-					default: { alpha: 0.9, fill: 0xffffff, stroke: { color: 0x000000, width: 5 } },
-					focused: { alpha: 0.8, fill: 0xffffff, stroke: { color: 0x000000, width: 5 } },
-				},
-				initialText: "hh",
-				type: "text",
-				inputMode: "text",
-				blurOnReturn: true,
-			},
-			this.events
-		);
-		input.on("pointertap", () => {
-			input.tint = 0xff0000;
-			inputBox.select();
-		});
-		this.events.on(TextInputEvents.INPUT, (text) => console.log(text));
-		setPivotToCenter(inputBox);
-		inputBox.y = -200;
-		this.centerContainer.addChild(inputBox);
-		this.centerContainer.addChild(input); */
-
 		get(ref(FB_DATABASE, "songList"))
 			.then((snapshot) => {
 				if (snapshot.exists()) {

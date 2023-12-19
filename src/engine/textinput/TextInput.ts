@@ -496,7 +496,6 @@ export class TextInput extends Container {
 	// INPUT SUBSTITUTION
 
 	private _createSurrogate(): void {
-		console.log("HOLAAAAAAAAAAA");
 		this.surrogateHitbox = new Graphics();
 		this.surrogateHitbox.alpha = 0;
 		this.surrogateHitbox.interactive = true;
