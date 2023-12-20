@@ -72,9 +72,33 @@
         "y": 0.5
       }
     },
-    "package-1/frame.png": {
+    "package-1/saveIcon.png": {
       "frame": {
         "x": 88,
+        "y": 1972,
+        "w": 71,
+        "h": 71
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 71,
+        "h": 71
+      },
+      "sourceSize": {
+        "w": 71,
+        "h": 71
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "package-1/frame.png": {
+      "frame": {
+        "x": 163,
         "y": 1972,
         "w": 51,
         "h": 51
@@ -98,7 +122,7 @@
     },
     "package-1/arrow.png": {
       "frame": {
-        "x": 143,
+        "x": 218,
         "y": 1972,
         "w": 44,
         "h": 26
