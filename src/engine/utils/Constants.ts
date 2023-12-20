@@ -47,16 +47,17 @@ export const CSSStyle: Partial<CSSStyleDeclaration> = {
 export const CSSStyleLeft: Partial<CSSStyleDeclaration> = {
 	position: "absolute",
 	fontFamily: "Poppins",
-	fontWeight: "600",
+	fontWeight: "300",
 	fontSize: "35px",
 	color: "#222222",
 	textAlign: "left",
 	appearance: "none",
-	width: "95%",
-	height: "95%",
+	// width: "100%",
 	maxWidth: `640px`,
-	maxHeight: "90px",
+	// maxHeight: "90px",
 	cursor: "pointer",
+	// border: "2px solid black",
+	overflow: "auto",
 };
 
 export const WIDTH_PARTS: number = 1920;

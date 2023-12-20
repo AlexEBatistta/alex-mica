@@ -312,8 +312,8 @@ export class TextInput extends Container {
 		for (const key in this.inputStyle) {
 			this.domInput.style[key] = this.inputStyle[key];
 		}
-		this.domInput.style.color = "transparent";
-		this.domInput.style.caretColor = this.inputStyle.color;
+		// this.domInput.style.color = "transparent";
+		this.domInput.style.caretColor = "black"; // this.inputStyle.color;
 	}
 
 	private _addListeners(): void {
@@ -510,7 +510,7 @@ export class TextInput extends Container {
 		this.addChild(this.surrogateMask);
 
 		this.surrogate = new Text("", {});
-		this.addChild(this.surrogate);
+		// this.addChild(this.surrogate);
 
 		this.surrogate.mask = this.surrogateMask;
 
@@ -562,7 +562,7 @@ export class TextInput extends Container {
 				this.surrogate.x = inputBounds.width - padding[1] - this.surrogate.width;
 				break;
 		}
-
+		console.log(this.surrogate.x);
 		this._updateSurrogateHitbox(inputBounds);
 		this._updateSurrogateMask(inputBounds, padding);
 	}
@@ -735,8 +735,8 @@ export class TextInput extends Container {
 		return document.activeElement === this.domInput;
 	}
 
-	private _setDOMInputVisible(visible: any): void {
-		this.domInput.style.display = visible ? "block" : "none";
+	private _setDOMInputVisible(_visible: any): void {
+		this.domInput.style.display = "block"; // visible ? "block" : "none";
 	}
 
 	private _getCanvasBounds(): { top: number; left: number; width: number; height: number } {

@@ -95,7 +95,6 @@ export class LoadingTransition extends TransitionBase {
 		this.fadeOutTime = 1000;
 
 		this.interactive = true;
-		console.log("I EXISTS!");
 	}
 
 	public override startCovering(): Promise<void> {

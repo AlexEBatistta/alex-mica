@@ -1,21 +1,46 @@
-export function convertToCSV(data: any): string {
-	const csvRows = [];
+export function convertToCSV(data: { guests: any; songList: any }): string {
+	// const csvRows = [];
 
 	// Obtén las claves (nombres de las personas) del objeto
-	const keys = Object.keys(data);
+	// const guests = Object.keys(data.guests);
+	// const songs = Object.keys(data.songList);
+
+	const guests = Object.values<string>(data.guests);
+	console.log(data.guests);
+
+	const songs = Object.values<string>(data.songList);
 
 	// Encabezados CSV (incluyendo metadatos de formato)
-	const headers = ["nombre", "asistencia", "texto"];
-	csvRows.push(headers.join(","));
+	// const headers = ["Invitados", "Canciones"];
+	// csvRows.push(headers.join(","));
 
+	// csvRows.push(guests.join(","));
+	// csvRows.push(songs.join(","));
 	// Itera sobre las claves y convierte los valores en una fila CSV
-	for (const key of keys) {
+	/* for (const key of keys) {
 		const personData = data[key];
 		const values = [key, personData.asistencia, personData.texto];
 		csvRows.push(values.join(","));
-	}
+	} */
 
-	return csvRows.join("\n");
+	// Unir las listas en una sola matriz
+	const datos = guests.concat(songs);
+
+	// Convertir la matriz a una cadena CSV
+	const csvData = `Invitados,Canciones\n${datos.map((d) => `"${d}"`).join(",")}`;
+
+	return csvData; // csvRows.join("\n");
+}
+
+export function generateData(data: { guests: any; songList: any }): string {
+	const guests = Object.values<string>(data.guests);
+	const songs = Object.values<string>(data.songList);
+
+	let text: string = "Invitados:\n● ";
+	text += guests.join("\n● ");
+	text += "\n\nLista de Canciones:\n● ";
+	text += songs.join("\n● ");
+	return text;
 }
 
 /* Firebase

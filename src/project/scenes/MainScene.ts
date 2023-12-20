@@ -22,8 +22,10 @@ import { DEBUG } from "../../flags";
 import type { IScene } from "../../engine/scenemanager/IScene";
 import { get, ref } from "firebase/database";
 import { DataManager } from "../../engine/datamanager/DataManager";
-// import { getDatabase, ref, set, update, get } from "firebase/database";
-// import { saveAs } from "file-saver";
+import { setPivotToCenter } from "../../engine/utils/MathUtils";
+import { Button } from "../../engine/ui/button/Button";
+import { generateData } from "../../engine/utils/Utils";
+import { saveAs } from "file-saver";
 
 // https://alexebatistta.github.io/invitations
 export class MainScene extends PixiScene {
@@ -38,24 +40,12 @@ export class MainScene extends PixiScene {
 	private previousSize: ISize;
 	public static songList: Array<string> = new Array();
 	public static guestNames: Array<string> = new Array(2);
+	private btnSave: Button;
 	constructor() {
 		super();
 
 		MainScene.guestNames[0] = DataManager.getValue("guest 0");
 		MainScene.guestNames[1] = DataManager.getValue("guest 1");
-
-		/* // ?main = true
-		if (Boolean(new URLSearchParams(window.location.search).get("main"))) {
-			console.log("ADMIN");
-			// ESTO ES PARA EL ADMIN
-		}
-
-		// ?sd=invi1
-		const id: string = new URLSearchParams(window.location.search).get("sd");
-		if (Boolean(id)) {
-			this.nameKey = i18next.t(`Invitados.${id}`);
-			console.log(this.nameKey);
-		} */
 
 		// savedate.com.ar/alex&mica?sd=ml
 		this.createParts();
@@ -95,6 +85,30 @@ export class MainScene extends PixiScene {
 			.catch((error) => {
 				console.error("Error al obtener datos:", error);
 			});
+
+		// ?1502
+		if (new URLSearchParams(window.location.search).get("1502") != undefined) {
+			// const btnContent: Container = new Container();
+			const btnSprite: Sprite = Sprite.from("package-1/saveIcon.png");
+			setPivotToCenter(btnSprite);
+
+			this.btnSave = new Button({
+				defaultState: { content: btnSprite, scale: 1 },
+				highlightState: { scale: 1.05, tween: true },
+				onClick: () => {
+					get(ref(FB_DATABASE)).then((rawData) => {
+						console.log(rawData.val());
+
+						// const csvData = convertToCSV(rawData.val());
+						// console.log(csvData);
+						const blob = new Blob([generateData(rawData.val())], { type: "text/plain;charset=utf-8" });
+						saveAs(blob, "datos.txt");
+					});
+				},
+				fixedCursor: "pointer",
+			});
+			this.addChild(this.btnSave);
+		}
 	}
 
 	public override onShow(): void {
@@ -209,5 +223,8 @@ export class MainScene extends PixiScene {
 		const arrow = this.namesContainer.getArrowBounds();
 		this.arrowInput.scale.set(arrow.width * 2 * this.namesContainer.scale.x, arrow.height * 3 * this.namesContainer.scale.y);
 		this.arrowInput.position.set(newW / 2, newH - this.arrowInput.height * 1.75);
+
+		this.btnSave?.scale.set(this.contentScale);
+		this.btnSave?.position.set(this.btnSave.width, this.btnSave.height);
 	}
 }
