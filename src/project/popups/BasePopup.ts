@@ -121,7 +121,7 @@ export class BasePopup extends PixiScene {
 			.start();
 	}
 
-	private closePopup(): void {
+	protected closePopup(): void {
 		this.centerContainer.visible = false;
 		new Tween(this.backgroundContainer.scale)
 			.to({ x: 0 }, 250)

@@ -58,7 +58,8 @@
 		"title": "CONFIRMACIÓN DE ASISTENCIA",
 		"name1": "Nombre & Apellido",
 		"name2": "Nombre & Apellido del acompañante",
-		"button": "ENVIAR"
+		"button": "ENVIAR",
+		"send": "Enviado!"
 	},
 	"FinalGreeting": "¡Gracias por acompañarnos en este momento tan importante!"
 }

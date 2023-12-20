@@ -18,10 +18,10 @@ import { FB_DATABASE, Manager } from "../..";
 import { SoundLib } from "../../engine/sound/SoundLib";
 import { GraphicsHelper } from "../../engine/utils/GraphicsHelper";
 import { ColorDictionary } from "../../engine/utils/Constants";
-import i18next from "i18next";
 import { DEBUG } from "../../flags";
 import type { IScene } from "../../engine/scenemanager/IScene";
 import { get, ref } from "firebase/database";
+import { DataManager } from "../../engine/datamanager/DataManager";
 // import { getDatabase, ref, set, update, get } from "firebase/database";
 // import { saveAs } from "file-saver";
 
@@ -34,13 +34,17 @@ export class MainScene extends PixiScene {
 	private namesContainer: Names;
 	private contentScale: number;
 	private arrowInput: Graphics;
-	private nameKey: string;
+	// private nameKey: string;
 	private previousSize: ISize;
 	public static songList: Array<string> = new Array();
+	public static guestNames: Array<string> = new Array(2);
 	constructor() {
 		super();
 
-		// ?main = true
+		MainScene.guestNames[0] = DataManager.getValue("guest 0");
+		MainScene.guestNames[1] = DataManager.getValue("guest 1");
+
+		/* // ?main = true
 		if (Boolean(new URLSearchParams(window.location.search).get("main"))) {
 			console.log("ADMIN");
 			// ESTO ES PARA EL ADMIN
@@ -51,7 +55,7 @@ export class MainScene extends PixiScene {
 		if (Boolean(id)) {
 			this.nameKey = i18next.t(`Invitados.${id}`);
 			console.log(this.nameKey);
-		}
+		} */
 
 		// savedate.com.ar/alex&mica?sd=ml
 		this.createParts();
@@ -83,12 +87,9 @@ export class MainScene extends PixiScene {
 			.then((snapshot) => {
 				if (snapshot.exists()) {
 					const data = snapshot.val();
-					console.log("Datos obtenidos:", data);
 					MainScene.songList = Object.values<string>(data).filter((_value, index) => {
 						return data.hasOwnProperty(`song ${index}`);
 					});
-				} else {
-					console.log("La ubicación no contiene datos.");
 				}
 			})
 			.catch((error) => {
