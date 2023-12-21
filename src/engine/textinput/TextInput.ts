@@ -451,7 +451,26 @@ export class TextInput extends Container {
 		this._updateSurrogate();
 	}
 
+	public updateScale(box: Container, scale: number): void {
+		const wStyle: number = this.inputStyle.maxWidth.replace("px", "") as unknown as number;
+		const space: number = 10;
+
+		this.domInput.style.top = `${box.getGlobalPosition().y - (box.height * scale) / 2}px`;
+		this.domInput.style.padding = "0px 0px 0px 0px";
+
+		if (this.inputStyle.textAlign == "left" && wStyle != box.width) {
+			this.domInput.style.left = `${box.getGlobalPosition().x - (box.width * scale) / 2 + space}px`;
+			this.domInput.style.width = `${wStyle * scale}px`;
+		} else {
+			this.domInput.style.left = `${box.getGlobalPosition().x - (box.width * scale) / 2 + space}px`;
+			this.domInput.style.width = `${box.width * scale - space * 2}px`;
+		}
+
+		this.domInput.style.height = `${box.height * scale}px`;
+		this.domInput.style.fontSize = `${(this.inputStyle.fontSize.replace("px", "") as unknown as number) * scale}px`;
+	}
 	private _updateDOMInput(): void {
+		return;
 		if (!this.canvasBounds) {
 			return;
 		}
@@ -562,7 +581,6 @@ export class TextInput extends Container {
 				this.surrogate.x = inputBounds.width - padding[1] - this.surrogate.width;
 				break;
 		}
-		console.log(this.surrogate.x);
 		this._updateSurrogateHitbox(inputBounds);
 		this._updateSurrogateMask(inputBounds, padding);
 	}
@@ -739,6 +757,10 @@ export class TextInput extends Container {
 		this.domInput.style.display = "block"; // visible ? "block" : "none";
 	}
 
+	public inputVisibility(visible: boolean): void {
+		this.domInput.style.display = visible ? "block" : "none";
+	}
+
 	private _getCanvasBounds(): { top: number; left: number; width: number; height: number } {
 		const rect = this.lastRenderer.view.getBoundingClientRect();
 		const bounds = { top: rect.y, left: rect.x, width: rect.width, height: rect.height };
@@ -773,6 +795,7 @@ export class TextInput extends Container {
 	private _getDOMRelativeWorldTransform(): Matrix {
 		const canvasBounds = this.lastRenderer.view.getBoundingClientRect();
 		const matrix = this.worldTransform.clone();
+		console.log(matrix);
 
 		matrix.scale(this.resolution, this.resolution);
 		matrix.scale(canvasBounds.width / this.lastRenderer.width, canvasBounds.height / this.lastRenderer.height);

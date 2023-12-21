@@ -48,9 +48,9 @@ export class ConfirmationPopup extends BasePopup {
 		this.input1.cursor = "text";
 		this.input1.events.on(TextInputEvents.ENTER_BLUR, this.onInputBlur.bind(this));
 		this.input1.events.on(TextInputEvents.BLUR, this.onInputBlur.bind(this));
-		this.input1.events.on(TextInputEvents.FOCUS, this.onInputFocus.bind(this));
 		this.input1.name = "input1";
 		this.input1.text = MainScene.guestNames[0] ?? "";
+		this.input1.inputVisibility(false);
 		this.centerContainer.addChild(this.input1);
 
 		this.boxInput1 = new NineSlicePlane(Texture.from("package-1/frame.png"), 25, 25, 25, 25);
@@ -73,9 +73,9 @@ export class ConfirmationPopup extends BasePopup {
 		this.input2.cursor = "text";
 		this.input2.events.on(TextInputEvents.ENTER_BLUR, this.onInputBlur.bind(this));
 		this.input2.events.on(TextInputEvents.BLUR, this.onInputBlur.bind(this));
-		this.input2.events.on(TextInputEvents.FOCUS, this.onInputFocus.bind(this));
 		this.input2.name = "input2";
 		this.input2.text = MainScene.guestNames[1] ?? "";
+		this.input2.inputVisibility(false);
 		this.centerContainer.addChild(this.input2);
 
 		this.boxInput2 = new NineSlicePlane(Texture.from("package-1/frame.png"), 25, 25, 25, 25);
@@ -108,7 +108,36 @@ export class ConfirmationPopup extends BasePopup {
 
 		this.onChangeOrientation();
 	}
-	private onInputFocus(): void {}
+
+	public override onShow(): void {
+		const scaleContainer = this.backgroundContainer.scale.x;
+		this.backgroundContainer.scale.x = 0;
+		new Tween(this.overlay)
+			.to({ alpha: 0.8 }, 250)
+			.onComplete(() => {
+				new Tween(this.backgroundContainer.scale)
+					.to({ x: scaleContainer }, 250)
+					.onComplete(() => {
+						this.centerContainer.visible = true;
+						this.input1.inputVisibility(true);
+						this.input2.inputVisibility(true);
+					})
+					.start();
+			})
+			.start();
+	}
+
+	protected override closePopup(): void {
+		this.centerContainer.visible = false;
+		this.input1.inputVisibility(false);
+		this.input2.inputVisibility(false);
+		new Tween(this.backgroundContainer.scale)
+			.to({ x: 0 }, 250)
+			.onComplete(() => {
+				new Tween(this.overlay).to({ alpha: 0 }, 250).onComplete(this.closeHandler.bind(this)).start();
+			})
+			.start();
+	}
 
 	private onInputBlur(input: string, text: string): void {
 		if (input == "input1") {
@@ -203,5 +232,11 @@ export class ConfirmationPopup extends BasePopup {
 
 		tween.start();
 		this.button.enabled = false;
+	}
+
+	public override onResize(newW: number, newH: number): void {
+		super.onResize(newW, newH);
+		this.input1.updateScale(this.boxInput1, this.centerContainer.scale.x);
+		this.input2.updateScale(this.boxInput2, this.centerContainer.scale.y);
 	}
 }

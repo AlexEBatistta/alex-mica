@@ -32,16 +32,14 @@ export const TextStyleDictionary = {
 export const CSSStyle: Partial<CSSStyleDeclaration> = {
 	position: "absolute",
 	fontFamily: "Poppins",
-	fontWeight: "600",
+	fontWeight: "300",
 	fontSize: "35px",
 	color: "#222222",
 	textAlign: "center",
 	appearance: "none",
-	width: "95%",
-	height: "95%",
 	maxWidth: `775px`,
-	maxHeight: "90px",
 	cursor: "pointer",
+	overflow: "auto",
 };
 
 export const CSSStyleLeft: Partial<CSSStyleDeclaration> = {
@@ -52,11 +50,8 @@ export const CSSStyleLeft: Partial<CSSStyleDeclaration> = {
 	color: "#222222",
 	textAlign: "left",
 	appearance: "none",
-	// width: "100%",
 	maxWidth: `640px`,
-	// maxHeight: "90px",
 	cursor: "pointer",
-	// border: "2px solid black",
 	overflow: "auto",
 };
 

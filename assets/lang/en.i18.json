@@ -21,6 +21,13 @@
 		"text": "El costo de la tarjeta es:\nAdultos: $3.500\nMenores de 10: Exento de pago",
 		"button": "ABONAR AHORA"
 	},
+	"PPPayment":{
+		"title": "DATOS BANCARIOS",
+		"subtitle1": "CVU",
+		"subtitle2": "ALIAS",
+		"cvu": "0000003100021431763469",
+		"alias": "alex.batistta.mp"
+	},
 	"DressCode":{
 		"title": "DRESS CODE",
 		"text": "FORMAL ELEGANTE\nTe recomendamos evitar utilizar ropa de color negro.\nPor favor, abstenerse de vestir de blanco",

@@ -53,6 +53,7 @@ export class SongsListPopup extends BasePopup {
 		this.boxInput.height = 90;
 		this.boxInput.pivot.set(775 / 2, 90 / 2);
 		this.centerContainer.addChild(this.boxInput);
+
 		this.input = new TextInput(
 			{
 				inputStyle: CSSStyleLeft,
@@ -64,10 +65,8 @@ export class SongsListPopup extends BasePopup {
 			this.events
 		);
 		setPivotToCenter(this.input);
-		this.input.placeholder = i18next.t("PPSongsList.input");
-		this.input.placeholderColor = ColorDictionary.black;
-		this.events.on(TextInputEvents.INPUT, this.onInput.bind(this));
-		this.events.on(TextInputEvents.ENTER_BLUR, this.onInput.bind(this));
+		this.input.text = i18next.t("PPSongsList.input");
+		this.input.inputVisibility(false);
 		this.events.on(TextInputEvents.BLUR, this.onInputBlur.bind(this));
 		this.events.on(TextInputEvents.FOCUS, this.onInputFocus.bind(this));
 		this.centerContainer.addChild(this.input);
@@ -109,8 +108,20 @@ export class SongsListPopup extends BasePopup {
 					.onComplete(() => {
 						this.centerContainer.visible = true;
 						this.scrollView.scrollToBottom(1000);
+						this.input.inputVisibility(true);
 					})
 					.start();
+			})
+			.start();
+	}
+
+	protected override closePopup(): void {
+		this.centerContainer.visible = false;
+		this.input.inputVisibility(false);
+		new Tween(this.backgroundContainer.scale)
+			.to({ x: 0 }, 250)
+			.onComplete(() => {
+				new Tween(this.overlay).to({ alpha: 0 }, 250).onComplete(this.closeHandler.bind(this)).start();
 			})
 			.start();
 	}
@@ -140,25 +151,23 @@ export class SongsListPopup extends BasePopup {
 	}
 
 	private onInputFocus(): void {
-		this.input.placeholder = "";
+		if (this.input.text === i18next.t("PPSongsList.input")) {
+			this.input.text = "";
+		}
 	}
 
 	private onInputBlur(): void {
-		this.input.placeholder = i18next.t("PPSongsList.input");
-	}
-
-	private onInput(text: string): void {
-		console.log(text);
+		if (this.input.text === "") {
+			this.input.text = i18next.t("PPSongsList.input");
+		}
 	}
 
 	private onBtnArrow(): void {
 		this.addSong(this.input.text, true);
-		this.input.text = "";
-		this.input.placeholder = i18next.t("PPSongsList.input");
+		this.input.text = i18next.t("PPSongsList.input");
 	}
 
 	private addSong(title: string, updateList: boolean): void {
-		console.log(title);
 		const song: Text = new Text(title, TextStyleDictionary.textBlack);
 		const index = this.contentView.children.length;
 		song.y = 75 * index;
@@ -171,5 +180,10 @@ export class SongsListPopup extends BasePopup {
 			MainScene.songList.push(title);
 			update(ref(FB_DATABASE, "songList"), { [`song ${index}`]: title });
 		}
+	}
+
+	public override onResize(newW: number, newH: number): void {
+		super.onResize(newW, newH);
+		this.input.updateScale(this.boxInput, this.centerContainer.scale.x);
 	}
 }

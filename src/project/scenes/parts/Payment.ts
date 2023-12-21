@@ -1,11 +1,12 @@
 import i18next from "i18next";
 import type { Graphics } from "pixi.js";
-import { utils } from "pixi.js";
 import { Container, Sprite, Text } from "pixi.js";
+import { Manager } from "../../..";
 import { Button } from "../../../engine/ui/button/Button";
 import { ColorDictionary, Offsets, TextStyleDictionary } from "../../../engine/utils/Constants";
 import { GraphicsHelper } from "../../../engine/utils/GraphicsHelper";
 import { setPivotToCenter } from "../../../engine/utils/MathUtils";
+import { PaymentPopup } from "../../popups/PaymentPopup";
 import { BaseParts } from "./BaseParts";
 
 export class Payment extends BaseParts {
@@ -34,12 +35,7 @@ export class Payment extends BaseParts {
 			defaultState: { content: btnContent, scale: 1 },
 			highlightState: { scale: 1.05, tween: true },
 			onClick: () => {
-				if (utils.isMobile.any) {
-					window.history.pushState({ page: "previous" }, "Página Anterior", window.location.href);
-					window.location.href = "http://mpago.li/1TV1Hr8";
-				} else {
-					window.open("http://mpago.li/1TV1Hr8");
-				}
+				Manager.openPopup(PaymentPopup);
 			},
 			fixedCursor: "pointer",
 		});

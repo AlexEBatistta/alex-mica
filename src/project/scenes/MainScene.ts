@@ -88,7 +88,6 @@ export class MainScene extends PixiScene {
 
 		// ?1502
 		if (new URLSearchParams(window.location.search).get("1502") != undefined) {
-			// const btnContent: Container = new Container();
 			const btnSprite: Sprite = Sprite.from("package-1/saveIcon.png");
 			setPivotToCenter(btnSprite);
 
@@ -97,10 +96,6 @@ export class MainScene extends PixiScene {
 				highlightState: { scale: 1.05, tween: true },
 				onClick: () => {
 					get(ref(FB_DATABASE)).then((rawData) => {
-						console.log(rawData.val());
-
-						// const csvData = convertToCSV(rawData.val());
-						// console.log(csvData);
 						const blob = new Blob([generateData(rawData.val())], { type: "text/plain;charset=utf-8" });
 						saveAs(blob, "datos.txt");
 					});
