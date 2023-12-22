@@ -1,5 +1,6 @@
 import i18next from "i18next";
 import { Container, Sprite, Text } from "pixi.js";
+import { Easing, Tween } from "tweedle.js";
 import { Manager } from "../..";
 import { Button } from "../../engine/ui/button/Button";
 import { ColorDictionary, TextStyleDictionary } from "../../engine/utils/Constants";
@@ -10,8 +11,10 @@ import { BasePopup } from "./BasePopup";
 export class PaymentPopup extends BasePopup {
 	private subtitle1: Text;
 	private cvuContent: Container;
+	private cvuCopied: Text;
 	private subtitle2: Text;
 	private aliasContent: Container;
+	private aliasCopied: Text;
 	constructor() {
 		super(i18next.t("PPPayment.title"));
 
@@ -52,12 +55,30 @@ export class PaymentPopup extends BasePopup {
 				textarea.select();
 				document.execCommand("copy");
 				document.body.removeChild(textarea);
+
+				btnCvu.enabled = false;
+				this.cvuCopied.visible = true;
+				new Tween(this.cvuCopied)
+					.to({ y: "+100" }, 500)
+					.easing(Easing.Exponential.Out)
+					.onComplete(() => {
+						btnCvu.enabled = true;
+						this.cvuCopied.visible = false;
+						this.cvuCopied.y = this.cvuContent.y;
+					})
+					.start();
 			},
 			highlightState: { scale: 1.05, tween: true },
 			fixedCursor: "pointer",
 		});
 		btnCvu.x = 386;
 		this.cvuContent.addChild(btnCvu);
+
+		this.cvuCopied = new Text(i18next.t("PPPayment.copied"), TextStyleDictionary.textBlack);
+		this.cvuCopied.scale.set(0.8);
+		setPivotToCenter(this.cvuCopied);
+		this.cvuCopied.visible = false;
+		this.centerContainer.addChildAt(this.cvuCopied, 0);
 
 		this.subtitle2 = new Text(i18next.t("PPPayment.subtitle2"), TextStyleDictionary.textBlackBig);
 		setPivotToCenter(this.subtitle2);
@@ -96,12 +117,30 @@ export class PaymentPopup extends BasePopup {
 				textarea.select();
 				document.execCommand("copy");
 				document.body.removeChild(textarea);
+
+				btnAlias.enabled = false;
+				this.aliasCopied.visible = true;
+				new Tween(this.aliasCopied)
+					.to({ y: "+100" }, 500)
+					.easing(Easing.Exponential.Out)
+					.onComplete(() => {
+						btnAlias.enabled = true;
+						this.aliasCopied.visible = false;
+						this.aliasCopied.y = this.aliasContent.y;
+					})
+					.start();
 			},
 			highlightState: { scale: 1.05, tween: true },
 			fixedCursor: "pointer",
 		});
 		btnAlias.x = 386;
 		this.aliasContent.addChild(btnAlias);
+
+		this.aliasCopied = new Text(i18next.t("PPPayment.copied"), TextStyleDictionary.textBlack);
+		this.aliasCopied.scale.set(0.8);
+		setPivotToCenter(this.aliasCopied);
+		this.aliasCopied.visible = false;
+		this.centerContainer.addChildAt(this.aliasCopied, 0);
 
 		setPivotToCenter(this.cvuContent);
 		setPivotToCenter(this.aliasContent);
@@ -118,5 +157,8 @@ export class PaymentPopup extends BasePopup {
 		}
 		this.cvuContent.y = this.subtitle1.y + 115;
 		this.aliasContent.y = this.subtitle2.y + 115;
+
+		this.cvuCopied.position.set(this.cvuContent.width / 2 - 87 / 2, this.cvuContent.y);
+		this.aliasCopied.position.set(this.aliasContent.width / 2 - 87 / 2, this.aliasContent.y);
 	}
 }

@@ -95,6 +95,7 @@ export class ConfirmationPopup extends BasePopup {
 		btnContent.addChild(btnText);
 
 		this.sendText = new Text(i18next.t("PPConfirmation.send"), TextStyleDictionary.textBlack);
+		this.sendText.scale.set(0.8);
 		setPivotToCenter(this.sendText);
 		this.centerContainer.addChild(this.sendText);
 
