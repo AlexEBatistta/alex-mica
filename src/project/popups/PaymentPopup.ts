@@ -110,11 +110,13 @@ export class PaymentPopup extends BasePopup {
 
 	public override onChangeOrientation(): void {
 		if (Manager.isPortrait) {
-			this.subtitle1.y = 700;
-			this.cvuContent.y = 815;
-			this.subtitle2.y = 1100;
-			this.aliasContent.y = 1215;
+			this.subtitle1.y = 770;
+			this.subtitle2.y = 1075;
 		} else {
+			this.subtitle1.y = 400;
+			this.subtitle2.y = 680;
 		}
+		this.cvuContent.y = this.subtitle1.y + 115;
+		this.aliasContent.y = this.subtitle2.y + 115;
 	}
 }
