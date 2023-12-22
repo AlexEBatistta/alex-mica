@@ -169,6 +169,9 @@ export class ConfirmationPopup extends BasePopup {
 			this.input1.position.set(-500, 478);
 			this.input2.position.set(-500, 812);
 			this.button.position.set(540, 605);
+			this.boxInput1.position.set(-500, 478);
+			this.boxInput2.position.set(-500, 812);
+			this.sendText.position.set(this.button.x, this.button.y + this.button.height / 2);
 		}
 	}
 

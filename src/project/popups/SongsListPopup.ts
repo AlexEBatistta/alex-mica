@@ -26,7 +26,9 @@ export class SongsListPopup extends BasePopup {
 	constructor(list: Array<string>) {
 		super(i18next.t("PPSongsList.title"));
 
-		this.subtitle = new Text(i18next.t("PPSongsList.subtitle"), TextStyleDictionary.textBlackBig);
+		const style = TextStyleDictionary.textBlackBig.clone();
+		style.wordWrapWidth = 980;
+		this.subtitle = new Text(i18next.t("PPSongsList.subtitle"), style);
 		setPivotToCenter(this.subtitle);
 		this.centerContainer.addChild(this.subtitle);
 
@@ -128,25 +130,55 @@ export class SongsListPopup extends BasePopup {
 
 	public override onChangeOrientation(): void {
 		if (Manager.isPortrait) {
+			this.subtitle.style.wordWrap = true;
+			this.subtitle.scale.set(1);
 			this.subtitle.y = 580;
-			this.boxView.y = 958 - this.boxView.height / 2;
-			this.scrollView.y = this.boxView.y + space / 2;
-			this.scrollView.x = -this.boxView.width / 2 + space;
-			this.input.position.set(-50, 1277);
+
+			this.input.y = 1277;
+
+			this.text.style.wordWrap = true;
+			this.text.width = 800;
+			this.text.scale.set(1, 1);
+			this.text.y = 1471;
+
 			this.boxInput.width = 775;
 			this.boxInput.height = 90;
 			this.boxInput.pivot.set(775 / 2, 90 / 2);
-			this.boxInput.y = this.input.y;
-			this.text.y = 1471;
-		} else {
-			this.subtitle.y = 356;
-			this.scrollView.y = 557;
-			this.boxView.y = 557;
-			this.input.position.set(-50, 762);
-			this.boxInput.y = this.input.y;
-			this.text.y = 863;
-		}
+			this.boxInput.y = 1277;
 
+			this.boxView.width = 775;
+			this.boxView.height = 464;
+			this.boxView.pivot.x = 775 / 2;
+			this.boxView.y = 958 - this.boxView.height / 2;
+			this.scrollView.position.set(-this.boxView.width / 2 + space, this.boxView.y + space / 2);
+		} else {
+			this.subtitle.scale.set(0.8);
+			this.subtitle.style.wordWrap = false;
+			this.subtitle.y = 356;
+
+			this.input.y = 762;
+
+			this.text.style.wordWrap = false;
+			this.text.width = 1400;
+			this.text.scale.y = this.text.scale.x;
+			this.text.y = 863;
+
+			this.boxInput.width = 1400;
+			this.boxInput.height = 90;
+			this.boxInput.pivot.set(1400 / 2, 90 / 2);
+			this.boxInput.y = 762;
+
+			this.boxView.width = 1400;
+			this.boxView.height = 240;
+			this.boxView.pivot.x = 1400 / 2;
+			this.boxView.y = 557 - this.boxView.height / 2;
+
+			this.scrollView.position.set(-this.boxView.width / 2 + space, this.boxView.y + space / 2);
+		}
+		setPivotToCenter(this.subtitle);
+		setPivotToCenter(this.text);
+		this.scrollView.scrollWidth = this.boxView.width - space * 2;
+		this.scrollView.scrollHeight = this.boxView.height - space;
 		this.btnArrow.position.set(this.boxInput.width - this.btnArrow.width / 2 - (this.boxInput.height - this.btnArrow.height) / 2, this.boxInput.height / 2);
 	}
 
