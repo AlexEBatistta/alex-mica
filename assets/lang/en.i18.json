@@ -57,7 +57,7 @@
 			"Imagine Dragons - It's Time"
 		]
 	},
-	"Confirmation":{
+	"Confirmation": {
 		"title": "CONFIRMACIÓN DE ASISTENCIA",
 		"text": "Esperamos que seas parte de esta nuestra celebración.\n¡Confirmanos tu asistencia!\nTENÉS TIEMPO HASTA EL 15 DE FEBRERO",
 		"button": "CONFIRMAR"
@@ -68,6 +68,12 @@
 		"name2": "Nombre & Apellido del acompañante",
 		"button": "ENVIAR",
 		"send": "Enviado!"
+	},
+	"Countdown": {
+		"days": "Días",
+		"hours": "Horas",
+		"minutes": "Minutos",
+		"seconds": "Segundos"
 	},
 	"FinalGreeting": "¡Gracias por acompañarnos en este momento tan importante!"
 }

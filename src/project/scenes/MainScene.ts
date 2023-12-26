@@ -26,6 +26,7 @@ import { setPivotToCenter } from "../../engine/utils/MathUtils";
 import { Button } from "../../engine/ui/button/Button";
 import { generateData } from "../../engine/utils/Utils";
 import { saveAs } from "file-saver";
+import { Countdown } from "./parts/Countdown";
 
 // https://alexebatistta.github.io/invitations
 export class MainScene extends PixiScene {
@@ -135,7 +136,16 @@ export class MainScene extends PixiScene {
 
 		this.centerContainer.y = this.namesContainer.height;
 
-		const parts: Array<BaseParts> = new Array(new Location(), new Photos(), new Payment(), new DressCode(), new SongsList(), new Confirmation(), new FinalGreeting());
+		const parts: Array<BaseParts> = new Array(
+			new Location(),
+			new Photos(),
+			new Payment(),
+			new DressCode(),
+			new SongsList(),
+			new Confirmation(),
+			new Countdown("30/03/2024", "19:30"),
+			new FinalGreeting()
+		);
 
 		for (let i = 0; i < parts.length; i++) {
 			if (i > 0) {

@@ -27,6 +27,8 @@ export const TextStyleDictionary = {
 		wordWrap: true,
 		wordWrapWidth: ScaleHelper.IDEAL_WIDTH - 200,
 	}),
+	textWhiteSmall: new TextStyle({ fontSize: 24, fontFamily: "Poppins", fill: ColorDictionary.white, align: "center" }),
+	monbaiti: new TextStyle({ fontSize: 72, fontFamily: "monbaiti", fill: ColorDictionary.black }),
 };
 
 export const CSSStyle: Partial<CSSStyleDeclaration> = {

@@ -18,6 +18,13 @@
 						"family": "Poppins"
 					}
 				},
+				{
+					"name": "font3",
+					"srcs": "./fonts/monbaiti.ttf",
+					"data": {
+						"family": "monbaiti"
+					}
+				},
 				{ 
 					"name": "monbaiti",
 					"srcs": "./fonts/sdf/monbaiti.json" 
@@ -28,7 +35,7 @@
 				},
 				{ 
 					"name": "monbaitiSmall",
-					"srcs": "./fonts/sdf/monbaitiSmall.json" 
+					"srcs": "./fonts/sdf/monbaitiSmall.json",
 				},
 				{
 					"name": "logo",

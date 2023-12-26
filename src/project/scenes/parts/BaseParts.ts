@@ -23,11 +23,6 @@ export class BaseParts extends Container {
 		this.addChild(this.background);
 	}
 
-	/* public setBackgroundSize(width: number, height?: number): void {
-		this.background.width = width;
-		this.background.height = height ?? this.background.height;
-	} */
-
 	public onChangeOrientation(): void {
 		if (this.text != undefined) {
 			this.text.style.wordWrapWidth = ScaleHelper.IDEAL_WIDTH - (Manager.isPortrait ? 150 : 300);
