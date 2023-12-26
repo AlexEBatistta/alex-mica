@@ -35,7 +35,7 @@
 				},
 				{ 
 					"name": "monbaitiSmall",
-					"srcs": "./fonts/sdf/monbaitiSmall.json",
+					"srcs": "./fonts/sdf/monbaitiSmall.json"
 				},
 				{
 					"name": "logo",

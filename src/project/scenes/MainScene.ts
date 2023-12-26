@@ -27,6 +27,7 @@ import { Button } from "../../engine/ui/button/Button";
 import { generateData } from "../../engine/utils/Utils";
 import { saveAs } from "file-saver";
 import { Countdown } from "./parts/Countdown";
+import { Message } from "./parts/Message";
 
 // https://alexebatistta.github.io/invitations
 export class MainScene extends PixiScene {
@@ -144,6 +145,7 @@ export class MainScene extends PixiScene {
 			new SongsList(),
 			new Confirmation(),
 			new Countdown("30/03/2024", "19:30"),
+			new Message(),
 			new FinalGreeting()
 		);
 

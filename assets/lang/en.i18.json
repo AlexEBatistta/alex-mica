@@ -75,5 +75,10 @@
 		"minutes": "Minutos",
 		"seconds": "Segundos"
 	},
+	"Message":{
+		"title": "MENSAJE PARA LOS NOVIOS",
+		"text": "Regalanos tus buenos deseos para este nuevo comienzo.",
+		"button": "ESCRIBIR"
+	},
 	"FinalGreeting": "¡Gracias por acompañarnos en este momento tan importante!"
 }
