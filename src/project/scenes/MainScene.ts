@@ -1,4 +1,4 @@
-import type { Graphics, ISize } from "pixi.js";
+import type { Graphics } from "pixi.js";
 import { Sprite } from "pixi.js";
 import { Rectangle } from "pixi.js";
 import { Container } from "pixi.js";
@@ -38,8 +38,6 @@ export class MainScene extends PixiScene {
 	private namesContainer: Names;
 	private contentScale: number;
 	private arrowInput: Graphics;
-	// private nameKey: string;
-	private previousSize: ISize;
 	public static songList: Array<string> = new Array();
 	public static guestNames: Array<string> = new Array(2);
 	private btnSave: Button;
@@ -181,7 +179,6 @@ export class MainScene extends PixiScene {
 	}
 
 	public override onPopupOpen(_popupReference: IScene, _popupParams?: any[]): void {
-		console.log("OPEN");
 		this.scrollView.setMouseWheel(false);
 	}
 
@@ -190,22 +187,11 @@ export class MainScene extends PixiScene {
 	}
 
 	public override onResize(newW: number, newH: number): void {
-		if (this.previousSize == undefined) {
-			this.previousSize = { width: newW, height: newH };
-		} else if (Math.abs(this.previousSize.width - newW) > 100 || Math.abs(this.previousSize.height - newH) > 100) {
-			console.log("RETURN");
-			return;
-		} else {
-			this.previousSize = { width: newW, height: newH };
-		}
-
 		ScaleHelper.setScaleRelativeToScreen(this.photoBackground, newW, newH, 1, 1, Math.max);
 		this.photoBackground.position.set(newW / 2, Manager.isPortrait ? newH / 2 : newH / 2);
 
 		this.contentScale = ScaleHelper.screenScale(ScaleHelper.IDEAL_WIDTH, ScaleHelper.IDEAL_HEIGHT, newW, newH, 1, 1, Math.max);
-
 		this.namesContainer.scale.set(this.contentScale);
-
 		this.centerContainer.y = newH / this.contentScale;
 		this.scrollView.scale.set(this.contentScale);
 

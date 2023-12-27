@@ -48,12 +48,12 @@
 			"assets": {
 				"gradient": "./img/gradient.png",
 				"cover_photo": "./img/cover_photo.jpg",
-				"photo1": "./img/photo1.png",
-				"photo2": "./img/photo2.png",
-				"photo3": "./img/photo3.png",
-				"photo4": "./img/photo4.png",
-				"photo5": "./img/photo5.png",
-				"photo6": "./img/photo6.png"
+				"photo1": "./img/photo1.jpg",
+				"photo2": "./img/photo2.jpg",
+				"photo3": "./img/photo3.jpg",
+				"photo4": "./img/photo4.jpg",
+				"photo5": "./img/photo5.jpg",
+				"photo6": "./img/photo6.jpg"
 			}
 		},
 		{

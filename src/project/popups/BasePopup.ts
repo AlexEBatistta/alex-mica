@@ -138,9 +138,14 @@ export class BasePopup extends PixiScene {
 		this.scaleBackground();
 
 		ScaleHelper.setScaleRelativeToScreen(this.backgroundContainer, newW, newH, 0.9, 0.9);
-		this.backgroundContainer.position.set(newW * 0.5, newH * 0.5);
+		this.backgroundContainer.x = newW * 0.5;
 
 		this.centerContainer.scale = this.backgroundContainer.scale;
-		this.centerContainer.position = this.backgroundContainer.position;
+		this.centerContainer.x = this.backgroundContainer.x;
+
+		if (!Manager.onKeyboard) {
+			this.backgroundContainer.y = newH * 0.5;
+			this.centerContainer.y = this.backgroundContainer.y;
+		}
 	}
 }

@@ -63,6 +63,9 @@ export class DressCodePopup extends BasePopup {
 		setPivotToCenter(this.grid);
 		this.grid.y = this.background.height / 2 + this.backTop.y / 2;
 		this.centerContainer.addChild(this.grid);
+
+		setPivotToCenter(this.centerContainer);
+		this.centerContainer.y = Manager.height / 2;
 	}
 
 	private zoomIn(photo: Sprite, tween: { in: Tween<Container>; out: Tween<Container> }): void {

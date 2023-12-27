@@ -155,6 +155,14 @@ export class SceneManager<R extends IRenderer> {
 		}
 	}
 
+	private _onKeyboard: boolean;
+	public get onKeyboard(): boolean {
+		return this._onKeyboard;
+	}
+	public set onKeyboard(value: boolean) {
+		this._onKeyboard = value;
+	}
+
 	private ticker: Ticker;
 	private hasFocus: boolean = true;
 
@@ -704,6 +712,7 @@ export class SceneManager<R extends IRenderer> {
 	// #region EventHandlers
 
 	public resize(w: number, h: number, devicePixelRatio?: number): void {
+		this.currentOrientation = w > h ? "landscape" : "portrait";
 		this.sceneRenderer.resize(w, h, devicePixelRatio);
 
 		// tell all the scenes that the screen resized
@@ -721,8 +730,6 @@ export class SceneManager<R extends IRenderer> {
 		for (const popup of this.currentPopups) {
 			popup.onResize(w, h);
 		}
-
-		this.currentOrientation = w > h ? "landscape" : "portrait";
 	}
 
 	/**

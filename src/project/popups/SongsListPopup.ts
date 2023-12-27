@@ -1,5 +1,6 @@
 import i18next from "i18next";
 import type { Graphics } from "pixi.js";
+import { utils } from "pixi.js";
 import { Container, NineSlicePlane, Rectangle, Sprite, Text, Texture } from "pixi.js";
 import { FB_DATABASE, Manager } from "../..";
 import { TextInput, TextInputEvents } from "../../engine/textinput/TextInput";
@@ -97,6 +98,9 @@ export class SongsListPopup extends BasePopup {
 		this.centerContainer.addChild(this.text);
 
 		this.onChangeOrientation();
+
+		this.interactive = true;
+		this.on("pointertap", this.onInputBlur.bind(this, true));
 	}
 
 	public override onShow(): void {
@@ -129,6 +133,7 @@ export class SongsListPopup extends BasePopup {
 	}
 
 	public override onChangeOrientation(): void {
+		this.input.blur(true);
 		if (Manager.isPortrait) {
 			this.subtitle.style.wordWrap = true;
 			this.subtitle.scale.set(1);
@@ -137,8 +142,7 @@ export class SongsListPopup extends BasePopup {
 			this.input.y = 1277;
 
 			this.text.style.wordWrap = true;
-			this.text.width = 800;
-			this.text.scale.set(1, 1);
+			this.text.scale.set(1);
 			this.text.y = 1471;
 
 			this.boxInput.width = 775;
@@ -158,15 +162,14 @@ export class SongsListPopup extends BasePopup {
 
 			this.input.y = 762;
 
-			this.text.style.wordWrap = false;
-			this.text.width = 1400;
+			this.text.scale.set(0.9);
 			this.text.scale.y = this.text.scale.x;
 			this.text.y = 863;
 
 			this.boxInput.width = 1400;
 			this.boxInput.height = 90;
 			this.boxInput.pivot.set(1400 / 2, 90 / 2);
-			this.boxInput.y = 762;
+			this.boxInput.y = 752;
 
 			this.boxView.width = 1400;
 			this.boxView.height = 240;
@@ -183,18 +186,32 @@ export class SongsListPopup extends BasePopup {
 	}
 
 	private onInputFocus(): void {
+		this.backgroundContainer.y = Manager.height / 2 - 100;
+		this.centerContainer.y = Manager.height / 2 - 100;
+		Manager.onKeyboard = utils.isMobile.any;
+
 		if (this.input.text === i18next.t("PPSongsList.input")) {
 			this.input.text = "";
 		}
 	}
 
-	private onInputBlur(): void {
+	private onInputBlur(forced: boolean): void {
+		if (forced) {
+			this.input.blur(true);
+		}
+		this.backgroundContainer.y = Manager.height / 2;
+		this.centerContainer.y = Manager.height / 2;
+		Manager.onKeyboard = false;
+
 		if (this.input.text === "") {
 			this.input.text = i18next.t("PPSongsList.input");
 		}
 	}
 
 	private onBtnArrow(): void {
+		if (this.input.text === i18next.t("PPSongsList.input") || this.input.text.length < 2) {
+			return;
+		}
 		this.addSong(this.input.text, true);
 		this.input.text = i18next.t("PPSongsList.input");
 	}

@@ -266,8 +266,8 @@ export class TextInput extends Container {
 		this.domInput.focus();
 	}
 
-	public blur(): void {
-		if (!this._hasFocus()) {
+	public blur(force: boolean): void {
+		if (!this._hasFocus() && !force) {
 			return;
 		}
 		this.domInput.blur();
@@ -335,7 +335,7 @@ export class TextInput extends Container {
 			if (this.blurOnReturn && this.domInput instanceof HTMLInputElement) {
 				this.ignoreBlurEvent = true;
 				const previousInputMode: InputMode = this.domInput.inputMode as InputMode;
-				this.blur();
+				this.blur(false);
 				this.domInput.inputMode = previousInputMode;
 				this.events.emit(TextInputEvents.ENTER_BLUR, this.name, this.text);
 			}
@@ -374,13 +374,13 @@ export class TextInput extends Container {
 	}
 
 	private _onAdded(): void {
-		document.body.appendChild(this.domInput);
+		document.getElementById("pixi-content").appendChild(this.domInput);
 		this.domInput.style.display = "none";
 		this.domAdded = true;
 	}
 
 	private _onRemoved(): void {
-		document.body.removeChild(this.domInput);
+		document.getElementById("pixi-content").removeChild(this.domInput);
 		this.domAdded = false;
 	}
 
