@@ -46,13 +46,13 @@ export function forceFocus(): void {
 			const elem = document.getElementById("pixi-content");
 			if (elem.requestFullscreen) {
 				elem.requestFullscreen();
-			} else if (elem.webkitRequestFullscreen) {
+			} /* else if (elem.webkitRequestFullscreen) {
 				// Safari
 				elem.webkitRequestFullscreen();
 			} else if (elem.msRequestFullscreen) {
 				// IE11
 				elem.msRequestFullscreen();
-			}
+			} */
 		}
 	};
 }
