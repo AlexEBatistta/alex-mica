@@ -142,4 +142,6 @@ export interface IScene {
 	destroy(): void;
 
 	onChangeOrientation(): void;
+
+	onChangeKeyboard(): void;
 }

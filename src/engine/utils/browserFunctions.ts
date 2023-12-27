@@ -40,10 +40,10 @@ export function forceFocus(): void {
 	const callback = (): void => {
 		window.focus();
 		if (utils.isMobile.any) {
-			if (screenfull.isEnabled && !screenfull.isFullscreen) {
+			/* if (screenfull.isEnabled && !screenfull.isFullscreen) {
 				screenfull.request();
-			}
-			/* const elem = document.getElementById("pixi-content");
+			} */
+			const elem = document.getElementById("pixi-content");
 			if (elem.requestFullscreen) {
 				elem.requestFullscreen();
 			} else if (elem.webkitRequestFullscreen) {
@@ -52,7 +52,7 @@ export function forceFocus(): void {
 			} else if (elem.msRequestFullscreen) {
 				// IE11
 				elem.msRequestFullscreen();
-			} */
+			}
 		}
 	};
 }

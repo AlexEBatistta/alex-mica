@@ -12,6 +12,7 @@ import { Ticker } from "pixi.js";
 import { SceneEvents } from "./SceneEvents";
 import { Assets } from "pixi.js";
 import { ScaleHelper } from "../utils/ScaleHelper";
+import { Manager } from "hammerjs";
 
 /** The constructor function of T. It has no arguments */
 export type EmptyConstructor<T> = new () => T;
@@ -718,6 +719,9 @@ export class SceneManager<R extends IRenderer> {
 		// tell all the scenes that the screen resized
 		for (const scene of this.currentScenes) {
 			scene.onResize(w, h);
+			if (this.onKeyboard) {
+				scene.onChangeKeyboard();
+			}
 		}
 
 		// tell the transition?
@@ -729,6 +733,9 @@ export class SceneManager<R extends IRenderer> {
 		// tell the popups the screen resized
 		for (const popup of this.currentPopups) {
 			popup.onResize(w, h);
+			if (this.onKeyboard) {
+				popup.onChangeKeyboard();
+			}
 		}
 	}
 

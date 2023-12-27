@@ -24,6 +24,7 @@ export class SongsListPopup extends BasePopup {
 	private boxView: NineSlicePlane;
 	private boxInput: NineSlicePlane;
 	private btnArrow: Button;
+	private waitKeyboard: boolean = false;
 	constructor(list: Array<string>) {
 		super(i18next.t("PPSongsList.title"));
 
@@ -134,12 +135,13 @@ export class SongsListPopup extends BasePopup {
 
 	public override onChangeOrientation(): void {
 		this.input.blur(true);
+		this.centerContainer.y = Manager.height / 2;
+		this.backgroundContainer.y = Manager.height / 2;
+
 		if (Manager.isPortrait) {
 			this.subtitle.style.wordWrap = true;
 			this.subtitle.scale.set(1);
 			this.subtitle.y = 580;
-
-			this.input.y = 1277;
 
 			this.text.style.wordWrap = true;
 			this.text.scale.set(1);
@@ -159,8 +161,6 @@ export class SongsListPopup extends BasePopup {
 			this.subtitle.scale.set(0.8);
 			this.subtitle.style.wordWrap = false;
 			this.subtitle.y = 356;
-
-			this.input.y = 762;
 
 			this.text.scale.set(0.9);
 			this.text.scale.y = this.text.scale.x;
@@ -183,12 +183,24 @@ export class SongsListPopup extends BasePopup {
 		this.scrollView.scrollWidth = this.boxView.width - space * 2;
 		this.scrollView.scrollHeight = this.boxView.height - space;
 		this.btnArrow.position.set(this.boxInput.width - this.btnArrow.width / 2 - (this.boxInput.height - this.btnArrow.height) / 2, this.boxInput.height / 2);
+
+		this.input.updateScale(this.boxInput, this.centerContainer.scale.x, this.boxInput.width - this.btnArrow.width * 2);
+	}
+
+	public override onChangeKeyboard(): void {
+		if (!this.waitKeyboard) {
+			this.onInputBlur(true);
+		}
 	}
 
 	private onInputFocus(): void {
 		this.backgroundContainer.y = Manager.height / 2 - 100;
 		this.centerContainer.y = Manager.height / 2 - 100;
 		Manager.onKeyboard = utils.isMobile.any;
+		if (Manager.onKeyboard) {
+			this.waitKeyboard = true;
+			setTimeout(() => (this.waitKeyboard = false), 500);
+		}
 
 		if (this.input.text === i18next.t("PPSongsList.input")) {
 			this.input.text = "";
@@ -199,9 +211,9 @@ export class SongsListPopup extends BasePopup {
 		if (forced) {
 			this.input.blur(true);
 		}
-		this.backgroundContainer.y = Manager.height / 2;
-		this.centerContainer.y = Manager.height / 2;
 		Manager.onKeyboard = false;
+		this.waitKeyboard = false;
+		this.onChangeOrientation();
 
 		if (this.input.text === "") {
 			this.input.text = i18next.t("PPSongsList.input");

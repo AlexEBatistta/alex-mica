@@ -164,4 +164,6 @@ export abstract class PixiScene extends Container implements IScene {
 	}
 
 	public onChangeOrientation(): void {}
+
+	public onChangeKeyboard(): void {}
 }

@@ -451,7 +451,10 @@ export class TextInput extends Container {
 		this._updateSurrogate();
 	}
 
-	public updateScale(box: Container, scale: number): void {
+	public updateScale(box: Container, scale: number, width?: number): void {
+		if (width != undefined) {
+			this.inputStyle.maxWidth = `${width}px`;
+		}
 		const wStyle: number = this.inputStyle.maxWidth.replace("px", "") as unknown as number;
 		const space: number = 10;
 
