@@ -1,6 +1,7 @@
 import { get, ref, update } from "firebase/database";
 import i18next from "i18next";
 import type { Graphics } from "pixi.js";
+import { utils } from "pixi.js";
 import { NineSlicePlane, Texture } from "pixi.js";
 import { Container, Text } from "pixi.js";
 import { Easing, Tween } from "tweedle.js";
@@ -8,7 +9,7 @@ import { FB_DATABASE, Manager } from "../..";
 import { DataManager } from "../../engine/datamanager/DataManager";
 import { TextInput, TextInputEvents } from "../../engine/textinput/TextInput";
 import { Button } from "../../engine/ui/button/Button";
-import { ColorDictionary, CSSStyle, TextStyleDictionary } from "../../engine/utils/Constants";
+import { ColorDictionary, CSSStyle, KEYBOARD_HEIGHT_LANDSCAPE, KEYBOARD_HEIGHT_PORTRAIT, TextStyleDictionary } from "../../engine/utils/Constants";
 import { GraphicsHelper } from "../../engine/utils/GraphicsHelper";
 import { setPivotToCenter } from "../../engine/utils/MathUtils";
 import { MainScene } from "../scenes/MainScene";
@@ -48,6 +49,7 @@ export class ConfirmationPopup extends BasePopup {
 		this.input1.cursor = "text";
 		this.input1.events.on(TextInputEvents.ENTER_BLUR, this.onInputBlur.bind(this));
 		this.input1.events.on(TextInputEvents.BLUR, this.onInputBlur.bind(this));
+		this.input1.events.on(TextInputEvents.FOCUS, this.onInputFocus.bind(this));
 		this.input1.name = "input1";
 		this.input1.text = MainScene.guestNames[0] ?? "";
 		this.input1.inputVisibility(false);
@@ -73,6 +75,7 @@ export class ConfirmationPopup extends BasePopup {
 		this.input2.cursor = "text";
 		this.input2.events.on(TextInputEvents.ENTER_BLUR, this.onInputBlur.bind(this));
 		this.input2.events.on(TextInputEvents.BLUR, this.onInputBlur.bind(this));
+		this.input2.events.on(TextInputEvents.FOCUS, this.onInputFocus.bind(this));
 		this.input2.name = "input2";
 		this.input2.text = MainScene.guestNames[1] ?? "";
 		this.input2.inputVisibility(false);
@@ -108,6 +111,9 @@ export class ConfirmationPopup extends BasePopup {
 		this.centerContainer.addChild(this.button);
 
 		this.onChangeOrientation();
+
+		this.interactive = true;
+		this.on("pointertap", this.forceBlur.bind(this));
 	}
 
 	public override onShow(): void {
@@ -140,15 +146,55 @@ export class ConfirmationPopup extends BasePopup {
 			.start();
 	}
 
+	private onInputFocus(input: string): void {
+		if (input == "input2" && !Manager.onKeyboard && utils.isMobile.any) {
+			Manager.onKeyboard = true;
+			const offset = (Manager.isPortrait ? KEYBOARD_HEIGHT_PORTRAIT : KEYBOARD_HEIGHT_LANDSCAPE) * this.backgroundContainer.scale.x;
+
+			this.backgroundContainer.y = Manager.height / 2 - Math.abs(this.input2.y - offset);
+			this.centerContainer.y = Manager.height / 2 - Math.abs(this.input2.y - offset);
+			console.log(Manager.height / 2, Math.abs(this.boxInput2.y - offset));
+
+			this.waitKeyboard = true;
+			setTimeout(() => (this.waitKeyboard = false), 500);
+		}
+	}
+
 	private onInputBlur(input: string, text: string): void {
 		if (input == "input1") {
 			MainScene.guestNames[0] = text;
 		} else {
 			MainScene.guestNames[1] = text;
 		}
+
+		Manager.onKeyboard = false;
+		this.waitKeyboard = false;
+		this.onChangeOrientation();
+	}
+
+	private forceBlur(): void {
+		MainScene.guestNames[0] = this.input1.text;
+		MainScene.guestNames[1] = this.input2.text;
+
+		this.input1.blur(true);
+		this.input2.blur(true);
+
+		Manager.onKeyboard = false;
+		this.waitKeyboard = false;
+		this.onChangeOrientation();
+	}
+
+	public override onChangeKeyboard(): void {
+		if (!this.waitKeyboard) {
+			this.forceBlur();
+		}
 	}
 
 	public override onChangeOrientation(): void {
+		this.input1.blur(true);
+		this.input2.blur(true);
+		this.centerContainer.y = Manager.height / 2;
+		this.backgroundContainer.y = Manager.height / 2;
 		if (Manager.isPortrait) {
 			this.title.maxWidth = 1000;
 			this.name1.scale.set(1);
@@ -157,7 +203,6 @@ export class ConfirmationPopup extends BasePopup {
 			this.name2.position.set(0, 1028);
 			this.input1.position.set(0, 792);
 			this.boxInput1.position.set(0, 792);
-			this.input2.position.set(0, 1183);
 			this.boxInput2.position.set(0, 1183);
 			this.button.position.set(0, 1354);
 			this.sendText.position.set(0, this.button.y + this.button.height / 2);
@@ -168,12 +213,14 @@ export class ConfirmationPopup extends BasePopup {
 			this.name1.position.set(-500, 390);
 			this.name2.position.set(-500, 680);
 			this.input1.position.set(-500, 478);
-			this.input2.position.set(-500, 812);
 			this.button.position.set(540, 605);
 			this.boxInput1.position.set(-500, 478);
 			this.boxInput2.position.set(-500, 812);
 			this.sendText.position.set(this.button.x, this.button.y + this.button.height / 2);
 		}
+
+		this.input1.updateScale(this.boxInput1, this.centerContainer.scale.x);
+		this.input2.updateScale(this.boxInput2, this.centerContainer.scale.x);
 	}
 
 	private onConfirmation(): void {

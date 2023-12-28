@@ -66,3 +66,6 @@ export const Offsets = {
 	button: 75,
 	bottom: 100,
 };
+
+export const KEYBOARD_HEIGHT_PORTRAIT: number = 200;
+export const KEYBOARD_HEIGHT_LANDSCAPE: number = 400;

@@ -1,13 +1,14 @@
 import { get, ref, set, update } from "firebase/database";
 import i18next from "i18next";
 import type { Graphics } from "pixi.js";
+import { utils } from "pixi.js";
 import { NineSlicePlane, Texture } from "pixi.js";
 import { Container, Text } from "pixi.js";
 import { Easing, Tween } from "tweedle.js";
 import { FB_DATABASE, Manager } from "../..";
 import { TextInput, TextInputEvents } from "../../engine/textinput/TextInput";
 import { Button } from "../../engine/ui/button/Button";
-import { ColorDictionary, CSSStyleLeft, TextStyleDictionary } from "../../engine/utils/Constants";
+import { ColorDictionary, CSSStyleLeft, KEYBOARD_HEIGHT_LANDSCAPE, KEYBOARD_HEIGHT_PORTRAIT, TextStyleDictionary } from "../../engine/utils/Constants";
 import { GraphicsHelper } from "../../engine/utils/GraphicsHelper";
 import { setPivotToCenter } from "../../engine/utils/MathUtils";
 import { ScaleHelper } from "../../engine/utils/ScaleHelper";
@@ -69,6 +70,9 @@ export class MessagePopup extends BasePopup {
 		this.centerContainer.addChild(this.button);
 
 		this.onChangeOrientation();
+
+		this.interactive = true;
+		this.on("pointertap", this.onInputBlur.bind(this, true));
 	}
 
 	public override onShow(): void {
@@ -100,6 +104,10 @@ export class MessagePopup extends BasePopup {
 	}
 
 	public override onChangeOrientation(): void {
+		this.input.blur(true);
+		this.centerContainer.y = Manager.height / 2;
+		this.backgroundContainer.y = Manager.height / 2;
+
 		if (Manager.isPortrait) {
 			this.title.maxWidth = ScaleHelper.IDEAL_WIDTH - 200;
 			this.subtitle.scale.set(1);
@@ -144,31 +152,33 @@ export class MessagePopup extends BasePopup {
 		this.button.enabled = false;
 	}
 
+	public override onChangeKeyboard(): void {
+		if (!this.waitKeyboard) {
+			this.onInputBlur(true);
+		}
+	}
+
 	private onInputFocus(): void {
-		/* this.backgroundContainer.y = Manager.height / 2 - 100;
-		this.centerContainer.y = Manager.height / 2 - 100;
-		Manager.onKeyboard = utils.isMobile.any;
+		if (utils.isMobile.any) {
+			Manager.onKeyboard = true;
+			const offset = (Manager.isPortrait ? KEYBOARD_HEIGHT_PORTRAIT : KEYBOARD_HEIGHT_LANDSCAPE) * this.backgroundContainer.scale.x;
+			this.backgroundContainer.y = Manager.height / 2 - Math.abs(this.input.y - offset);
+			this.centerContainer.y = Manager.height / 2 - Math.abs(this.input.y - offset);
+		}
+
 		if (Manager.onKeyboard) {
 			this.waitKeyboard = true;
 			setTimeout(() => (this.waitKeyboard = false), 500);
 		}
-
-		if (this.input.text === i18next.t("PPSongsList.input")) {
-			this.input.text = "";
-		} */
 	}
 
-	private onInputBlur(_forced: boolean): void {
-		/* if (forced) {
+	private onInputBlur(forced: boolean): void {
+		if (forced) {
 			this.input.blur(true);
 		}
 		Manager.onKeyboard = false;
 		this.waitKeyboard = false;
 		this.onChangeOrientation();
-
-		if (this.input.text === "") {
-			this.input.text = i18next.t("PPSongsList.input");
-		} */
 	}
 
 	public override onResize(newW: number, newH: number): void {

@@ -361,7 +361,7 @@ export class TextInput extends Container {
 
 	private _onFocused(): void {
 		this._setState("FOCUSED");
-		this.events.emit(TextInputEvents.FOCUS);
+		this.events.emit(TextInputEvents.FOCUS, this.name);
 	}
 
 	private _onBlurred(): void {

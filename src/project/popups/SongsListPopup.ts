@@ -5,7 +5,7 @@ import { Container, NineSlicePlane, Rectangle, Sprite, Text, Texture } from "pix
 import { FB_DATABASE, Manager } from "../..";
 import { TextInput, TextInputEvents } from "../../engine/textinput/TextInput";
 import { ScrollView } from "../../engine/ui/scrollview/ScrollView";
-import { ColorDictionary, CSSStyleLeft, TextStyleDictionary } from "../../engine/utils/Constants";
+import { ColorDictionary, CSSStyleLeft, KEYBOARD_HEIGHT_LANDSCAPE, KEYBOARD_HEIGHT_PORTRAIT, TextStyleDictionary } from "../../engine/utils/Constants";
 import { setPivotToCenter } from "../../engine/utils/MathUtils";
 import { BasePopup } from "./BasePopup";
 import { Button } from "../../engine/ui/button/Button";
@@ -34,7 +34,7 @@ export class SongsListPopup extends BasePopup {
 		this.centerContainer.addChild(this.subtitle);
 
 		this.contentView = new Container();
-		this.boxView = new NineSlicePlane(Texture.from("package-1/frame.png"), 25, 25, 25, 25); // new Graphics().lineStyle(5, ColorDictionary.black).drawRect(-775 / 2, 0, 775, 464);
+		this.boxView = new NineSlicePlane(Texture.from("package-1/frame.png"), 25, 25, 25, 25);
 		this.boxView.width = 775;
 		this.boxView.height = 464;
 		this.boxView.pivot.x = 775 / 2;
@@ -51,7 +51,7 @@ export class SongsListPopup extends BasePopup {
 		});
 		this.centerContainer.addChild(this.scrollView);
 
-		this.boxInput = new NineSlicePlane(Texture.from("package-1/frame.png"), 25, 25, 25, 25); // new Graphics().lineStyle(5, ColorDictionary.black).drawRect(-775 / 2, -90 / 2, 775, 90);
+		this.boxInput = new NineSlicePlane(Texture.from("package-1/frame.png"), 25, 25, 25, 25);
 		this.boxInput.width = 775;
 		this.boxInput.height = 90;
 		this.boxInput.pivot.set(775 / 2, 90 / 2);
@@ -193,9 +193,13 @@ export class SongsListPopup extends BasePopup {
 	}
 
 	private onInputFocus(): void {
-		this.backgroundContainer.y = Manager.height / 2 - 100;
-		this.centerContainer.y = Manager.height / 2 - 100;
-		Manager.onKeyboard = utils.isMobile.any;
+		if (utils.isMobile.any) {
+			Manager.onKeyboard = true;
+			const offset = (Manager.isPortrait ? KEYBOARD_HEIGHT_PORTRAIT : KEYBOARD_HEIGHT_LANDSCAPE) * this.backgroundContainer.scale.x;
+			this.backgroundContainer.y = Manager.height / 2 - Math.abs(this.input.y - offset);
+			this.centerContainer.y = Manager.height / 2 - Math.abs(this.input.y - offset);
+		}
+
 		if (Manager.onKeyboard) {
 			this.waitKeyboard = true;
 			setTimeout(() => (this.waitKeyboard = false), 500);
