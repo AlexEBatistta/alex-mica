@@ -1,4 +1,3 @@
-import i18next from "i18next";
 import { Sprite } from "pixi.js";
 import { Graphics } from "pixi.js";
 import { Container } from "pixi.js";
@@ -23,6 +22,7 @@ export class BasePopup extends PixiScene {
 	protected btnClose: Button;
 	protected backgroundContainer: Container;
 	protected auxFrame: Graphics;
+	protected waitKeyboard: boolean = false;
 	constructor(title: string) {
 		super();
 
@@ -64,12 +64,10 @@ export class BasePopup extends PixiScene {
 		setPivotToCenter(btnBack);
 		btnBack.scale.set(100);
 		btnContent.addChild(btnBack);
-		const btnText: SDFBitmapText = new SDFBitmapText(i18next.t("X"), SDFTextStyleDictionary.titleBlack);
-		btnText.height = 50;
-		btnText.scale.x = btnText.scale.y;
-		setPivotToCenter(btnText);
-		btnText.y = -10;
-		btnContent.addChild(btnText);
+		const btnSprite: Sprite = Sprite.from("package-1/btnClose.png");
+		setPivotToCenter(btnSprite);
+		btnSprite.y = -5;
+		btnContent.addChild(btnSprite);
 
 		this.btnClose = new Button({
 			defaultState: { content: btnContent, scale: 1 },

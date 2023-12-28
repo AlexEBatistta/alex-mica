@@ -80,5 +80,11 @@
 		"text": "Regalanos tus buenos deseos para este nuevo comienzo.",
 		"button": "ESCRIBIR"
 	},
+	"PPMessage":{
+		"title": "MENSAJE PARA LOS NOVIOS",
+		"subtitle": "Palabras",
+		"button": "ENVIAR",
+		"send": "Enviado!"
+	},
 	"FinalGreeting": "¡Gracias por acompañarnos en este momento tan importante!"
 }

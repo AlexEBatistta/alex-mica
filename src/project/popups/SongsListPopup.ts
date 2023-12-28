@@ -24,7 +24,6 @@ export class SongsListPopup extends BasePopup {
 	private boxView: NineSlicePlane;
 	private boxInput: NineSlicePlane;
 	private btnArrow: Button;
-	private waitKeyboard: boolean = false;
 	constructor(list: Array<string>) {
 		super(i18next.t("PPSongsList.title"));
 

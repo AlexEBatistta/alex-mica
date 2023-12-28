@@ -471,6 +471,11 @@ export class TextInput extends Container {
 
 		this.domInput.style.height = `${box.height * scale}px`;
 		this.domInput.style.fontSize = `${(this.inputStyle.fontSize.replace("px", "") as unknown as number) * scale}px`;
+
+		if (this.multiline) {
+			this.domInput.style.top = `${box.getGlobalPosition().y - (box.height * scale) / 2 + space}px`;
+			this.domInput.style.height = `${box.height * scale - space * 2}px`;
+		}
 	}
 	private _updateDOMInput(): void {
 		return;

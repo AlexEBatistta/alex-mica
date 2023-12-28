@@ -1,11 +1,13 @@
 import i18next from "i18next";
 import type { Graphics } from "pixi.js";
 import { Container, Text } from "pixi.js";
+import { Manager } from "../../..";
 import { SDFBitmapText } from "../../../engine/sdftext/SDFBitmapText";
 import { Button } from "../../../engine/ui/button/Button";
 import { ColorDictionary, Offsets, SDFTextStyleDictionary, TextStyleDictionary } from "../../../engine/utils/Constants";
 import { GraphicsHelper } from "../../../engine/utils/GraphicsHelper";
 import { setPivotToCenter } from "../../../engine/utils/MathUtils";
+import { MessagePopup } from "../../popups/MessagePopup";
 import { BaseParts } from "./BaseParts";
 
 export class Message extends BaseParts {
@@ -34,7 +36,7 @@ export class Message extends BaseParts {
 			defaultState: { content: btnContent, scale: 1 },
 			highlightState: { scale: 1.05, tween: true },
 			onClick: () => {
-				// Manager.openPopup(MessagePopup);
+				Manager.openPopup(MessagePopup);
 			},
 			fixedCursor: "pointer",
 		});
