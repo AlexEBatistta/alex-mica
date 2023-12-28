@@ -1,6 +1,6 @@
 import XSadd from "ml-xsadd";
 import { utils } from "pixi.js";
-import screenfull from "screenfull";
+// import screenfull from "screenfull";
 import { Manager } from "../..";
 import { DEBUG } from "../../flags";
 import { Key } from "../input/Key";

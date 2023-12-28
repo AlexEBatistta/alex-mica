@@ -12,7 +12,6 @@ import { Ticker } from "pixi.js";
 import { SceneEvents } from "./SceneEvents";
 import { Assets } from "pixi.js";
 import { ScaleHelper } from "../utils/ScaleHelper";
-import { Manager } from "hammerjs";
 
 /** The constructor function of T. It has no arguments */
 export type EmptyConstructor<T> = new () => T;
