@@ -144,9 +144,33 @@
         "y": 0.5
       }
     },
-    "package-1/arrow.png": {
+    "package-1/btnClose.png": {
       "frame": {
         "x": 263,
+        "y": 1972,
+        "w": 52,
+        "h": 48
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 13,
+        "y": 14,
+        "w": 52,
+        "h": 48
+      },
+      "sourceSize": {
+        "w": 78,
+        "h": 78
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "package-1/arrow.png": {
+      "frame": {
+        "x": 319,
         "y": 1972,
         "w": 44,
         "h": 26
