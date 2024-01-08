@@ -271,6 +271,7 @@ export class TextInput extends Container {
 			return;
 		}
 		this.domInput.blur();
+
 		// this.domInput.inputMode = "none";
 		// this.domInput.inputMode = undefined;
 	}

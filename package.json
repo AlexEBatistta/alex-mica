@@ -68,6 +68,7 @@
     "@pixi/sound": "5.1.1",
     "@pixi/ui": "^0.7.2",
     "@types/node": "^20.6.3",
+    "bigscreen": "^2.0.5",
     "firebase": "^10.4.0",
     "firebase-admin": "^12.0.0",
     "googleapis": "^126.0.1",

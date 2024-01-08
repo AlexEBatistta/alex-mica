@@ -8,7 +8,7 @@ import { Easing, Tween } from "tweedle.js";
 import { FB_DATABASE, Manager } from "../..";
 import { TextInput, TextInputEvents } from "../../engine/textinput/TextInput";
 import { Button } from "../../engine/ui/button/Button";
-import { ColorDictionary, CSSStyleLeft, KEYBOARD_HEIGHT_LANDSCAPE, KEYBOARD_HEIGHT_PORTRAIT, TextStyleDictionary } from "../../engine/utils/Constants";
+import { ColorDictionary, CSSStyleLeft, TextStyleDictionary } from "../../engine/utils/Constants";
 import { GraphicsHelper } from "../../engine/utils/GraphicsHelper";
 import { setPivotToCenter } from "../../engine/utils/MathUtils";
 import { ScaleHelper } from "../../engine/utils/ScaleHelper";
@@ -161,12 +161,11 @@ export class MessagePopup extends BasePopup {
 	private onInputFocus(): void {
 		if (utils.isMobile.any) {
 			Manager.onKeyboard = true;
-			const offset = (Manager.isPortrait ? KEYBOARD_HEIGHT_PORTRAIT : KEYBOARD_HEIGHT_LANDSCAPE) * this.backgroundContainer.scale.x;
-			this.backgroundContainer.y = Manager.height / 2 - Math.abs(this.input.y - offset);
-			this.centerContainer.y = Manager.height / 2 - Math.abs(this.input.y - offset);
-		}
+			// const offset = this.boxInput.getBounds().y - (Manager.isPortrait ? KEYBOARD_HEIGHT_PORTRAIT : KEYBOARD_HEIGHT_LANDSCAPE);
 
-		if (Manager.onKeyboard) {
+			// this.backgroundContainer.y = Manager.height / 2 - Math.abs(offset) * this.backgroundContainer.scale.x;
+			// this.centerContainer.y = Manager.height / 2 - Math.abs(offset) * this.backgroundContainer.scale.x;
+
 			this.waitKeyboard = true;
 			setTimeout(() => (this.waitKeyboard = false), 500);
 		}

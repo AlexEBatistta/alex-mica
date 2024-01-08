@@ -9,7 +9,7 @@ import { FB_DATABASE, Manager } from "../..";
 import { DataManager } from "../../engine/datamanager/DataManager";
 import { TextInput, TextInputEvents } from "../../engine/textinput/TextInput";
 import { Button } from "../../engine/ui/button/Button";
-import { ColorDictionary, CSSStyle, KEYBOARD_HEIGHT_LANDSCAPE, KEYBOARD_HEIGHT_PORTRAIT, TextStyleDictionary } from "../../engine/utils/Constants";
+import { ColorDictionary, CSSStyle, TextStyleDictionary } from "../../engine/utils/Constants";
 import { GraphicsHelper } from "../../engine/utils/GraphicsHelper";
 import { setPivotToCenter } from "../../engine/utils/MathUtils";
 import { MainScene } from "../scenes/MainScene";
@@ -147,13 +147,17 @@ export class ConfirmationPopup extends BasePopup {
 	}
 
 	private onInputFocus(input: string): void {
-		if (input == "input2" && !Manager.onKeyboard && utils.isMobile.any) {
+		this.centerContainer.y = Manager.height / 2;
+		this.backgroundContainer.y = Manager.height / 2;
+		if ((!Manager.onKeyboard && utils.isMobile.any) || true) {
 			Manager.onKeyboard = true;
-			const offset = (Manager.isPortrait ? KEYBOARD_HEIGHT_PORTRAIT : KEYBOARD_HEIGHT_LANDSCAPE) * this.backgroundContainer.scale.x;
+			const offset = input == "input1" ? this.boxInput1.getBounds().y : this.boxInput2.getBounds().y - Manager.height / 2;
+			console.log(offset);
 
-			this.backgroundContainer.y = Manager.height / 2 - Math.abs(this.input2.y - offset);
-			this.centerContainer.y = Manager.height / 2 - Math.abs(this.input2.y - offset);
-			console.log(Manager.height / 2, Math.abs(this.boxInput2.y - offset));
+			this.backgroundContainer.y = Manager.height / 2 - Math.abs(offset);
+			this.centerContainer.y = Manager.height / 2 - Math.abs(offset);
+			this.input1.updateScale(this.boxInput1, this.centerContainer.scale.x);
+			this.input2.updateScale(this.boxInput2, this.centerContainer.scale.x);
 
 			this.waitKeyboard = true;
 			setTimeout(() => (this.waitKeyboard = false), 500);
