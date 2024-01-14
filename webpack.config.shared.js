@@ -129,7 +129,7 @@ const pwaManifest = new WebpackPwaManifest({
     background_color: PACKAGE.pwa.background_color,
     crossorigin: 'use-credentials', //I think this must remain like this....
     orientation: "landscape",
-    /* icons: [
+   /* icons: [
         {
             src: path.resolve('icon.png'),
             sizes: [96, 120, 128, 144, 152, 180, 192, 256, 384, 512], // multiple sizes

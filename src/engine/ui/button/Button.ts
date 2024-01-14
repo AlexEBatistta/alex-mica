@@ -188,11 +188,18 @@ export class Button extends Container {
 		if (this.fixedHitArea != undefined) {
 			const scale: IPointData = { x: this.scaleAndFilterContainer.scale.x, y: this.scaleAndFilterContainer.scale.y };
 			if (this.fixedHitArea instanceof Rectangle) {
+				/* const aux: Graphics = GraphicsHelper.rectangle(
+					new Rectangle(this.fixedHitArea.x / scale.x, this.fixedHitArea.y / scale.y, this.fixedHitArea.width / scale.x, this.fixedHitArea.height / scale.y),
+					0xff0000,
+					0.5
+				);
+				this.addChild(aux); */
 				return new Rectangle(this.fixedHitArea.x / scale.x, this.fixedHitArea.y / scale.y, this.fixedHitArea.width / scale.x, this.fixedHitArea.height / scale.y);
 			} else if (this.fixedHitArea instanceof Circle) {
 				return new Circle(this.fixedHitArea.x / scale.x, this.fixedHitArea.y / scale.y, this.fixedHitArea.radius / Math.max(scale.x, scale.y));
 			}
 		}
+
 		return this.fallbackState.customHitArea;
 	}
 

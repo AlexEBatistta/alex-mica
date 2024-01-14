@@ -90,6 +90,7 @@ export class SongsListPopup extends BasePopup {
 			onClick: this.onBtnArrow.bind(this),
 			highlightState: { scale: 1.05, tween: true },
 			fixedCursor: "pointer",
+			fixedHitArea: new Rectangle(-btnContainer.width, -btnContainer.height, btnContainer.width * 2, btnContainer.height * 2),
 		});
 		this.boxInput.addChild(this.btnArrow);
 

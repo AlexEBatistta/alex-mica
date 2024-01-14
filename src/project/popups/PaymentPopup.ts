@@ -1,5 +1,5 @@
 import i18next from "i18next";
-import { Container, Sprite, Text } from "pixi.js";
+import { Container, Rectangle, Sprite, Text } from "pixi.js";
 import { Easing, Tween } from "tweedle.js";
 import { Manager } from "../..";
 import { Button } from "../../engine/ui/button/Button";
@@ -63,7 +63,7 @@ export class PaymentPopup extends BasePopup {
 				btnCvu.enabled = false;
 				this.cvuCopied.visible = true;
 				new Tween(this.cvuCopied)
-					.to({ y: "+100" }, 500)
+					.to({ y: "+75" }, 500)
 					.easing(Easing.Exponential.Out)
 					.onComplete(() => {
 						btnCvu.enabled = true;
@@ -74,6 +74,7 @@ export class PaymentPopup extends BasePopup {
 			},
 			highlightState: { scale: 1.05, tween: true },
 			fixedCursor: "pointer",
+			fixedHitArea: new Rectangle(-btnCvuContent.width, -btnCvuContent.height, btnCvuContent.width * 2, btnCvuContent.height * 2),
 		});
 		btnCvu.x = 386;
 		this.cvuContent.addChild(btnCvu);
@@ -129,7 +130,7 @@ export class PaymentPopup extends BasePopup {
 				btnAlias.enabled = false;
 				this.aliasCopied.visible = true;
 				new Tween(this.aliasCopied)
-					.to({ y: "+100" }, 500)
+					.to({ y: "+75" }, 500)
 					.easing(Easing.Exponential.Out)
 					.onComplete(() => {
 						btnAlias.enabled = true;
@@ -140,6 +141,7 @@ export class PaymentPopup extends BasePopup {
 			},
 			highlightState: { scale: 1.05, tween: true },
 			fixedCursor: "pointer",
+			fixedHitArea: new Rectangle(-btnAliasContent.width, -btnAliasContent.height, btnAliasContent.width * 2, btnAliasContent.height * 2),
 		});
 		btnAlias.x = 386;
 		this.aliasContent.addChild(btnAlias);

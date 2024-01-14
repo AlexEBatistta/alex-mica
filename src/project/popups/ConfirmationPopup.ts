@@ -229,7 +229,7 @@ export class ConfirmationPopup extends BasePopup {
 
 	private onConfirmation(): void {
 		const tween = new Tween(this.sendText)
-			.to({ y: "+100" }, 500)
+			.to({ y: "+75" }, 500)
 			.easing(Easing.Exponential.Out)
 			.onComplete(() => this.closePopup());
 

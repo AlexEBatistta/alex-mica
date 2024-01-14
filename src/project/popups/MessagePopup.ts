@@ -162,7 +162,7 @@ export class MessagePopup extends BasePopup {
 		if (utils.isMobile.any) {
 			Manager.onKeyboard = true;
 
-			const pretended = this.boxInput.getBounds().y - Math.abs(Manager.height - KEYBOARD) + 100;
+			const pretended = this.boxInput.getBounds().y - Math.abs(Manager.height - KEYBOARD) + 50;
 
 			this.backgroundContainer.y = Manager.height / 2 - pretended;
 			this.centerContainer.y = Manager.height / 2 - pretended;

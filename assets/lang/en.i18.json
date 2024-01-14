@@ -1,6 +1,6 @@
 {
 	"Loader":{
-		"title": "¡LLEGÓ EL GRAN DÍA!",
+		"title": "¡LLEGA EL GRAN DÍA!",
 		"button": "QUIERO SER PARTE"
 	},
 	"Names":{
@@ -9,16 +9,16 @@
 		"subtitle": "¡NOS CASAMOS!"
 	},
 	"Location":{
-		"title": "¡LLEGÓ EL GRAN DÍA!",
-		"subtitle": "CEREMONIA Y FIESTA",
-		"text": "Celebramos nuestra boda el 30 de Marzo a las 19:30 horas en el Salón Zoraida, Yapeyú y Entre Ríos - San José\n\n¡Te esperamos!",
+		"title": "¡LLEGA EL GRAN DÍA!",
+		"subtitle": "CEREMONIA & FIESTA",
+		"text": "Celebramos nuestra boda el 30 de Marzo a las 19:30hs en el Salón La Zoraida, Yapeyú y Entre Ríos - San José.\n\n¡Te esperamos!",
 		"button": "CÓMO LLEGAR"
 	},
 	"Photos":{
 		"title": "NOSOTROS"
 	},
 	"Payment":{
-		"text": "El costo de la tarjeta es:\nAdultos: $3.500\nMenores de 10: Exento de pago",
+		"text": "El costo de la tarjeta es:\nAdultos: $4.000\nMenores de 10 exentos de pago.",
 		"button": "ABONAR AHORA"
 	},
 	"PPPayment":{
@@ -31,7 +31,7 @@
 	},
 	"DressCode":{
 		"title": "DRESS CODE",
-		"text": "FORMAL ELEGANTE\nTe recomendamos evitar utilizar ropa de color negro.\nPor favor, abstenerse de vestir de blanco",
+		"text": "FORMAL ELEGANTE\nTe recomendamos evitar el uso de ropa de color negro.\nPor favor, abstenerse de vestir de blanco.",
 		"button": "INSPIRACIÓN"
 	},
 	"PPDressCode":{
@@ -39,7 +39,7 @@
 	},
 	"SongsList":{
 		"title": "¿QUÉ CANCIONES NO PUEDEN FALTAR?",
-		"text": "¡Te invitamos a sugerir las canciones que crees que no deben faltar en la fiesta!",
+		"text": "¡Te invitamos a sugerir las canciones que creés que no deben faltar en la fiesta!",
 		"button": "AGREGAR A LA LISTA"
 	},
 	"PPSongsList":{
@@ -59,7 +59,7 @@
 	},
 	"Confirmation": {
 		"title": "CONFIRMACIÓN DE ASISTENCIA",
-		"text": "Esperamos que seas parte de esta nuestra celebración.\n¡Confirmanos tu asistencia!\nTENÉS TIEMPO HASTA EL 15 DE FEBRERO",
+		"text": "Esperamos que seas parte de nuestra celebración.\n¡Confirmanos tu asistencia!\nTENÉS TIEMPO HASTA EL 15 DE FEBRERO",
 		"button": "CONFIRMAR"
 	},
 	"PPConfirmation": {
