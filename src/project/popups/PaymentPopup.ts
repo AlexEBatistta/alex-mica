@@ -49,12 +49,16 @@ export class PaymentPopup extends BasePopup {
 		const btnCvu = new Button({
 			defaultState: { content: btnCvuContent },
 			onClick: () => {
-				const textarea = document.createElement("textarea");
-				textarea.value = cvuText.text;
-				document.body.appendChild(textarea);
-				textarea.select();
-				document.execCommand("copy");
-				document.body.removeChild(textarea);
+				if (navigator == undefined) {
+					const textarea = document.createElement("textarea");
+					textarea.value = cvuText.text;
+					document.body.appendChild(textarea);
+					textarea.select();
+					document.execCommand("copy");
+					document.body.removeChild(textarea);
+				} else {
+					navigator.clipboard.writeText(cvuText.text);
+				}
 
 				btnCvu.enabled = false;
 				this.cvuCopied.visible = true;
@@ -111,12 +115,16 @@ export class PaymentPopup extends BasePopup {
 		const btnAlias = new Button({
 			defaultState: { content: btnAliasContent },
 			onClick: () => {
-				const textarea = document.createElement("textarea");
-				textarea.value = aliasText.text;
-				document.body.appendChild(textarea);
-				textarea.select();
-				document.execCommand("copy");
-				document.body.removeChild(textarea);
+				if (navigator == undefined) {
+					const textarea = document.createElement("textarea");
+					textarea.value = aliasText.text;
+					document.body.appendChild(textarea);
+					textarea.select();
+					document.execCommand("copy");
+					document.body.removeChild(textarea);
+				} else {
+					navigator.clipboard.writeText(aliasText.text);
+				}
 
 				btnAlias.enabled = false;
 				this.aliasCopied.visible = true;

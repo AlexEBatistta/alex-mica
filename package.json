@@ -1,5 +1,5 @@
 {
-  "name": "Test",
+  "name": "Alex & Micaela",
   "version": "0.0.1",
   "description": "BunnyBox is a boilerplate/engine for pixijs. Descendant of the great killabunnies engine",
   "pwa": {
@@ -17,15 +17,10 @@
     "lint": "eslint src/**/*.ts --fix",
     "clean": "rimraf ./dist",
     "check": "tsc --noEmit --skipLibCheck -p tsconfig.json",
-    "deploy": "npm run build:release && gh-pages -d dist",
+    "deploy": "gh-pages -d dist",
     "downloadCsv": "node ./.tools/DownloadCSVGoogle.js"
   },
-  "languages": [
-    "en",
-    "pt",
-    "es"
-  ],
-  "author": "ElementalCode (Milton Candelero) @ Killabunnies",
+  "author": "Alex Batistta",
   "devDependencies": {
     "@killabunnies/eslint-config": "^1.0.5",
     "@types/file-saver": "^2.0.5",
