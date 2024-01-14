@@ -5,7 +5,7 @@ import { Container, NineSlicePlane, Rectangle, Sprite, Text, Texture } from "pix
 import { FB_DATABASE, Manager } from "../..";
 import { TextInput, TextInputEvents } from "../../engine/textinput/TextInput";
 import { ScrollView } from "../../engine/ui/scrollview/ScrollView";
-import { ColorDictionary, CSSStyleLeft, TextStyleDictionary } from "../../engine/utils/Constants";
+import { ColorDictionary, CSSStyleLeft, KEYBOARD, TextStyleDictionary } from "../../engine/utils/Constants";
 import { setPivotToCenter } from "../../engine/utils/MathUtils";
 import { BasePopup } from "./BasePopup";
 import { Button } from "../../engine/ui/button/Button";
@@ -195,10 +195,10 @@ export class SongsListPopup extends BasePopup {
 	private onInputFocus(): void {
 		if (utils.isMobile.any) {
 			Manager.onKeyboard = true;
-			const offset = this.boxInput.getBounds().y;
+			const pretended = this.boxInput.getBounds().y - Math.abs(Manager.height - KEYBOARD);
 
-			this.backgroundContainer.y = Manager.height / 2 - Math.abs(offset) * this.backgroundContainer.scale.x;
-			this.centerContainer.y = Manager.height / 2 - Math.abs(offset) * this.backgroundContainer.scale.x;
+			this.backgroundContainer.y = Manager.height / 2 - pretended;
+			this.centerContainer.y = Manager.height / 2 - pretended;
 			this.input.updateScale(this.boxInput, this.centerContainer.scale.x, this.boxInput.width - this.btnArrow.width * 2);
 
 			this.waitKeyboard = true;

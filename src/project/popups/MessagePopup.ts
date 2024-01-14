@@ -8,7 +8,7 @@ import { Easing, Tween } from "tweedle.js";
 import { FB_DATABASE, Manager } from "../..";
 import { TextInput, TextInputEvents } from "../../engine/textinput/TextInput";
 import { Button } from "../../engine/ui/button/Button";
-import { ColorDictionary, CSSStyleLeft, TextStyleDictionary } from "../../engine/utils/Constants";
+import { ColorDictionary, CSSStyleLeft, KEYBOARD, TextStyleDictionary } from "../../engine/utils/Constants";
 import { GraphicsHelper } from "../../engine/utils/GraphicsHelper";
 import { setPivotToCenter } from "../../engine/utils/MathUtils";
 import { ScaleHelper } from "../../engine/utils/ScaleHelper";
@@ -161,10 +161,12 @@ export class MessagePopup extends BasePopup {
 	private onInputFocus(): void {
 		if (utils.isMobile.any) {
 			Manager.onKeyboard = true;
-			// const offset = this.boxInput.getBounds().y - (Manager.isPortrait ? KEYBOARD_HEIGHT_PORTRAIT : KEYBOARD_HEIGHT_LANDSCAPE);
 
-			// this.backgroundContainer.y = Manager.height / 2 - Math.abs(offset) * this.backgroundContainer.scale.x;
-			// this.centerContainer.y = Manager.height / 2 - Math.abs(offset) * this.backgroundContainer.scale.x;
+			const pretended = this.boxInput.getBounds().y - Math.abs(Manager.height - KEYBOARD) + 100;
+
+			this.backgroundContainer.y = Manager.height / 2 - pretended;
+			this.centerContainer.y = Manager.height / 2 - pretended;
+			this.input.updateScale(this.boxInput, this.centerContainer.scale.x);
 
 			this.waitKeyboard = true;
 			setTimeout(() => (this.waitKeyboard = false), 500);
