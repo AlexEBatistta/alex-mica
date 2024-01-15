@@ -24,6 +24,7 @@ export class LoadingTransition extends TransitionBase {
 	private logo: Sprite;
 	private title: SDFBitmapText;
 	private button: Button;
+	private tweenButton: Tween<any>;
 
 	public constructor() {
 		super();
@@ -69,6 +70,7 @@ export class LoadingTransition extends TransitionBase {
 		this.button.y = 270;
 		this.button.visible = false;
 		this.centerContainer.addChild(this.button);
+		this.tweenButton = new Tween(this.button.scale, this.tweens).to({ x: 1.025, y: 1.025 }, 1000).yoyo(true).repeat(Infinity).easing(Easing.Sinusoidal.InOut);
 
 		// Loading Animation
 		this.loadingContainer = new Container();
@@ -114,6 +116,10 @@ export class LoadingTransition extends TransitionBase {
 		if (bundlesProgress["package-1"] == 1) {
 			this.loadingContainer.visible = false;
 			this.button.visible = true;
+			if (!this.tweenButton.isPlaying()) {
+				console.log("TWEEN");
+				this.tweenButton.start();
+			}
 		}
 	}
 

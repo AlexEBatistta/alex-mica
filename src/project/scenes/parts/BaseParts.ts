@@ -6,6 +6,7 @@ import { ColorDictionary, WIDTH_PARTS } from "../../../engine/utils/Constants";
 import type { SDFBitmapText } from "../../../engine/sdftext/SDFBitmapText";
 import { ScaleHelper } from "../../../engine/utils/ScaleHelper";
 import type { Button } from "../../../engine/ui/button/Button";
+import { Easing, Tween } from "tweedle.js";
 
 export class BaseParts extends Container {
 	protected background: Graphics;
@@ -13,6 +14,7 @@ export class BaseParts extends Container {
 	protected text: Text;
 	protected button: Button;
 	protected icon: Sprite;
+	protected btnTween: Tween<any>;
 	constructor(alpha: number, color: number = ColorDictionary.black, heightPart?: number) {
 		super();
 
@@ -26,6 +28,9 @@ export class BaseParts extends Container {
 	public onChangeOrientation(): void {
 		if (this.text != undefined) {
 			this.text.style.wordWrapWidth = ScaleHelper.IDEAL_WIDTH - (Manager.isPortrait ? 150 : 300);
+		}
+		if (this.button != undefined && this.btnTween == undefined) {
+			this.btnTween = new Tween(this.button.scale).to({ x: 1.025, y: 1.025 }, 1000).yoyo(true).repeat(Infinity).easing(Easing.Sinusoidal.InOut).start();
 		}
 	}
 
